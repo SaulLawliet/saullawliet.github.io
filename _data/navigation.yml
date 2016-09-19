@@ -1,10 +1,13 @@
 # Site navigation links
 
+- title: Posts
+  url: /posts/
+
+- title: Categories
+  url: /categories/
+
 - title: About
   url: /about/
 
-- title: Sample Posts
-  url: /posts/
-
-- title: Theme Setup
-  url: /theme-setup/
+- title: Docs
+  url: https://saullawliet.github.io/docs/

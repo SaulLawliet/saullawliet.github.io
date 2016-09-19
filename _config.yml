@@ -1,7 +1,7 @@
 # Site wide configuration
 
-title:            Site Title
-locale:           en_US
+title:            APPRIVOISER
+locale:           zh-CN
 url:
 
 
@@ -41,21 +41,21 @@ titlecase: true
 
 # Site owner
 owner:
-  name: Your Name
-  avatar: bio-photo.jpg
-  bio: "Describe your self."
+  name: Saul Lawliet
+  avatar: 8024a8aec564f5fdf74f8e70e045e96f.jpg
+  bio: "Everything's gonna be OK."
   email:
-  disqus-shortname:
+  disqus-shortname: saullawliet
   twitter: #username
   facebook: #username
   google:
     plus: #username
-    analytics:
+    analytics: UA-67880129-1
     verify:
     ad-client:
     ad-slot:
   bing-verify:
-  github: #username
+  github: SaulLawliet #username
   stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
   linkedin: #username
   xing: #username
