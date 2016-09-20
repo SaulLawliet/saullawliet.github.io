@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About me
-tags: []
+share: false
 ---
 
 	为了成为牛逼的自由程序员
