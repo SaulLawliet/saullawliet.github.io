@@ -1,0 +1,156 @@
+#+TITLE: sed笔记
+#+LANGUAGE: en
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
+#+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:nil *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
+
+-----
+
+* 说明
+#+BEGIN_QUOTE
+本文使用的版本为 ~sed (GNU sed) 4.2.2~, 其他版本不保证所有的功能和示例测试通过. \\
+查看版本号命令: ~sed --version |sed -n 1p~
+#+END_QUOTE
+
+** 基本使用方式
+  - sed [-n] [-e] 'command(s)' files
+    #+BEGIN_EXAMPLE
+    sed '1d' books.txt # 删除第1行
+    sed '1d;2d;5d;' books.txt # 删除第1,2,5行
+    sed -e '1d' -e '2d' -e '5d' books.txt # 删除1,2,5行
+    #+END_EXAMPLE
+
+  - sed [-n] -f scriptfile files
+    #+BEGIN_EXAMPLE
+    echo -e "1d\n2d\n5d" > commands.txt
+    sed -f commands.txt books.txt
+    #+END_EXAMPLE
+
+** 部分参数说明
+#+BEGIN_EXAMPLE
+-n, --quiet, --silent
+	suppress automatic printing of pattern space
+	抑制模式空间的自动打印
+-e script, --expression=script
+	add the script to the commands to be executed
+	添加执行命令需要的脚本
+-f script-file, --file=script-file
+	add the contents of script-file to the commands to be executed
+	添加执行命令需要的脚本文件
+#+END_EXAMPLE
+
+* 地址
+** addr1
+| ~number~     | 匹配指定数字的行                                                             |
+| ~first~step~ | 从第first行开始的, 匹配每个step倍数行. 例如:50~5, 将会匹配(50,55,60,65...)行 |
+| ~$~          | 匹配最后一行                                                                 |
+| ~/regexp/~   | 匹配所有'~/regexp/~'的行                                                     |
+
+** addr2
+| ~n1,n2~               | 匹配[n1, n2]行                                                               |
+| ~n1,+n2~              | 匹配[n1, n1+n2]行                                                            |
+| ~n,/regexp/~          | 从第n行开始, 匹配至第一个 ~/regexp/~ 的行                                    |
+| ~/regexp/,n~          | 从第一个 ~/regexp/~ 的行开始, 匹配到第n行. 并在余下的行中匹配所有 ~/regexp/~ |
+| ~/regexp/,+n~         | 循环执行: 从下一个 ~/regexp/~ 的行开始, 匹配接下来的连续n行                  |
+| ~/regexp/,~n~         | 循环执行: 从下一个 ~/regexp/~ 的行开始, 匹配至第一个行号是n的倍数            |
+| ~/regexp1/,/regexp2/~ | 循环执行: 从下一个 ~/regexp1/~ 的行开始, 匹配至第一个 ~/regexp2/~ 的行       |
+
+* 命令
+** Substitute
+   文本替换
+#+BEGIN_EXAMPLE
+[address1[,address2]]s/pattern/replacement/[flags]
+#+END_EXAMPLE
+1. ~[flags]~ 用法:
+   | g      | 匹配全部           |
+   | 2      | 匹配第2次          |
+   | 3g     | 匹配除了前2次      |
+   | i      | 忽略大小写         |
+   | p      | 打印改变的行       |
+   | w file | 改变的行保存到文件 |
+1. 在 ~pattern~ 中, 被 ~\(~ ~\)~ 包围的部分.\\
+   在 ~replacement~ 中, 可以以 ~\N~ 的方式提取, 其中 ~N~ 表示第几个匹配
+   #+BEGIN_EXAMPLE
+   $ echo "Three One Two" | sed 's/\(\w\+\) \(\w\+\) \(\w\+\)/\2 \3 \1/'
+   One Two Three
+   #+END_EXAMPLE
+
+
+** Insert
+   插入行
+#+BEGIN_EXAMPLE
+[address]i\
+Insert text
+#+END_EXAMPLE
+
+** Append
+   追加行
+#+BEGIN_EXAMPLE
+[address]a\
+Append text
+#+END_EXAMPLE
+
+** Delete
+   删除行
+#+BEGIN_EXAMPLE
+[address1[,address2]]d
+#+END_EXAMPLE
+
+** Change
+   改变行
+#+BEGIN_EXAMPLE
+[address1[,address2]]c\
+Replace text
+#+END_EXAMPLE
+
+** Translate
+   替换字符
+#+BEGIN_EXAMPLE
+[address1[,address2]]y/list-1/list-2/
+#+END_EXAMPLE
+
+** l
+   显示特殊字符, ~[len]~ 表示每行显示几个字符
+#+BEGIN_EXAMPLE
+[address1[,address2]]l
+[address1[,address2]]l [len]
+#+END_EXAMPLE
+
+** Write
+   写入文件\\
+   ~sed -n 'w b.txt' a.txt~ 等价于 ~cp a.txt b.txt~
+#+BEGIN_EXAMPLE
+[address1[,address2]]w file
+#+END_EXAMPLE
+
+** Read
+   读取文件
+#+BEGIN_EXAMPLE
+[address]r file
+#+END_EXAMPLE
+
+** Execute
+   执行命令, 如果 ~[command]~ 省略, 将会执行 处理的文件 里面的命令
+#+BEGIN_EXAMPLE
+[address1[,address2]]e [command]
+#+END_EXAMPLE
+
+** Quit
+   退出sed, ~[value]~ 表示返回码
+#+BEGIN_EXAMPLE
+[address]q
+[address]q [value]
+#+END_EXAMPLE
+
+** =
+   行号\\
+   ~sed -n '$=' a.txt~ 等价于 ~cat a.txt |wc -l~
+#+BEGIN_EXAMPLE
+[address1[,address2]]=
+#+END_EXAMPLE
+
+** &
+   存储之前的成功匹配
+
+* 参考
+1. ~man sed~
+1. http://www.tutorialspoint.com/sed/index.htm

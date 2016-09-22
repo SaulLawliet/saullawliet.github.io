@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>正则表达式</title>
+<!-- 2016-09-22 Thu 23:06 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Saul Lawliet" />
+<link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">正则表达式</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">基本概念</a></li>
+<li><a href="#sec-2">量化</a></li>
+<li><a href="#sec-3">字符集</a></li>
+<li><a href="#sec-4">参考</a></li>
+</ul>
+</div>
+</div>
+<hr  />
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">基本概念</h2>
+<div class="outline-text-2" id="text-1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left"><code>.</code></td>
+<td class="left">匹配任意字符</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>[ ]</code></td>
+<td class="left">匹配指定字符</td>
+<td class="left"><code>[abcdXYZ0123456789]</code> 等同 <code>[a-dX-Z0-9]</code></td>
+</tr>
+
+<tr>
+<td class="left"><code>[^ ]</code></td>
+<td class="left">排除指定字符</td>
+<td class="left"><code>[^abc]</code> 等同 <code>[^a-c]</code>, 将匹配任意字符但除了 <code>a</code>, <code>b</code>, <code>c</code></td>
+</tr>
+
+<tr>
+<td class="left"><code>^</code></td>
+<td class="left">行首</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>$</code></td>
+<td class="left">行尾</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>&#124;</code></td>
+<td class="left">选择操作</td>
+<td class="left"><code>gray&#124;grey</code> 将会匹配 <code>gray</code> 或 <code>grey</code></td>
+</tr>
+
+<tr>
+<td class="left"><code>( )</code></td>
+<td class="left">分组(定义一个子表达式)</td>
+<td class="left"><code>gr(a&#124;e)y</code> 将会匹配 <code>gray</code> 或 <code>grey</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">量化</h2>
+<div class="outline-text-2" id="text-2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left"><code>{n}</code></td>
+<td class="left">times == n</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>{min,}</code></td>
+<td class="left">times &gt;= min</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>{min, max}</code></td>
+<td class="left">times &gt;= min &amp;&amp; times &lt;= max</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left"><code>?</code></td>
+<td class="left">等同 <code>{0, 1}</code></td>
+<td class="left"><code>colou?r</code> 将会匹配 <code>color</code> 和 <code>colour</code></td>
+</tr>
+
+<tr>
+<td class="left"><code>*</code></td>
+<td class="left">等同 <code>{0,}</code></td>
+<td class="left"><code>ab*c</code> 将会匹配 <code>ac</code>, <code>abc</code>, <code>abbc</code>, <code>abbbc</code>&#x2026;</td>
+</tr>
+
+<tr>
+<td class="left"><code>+</code></td>
+<td class="left">等同 <code>{1,}</code></td>
+<td class="left"><code>ab+c</code> 将会匹配 <code>abc</code>, <code>abbc</code>, <code>abbbc</code>&#x2026; 但不会匹配 <code>ac</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">字符集</h2>
+<div class="outline-text-2" id="text-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">POSIX</th>
+<th scope="col" class="left">Non-standard</th>
+<th scope="col" class="left">Perl/Tcl</th>
+<th scope="col" class="left">Vim</th>
+<th scope="col" class="left">ASCII (不要忽视'[]'里面的空格;)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">[:alnum:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">[A-Za-z0-9]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">[:word:]</td>
+<td class="left">\w</td>
+<td class="left">\w</td>
+<td class="left">[A-Za-z0-9_]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\W</td>
+<td class="left">\W</td>
+<td class="left">[^A-Za-z0-9_]</td>
+</tr>
+
+<tr>
+<td class="left">[:alpha:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\a</td>
+<td class="left">[A-Za-z]</td>
+</tr>
+
+<tr>
+<td class="left">[:blank:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\s</td>
+<td class="left">[ \t]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\b</td>
+<td class="left">\< \></td>
+<td class="left">(?<=\W)(?=\w)&#124;(?<=\w)(?=\W)</td>
+</tr>
+
+<tr>
+<td class="left">[:cntrl:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">[\x00-\x1F\x7F]</td>
+</tr>
+
+<tr>
+<td class="left">[:digit:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">\d</td>
+<td class="left">\d</td>
+<td class="left">[0-9]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\D</td>
+<td class="left">\D</td>
+<td class="left">[^0-9]</td>
+</tr>
+
+<tr>
+<td class="left">[:graph:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">[\x21-\x7E]</td>
+</tr>
+
+<tr>
+<td class="left">[:lower:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\l</td>
+<td class="left">[a-z]</td>
+</tr>
+
+<tr>
+<td class="left">[:print:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\p</td>
+<td class="left">[\x20-\x7E]</td>
+</tr>
+
+<tr>
+<td class="left">[:punct:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">[][!"#$%&amp;'()*+,./:;&lt;=&gt;?@\^_`{&vert;}~-]</td>
+</tr>
+
+<tr>
+<td class="left">[:space:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">\s</td>
+<td class="left">\_s</td>
+<td class="left">[ \t\r\n\v\f]</td>
+</tr>
+
+<tr>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\S</td>
+<td class="left">\S</td>
+<td class="left">[^ \t\r\n\v\f]</td>
+</tr>
+
+<tr>
+<td class="left">[:upper:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\u</td>
+<td class="left">[A-Z]</td>
+</tr>
+
+<tr>
+<td class="left">[:xdigit:]</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+<td class="left">\x</td>
+<td class="left">[A-Fa-f0-9]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">参考</h2>
+<div class="outline-text-2" id="text-4">
+<ol class="org-ol">
+<li><a href="https://en.wikipedia.org/wiki/Regular_expression#Character_classes">https://en.wikipedia.org/wiki/Regular_expression#Character_classes</a>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2016-09-22 Thu 23:06</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

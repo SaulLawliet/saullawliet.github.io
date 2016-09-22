@@ -1,0 +1,77 @@
+#+TITLE: bash 笔记
+#+LANGUAGE: en
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
+#+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:nil *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
+
+-----
+
+* 基本语法
+** 数组
+#+BEGIN_SRC sh
+# 定义数组
+array=(1 2 3)
+
+# 数组长度
+echo ${#array[@]}
+
+# 按索引输出元素
+echo ${array[0]}
+echo ${array[-1]}
+
+# 遍历数组
+for value in ${array[@]}; do
+  echo $value
+done
+#+END_SRC
+
+* 代码片段
+** 读文件
+#+BEGIN_SRC sh
+# 按空格, 制表符, 换行符等读取文件
+for value in $(cat filename); do
+  echo $value
+done
+
+#按行读取文件
+while read line; do
+  echo $line
+done < filename
+#+END_SRC
+
+** 命令行参数相关
+#+BEGIN_SRC sh
+# 参数长度
+echo $#
+
+# 指定位置(第一个)
+echo $1
+
+# 遍历输出
+for value in $@; do
+  echo $value
+done
+#+END_SRC
+
+** 输出脚本绝对路径
+#+BEGIN_SRC sh
+echo $(readlink -f $0)
+#+END_SRC
+
+** 输出脚本所在目录
+#+BEGIN_SRC sh
+echo $(dirname $(readlink -f $0))
+#+END_SRC
+
+** 输出上条命令执行结果
+#+BEGIN_SRC sh
+if (( $? )); then echo "failure"; else echo "success"; fi
+#+END_SRC
+
+** 切换用户执行
+#+BEGIN_SRC sh
+su other_user << !
+  __command1__
+  __command2__
+  exit
+!
+#+END_SRC

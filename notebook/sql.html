@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>SQL 笔记</title>
+<!-- 2016-09-22 Thu 23:06 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Saul Lawliet" />
+<link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">SQL 笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">说明</a>
+<ul>
+<li><a href="#sec-1-1">本文约定</a></li>
+<li><a href="#sec-1-2">命名规则 (下划线命名法)</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">DATABASE 操作</a>
+<ul>
+<li><a href="#sec-2-1">CREATE DATABASE</a></li>
+<li><a href="#sec-2-2">DROP DATABASE</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">TABLE 操作</a>
+<ul>
+<li><a href="#sec-3-1">CREATE TABLE</a></li>
+<li><a href="#sec-3-2">DROP TABLE</a></li>
+<li><a href="#sec-3-3">ALTER TABLE</a>
+<ul>
+<li><a href="#sec-3-3-1">ADD COLUMN</a></li>
+<li><a href="#sec-3-3-2">DROP COLUMN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#sec-4">DATA 操作</a>
+<ul>
+<li><a href="#sec-4-1">WHERE 组件</a></li>
+<li><a href="#sec-4-2">SELECT</a>
+<ul>
+<li><a href="#sec-4-2-1">ORDER BY 组件</a></li>
+<li><a href="#sec-4-2-2">基本</a></li>
+<li><a href="#sec-4-2-3">聚合函数 ( aggregate_function )</a></li>
+<li><a href="#sec-4-2-4">HAVING 组件</a></li>
+<li><a href="#sec-4-2-5">GROUP BY</a></li>
+</ul>
+</li>
+<li><a href="#sec-4-3">INSERT</a></li>
+<li><a href="#sec-4-4">UPDATE</a></li>
+<li><a href="#sec-4-5">DELETE</a></li>
+<li><a href="#sec-4-6">TRUNCATE</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">联合</a>
+<ul>
+<li><a href="#sec-5-1">INNER JOIN</a></li>
+<li><a href="#sec-5-2">OUTER JOIN</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<hr  />
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">说明</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">本文约定</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+大写字母是SQL的关键字<br  />
+   小写字母是单词含义
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">命名规则 (下划线命名法)</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+<code>database</code>, <code>table</code> 通常是复数<br  />
+   <code>column</code> 通常是单数
+</p>
+
+<p>
+主键一般是 <code>id</code><br  />
+   外键一般是 <code>table</code> 的单数 加 <code>_</code> 加 <code>id</code>, 例如 <code>movie_id</code>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">DATABASE 操作</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">CREATE DATABASE</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">CREATE DATABASE database;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">DROP DATABASE</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+
+<pre class="src src-sql">DROP DATABASE database;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">TABLE 操作</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">CREATE TABLE</h3>
+<div class="outline-text-3" id="text-3-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">CREATE TABLE table (
+  column1 datatype constratint, -- 列约束 可选 (下同)
+  column2 datatype constratint,
+  ...
+  constratints  -- 表约束 可选
+);
+</pre>
+</div>
+
+<p>
+<code>constratint:</code> 列约束语法
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">PRIMARY KEY</td>
+<td class="left">主键, 每个表只能有一个, 满足 NOT NULL + UNIQUE</td>
+</tr>
+
+<tr>
+<td class="left">NOT NULL</td>
+<td class="left">此列不能为 NULL</td>
+</tr>
+
+<tr>
+<td class="left">UNIQUE</td>
+<td class="left">此列不能有重复的值</td>
+</tr>
+
+<tr>
+<td class="left">REFERENCES table(column)</td>
+<td class="left">外键, 当 column 省略的时候, column 取 table 中的主键</td>
+</tr>
+
+<tr>
+<td class="left">CHECK (column operator value)</td>
+<td class="left">值约束</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<code>constratints:</code> 表约束语法
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sql">-- 当仅有一列约束的时候, 等同于上面的写法
+-- 当有多列约束的时候, 应采用这种写法
+CONSTRAINT unique_name UNIQUE(column1, column2 ...)
+
+-- 外键
+FOREIGN KEY (column) REFERENCES table
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">DROP TABLE</h3>
+<div class="outline-text-3" id="text-3-2">
+<div class="org-src-container">
+
+<pre class="src src-sql">DROP TABLE table;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">ALTER TABLE</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-sec-3-3-1" class="outline-4">
+<h4 id="sec-3-3-1">ADD COLUMN</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">ALTER TABLE table ADD COLUMN column datatype;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3-2" class="outline-4">
+<h4 id="sec-3-3-2">DROP COLUMN</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<div class="org-src-container">
+
+<pre class="src src-sql">ALTER TABLE table DROP COLUMN column;
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">DATA 操作</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-sec-4-1" class="outline-3">
+<h3 id="sec-4-1">WHERE 组件</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">WHERE
+colume1 operator value
+[AND|OR]
+colume2 operator value
+...
+</pre>
+</div>
+
+<p>
+补充:
+</p>
+<ul class="org-ul">
+<li><code>value</code> 可以是 <code>subquery</code>, 例如:
+<div class="org-src-container">
+
+<pre class="src src-sql">-- 查询某列大于平均数的数据
+SELECT * FROM table WHERE column &gt; (SELECT AVG(column) FROM table);
+</pre>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2" class="outline-3">
+<h3 id="sec-4-2">SELECT</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+<b>EXAMPLE:</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sql">-- 查询所有列
+SELECT * FROM table;
+
+-- 查询指定列
+SELECT
+column1, column2 ...
+FROM table;
+
+-- 不显示重复行
+SELECT DISTINCT
+column1, column2 ...
+FROM table;
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-1" class="outline-4">
+<h4 id="sec-4-2-1">ORDER BY 组件</h4>
+<div class="outline-text-4" id="text-4-2-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">ORDER BY
+column1 [ASC|DESC], column2 [ASC|DESC] ...
+</pre>
+</div>
+<ul class="org-ul">
+<li>ASC: 升序(默认)
+</li>
+<li>DESC: 降序
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-2" class="outline-4">
+<h4 id="sec-4-2-2">基本</h4>
+<div class="outline-text-4" id="text-4-2-2">
+<div class="org-src-container">
+
+<pre class="src src-sql">SELECT ...
+FROM table
+(WHERE ...)  -- 1. 使用 WHERE 组件; 2. 括号内表示可选. 下同
+(ORDER BY ...)
+;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-3" class="outline-4">
+<h4 id="sec-4-2-3">聚合函数 ( aggregate_function )</h4>
+<div class="outline-text-4" id="text-4-2-3">
+<div class="org-src-container">
+
+<pre class="src src-sql">SELECT
+aggregate_function(column1), aggregate_function(column2) ...
+FROM table;
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">函数(列必须是数字)</th>
+<th scope="col" class="left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">AVG(column)</td>
+<td class="left">此列的平均数</td>
+</tr>
+
+<tr>
+<td class="left">COUNT(column) (其中 column 可以替换成 * )</td>
+<td class="left">此列(或此表)的总个数(不包括NULL)</td>
+</tr>
+
+<tr>
+<td class="left">MAX(column)</td>
+<td class="left">此列最大值</td>
+</tr>
+
+<tr>
+<td class="left">MIN(column)</td>
+<td class="left">此列最小值</td>
+</tr>
+
+<tr>
+<td class="left">SUM(column)</td>
+<td class="left">此列所有数累加</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-4" class="outline-4">
+<h4 id="sec-4-2-4">HAVING 组件</h4>
+<div class="outline-text-4" id="text-4-2-4">
+<pre class="example">
+HAVING
+aggregate_function(column1) operator value
+[AND|OR]
+aggregate_function(column2) operator value
+...
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-4-2-5" class="outline-4">
+<h4 id="sec-4-2-5">GROUP BY</h4>
+<div class="outline-text-4" id="text-4-2-5">
+<div class="org-src-container">
+
+<pre class="src src-sql">SELECT ${group_by_column},
+aggregate_function(column1), aggregate_function(column2) ...
+FROM table
+(WHERE ...)
+GROUP BY group_by_column
+(HAVING ...)
+(ORDER BY ...)
+;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-3" class="outline-3">
+<h3 id="sec-4-3">INSERT</h3>
+<div class="outline-text-3" id="text-4-3">
+<div class="org-src-container">
+
+<pre class="src src-sql">INSERT INTO table
+(column1, column2 ...)  -- 此行省略时的含义是: 所有列
+VALUES
+(value1, value2 ...)
+;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-4" class="outline-3">
+<h3 id="sec-4-4">UPDATE</h3>
+<div class="outline-text-3" id="text-4-4">
+<div class="org-src-container">
+
+<pre class="src src-sql">UPDATE table SET
+  column1 = new_value1,
+  column2 = new_value2,
+  ...
+  column = new_value
+(WHERE ...)
+;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-5" class="outline-3">
+<h3 id="sec-4-5">DELETE</h3>
+<div class="outline-text-3" id="text-4-5">
+<div class="org-src-container">
+
+<pre class="src src-sql">DELETE FROM table
+(WHERE ...)
+;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-4-6" class="outline-3">
+<h3 id="sec-4-6">TRUNCATE</h3>
+<div class="outline-text-3" id="text-4-6">
+<div class="org-src-container">
+
+<pre class="src src-sql">-- 当要删除表中的所有数据的时候, 请使用 TRUNCATE, 因为效率更高
+TRUNCATE TABLE table;
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">联合</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1">INNER JOIN</h3>
+<div class="outline-text-3" id="text-5-1">
+<div class="org-src-container">
+
+<pre class="src src-sql">SELECT * FROM table1
+INNER JOIN table2
+ON table1.id = table2.table1_id
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-5-2" class="outline-3">
+<h3 id="sec-5-2">OUTER JOIN</h3>
+<div class="outline-text-3" id="text-5-2">
+<div class="org-src-container">
+
+<pre class="src src-sql">-- LEFT: table1的所有数据
+SELECT * FROM table1
+LEFT OUTER JOIN table2
+ON table1.id = table2.table1_id
+
+-- RIGHT: table2的所有数据
+SELECT * FROM table1
+RIGHT OUTER JOIN table2
+ON table1.id = table2.table1_id
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2016-09-22 Thu 23:06</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
