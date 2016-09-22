@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java 工厂方法模式 进阶
+title: Java 中更好的「工厂方法模式」写法
 categories: java
 comments: true
 share: false
@@ -21,7 +21,8 @@ modified:
 │   ├── your
 │   │   └── YourProduct.java
 │   ├── AbstractProduct.java
-│   └── Product.java
+│   ├── Product.java
+│   └── ProductType.java
 ├── util
 │   └── RTSI.java
 └── Main.java

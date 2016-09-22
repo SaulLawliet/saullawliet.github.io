@@ -10,10 +10,6 @@ image:
 share: false
 ---
 
-### [[book]](/categories/book/)
-
-### [[essay]](/categories/essay/)
-
-### [[java]](/categories/java/)
-
-### [[share]](/categories/share/)
+{% for category in site.categories %}
+  <div markdown="0"><a href="/categories/{{ category[0] }}/" class="btn">{{ category[0] }} <sup>{{ category[1].size }}</sup></a></div>
+{% endfor %}
