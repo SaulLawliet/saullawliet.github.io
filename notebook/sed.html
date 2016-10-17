@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>sed笔记</title>
-<!-- 2016-09-22 Thu 23:06 -->
+<!-- 2016-10-17 Mon 11:36 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Saul Lawliet" />
@@ -144,6 +144,9 @@ sed -f commands.txt books.txt
 -f script-file, --file=script-file
 	add the contents of script-file to the commands to be executed
 	添加执行命令需要的脚本文件
+-i[SUFFIX], --in-place[=SUFFIX]
+        edit files in place (makes backup if SUFFIX supplied)
+        修改后将覆盖原文件 (如果指定了'SUFFIX', 将会备份修改前的文件, 新的文件名会在原来的基础上以'SUFFIX'为后缀)
 </pre>
 </div>
 </div>
@@ -470,7 +473,7 @@ Replace text
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2016-09-22 Thu 23:06</p>
+<p class="date">Created: 2016-10-17 Mon 11:36</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>

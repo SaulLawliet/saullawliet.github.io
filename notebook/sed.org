@@ -36,6 +36,9 @@
 -f script-file, --file=script-file
 	add the contents of script-file to the commands to be executed
 	添加执行命令需要的脚本文件
+-i[SUFFIX], --in-place[=SUFFIX]
+        edit files in place (makes backup if SUFFIX supplied)
+        修改后将覆盖原文件 (如果指定了'SUFFIX', 将会备份修改前的文件, 新的文件名会在原来的基础上以'SUFFIX'为后缀)
 #+END_EXAMPLE
 
 * 地址
