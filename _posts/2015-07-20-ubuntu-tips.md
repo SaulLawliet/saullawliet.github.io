@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Ubuntu 使用心得"
-categories: share
+category: share
 comments: true
 share: false
 image:

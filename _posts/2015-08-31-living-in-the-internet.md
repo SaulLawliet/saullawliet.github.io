@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "生活在互联网"
-categories: essay
+category: essay
 comments: true
 share: false
 image:

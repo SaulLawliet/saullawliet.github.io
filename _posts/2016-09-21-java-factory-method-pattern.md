@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Java 中更好的「工厂方法模式」写法
-categories: java
+category: java
 comments: true
 share: false
 image:

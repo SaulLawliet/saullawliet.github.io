@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Java 8 中线程安全的延时加载
-categories: java
+category: java
 comments: true
 share: false
 image:

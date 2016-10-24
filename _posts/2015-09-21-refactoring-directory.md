@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "《重构》目录"
-categories: book
+category: book
 comments: true
 share: false
 image:

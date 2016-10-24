@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "RE 笔记"
-categories: notes
+category: notes
 comments: false
 share: false
 image:
