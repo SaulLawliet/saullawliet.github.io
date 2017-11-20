@@ -1,0 +1,12 @@
+---
+layout: {{ layout }}
+title: {{ title }}
+categories: {{ dir }}
+comments: true
+share: false
+image:
+  feature:
+
+modified:
+---
+{% include _toc.html %}
