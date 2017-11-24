@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 一个从互联网上生成图书的工具 - KinldeCook
+title: 一个从互联网上生成电子书的工具 - Kinlde Cook
 categories: create
 comments: true
 share: false
