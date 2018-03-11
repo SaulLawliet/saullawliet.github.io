@@ -3,6 +3,9 @@
 - title: Posts
   url: /posts/
 
+- title: Notes
+  url: /categories/notes/
+
 - title: Categories
   url: /categories/
 
