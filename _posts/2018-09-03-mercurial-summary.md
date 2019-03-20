@@ -1,15 +1,32 @@
 ---
 layout: post
-title: 解决 Mercurial 中文路径字符编码的问题
+title: Mercurial 小结
 categories: essay
 comments: true
 share: false
 image:
   feature:
 
-modified:
+modified: 2019-03-20T22:02:06+08:00
 date: 2018-09-03T16:46:49+08:00
 ---
+
+{% include _toc.html %}
+
+# 基本操作
+
+``` bash
+# 拉取 并 更新
+pull pull && hg update
+
+# 撤销上一个命令(不能重复运行)
+hg rollback
+
+# 恢复到指定的 changeset
+hg strip --keep -r <changeset>
+```
+
+# 中文路径乱码
 
 1. Mercurial 的路径字符编码使用提交者电脑的字符编码
 1. 当 Windows 用户提交时, 路径字符编码是 GBK, 此时 Linux/Mac 用户更新的时, 会出现路径乱码情况
@@ -27,8 +44,7 @@ hg update -C
 hg purge --all
 
 # 更新
-hg pull
-hg update
+hg pull && hg update
 
 # 转换文件名的字符编码
 convmv -f gbk -t utf-8 -r --notest .

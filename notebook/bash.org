@@ -1,6 +1,5 @@
 #+TITLE: Bash 笔记
 #+LANGUAGE: en
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
 #+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:nil *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
 
 -----
@@ -61,16 +60,27 @@ echo "${a2[@]}"
 ** 遍历文件的行
    #+BEGIN_SRC sh
 while read -r line; do
-    printf '%s\n' "$line"
+  printf '%s\n' "$line"
 done < "file"
    #+END_SRC
 
 ** 遍历文件和目录
    #+BEGIN_SRC sh
 for file in *; do
-    printf '%s\n' "$file"
+  printf '%s\n' "$file"
 done
    #+END_SRC
+
+** 输出带颜色的文字
+#+BEGIN_SRC sh
+# 输出所有颜色(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)
+for code in {0..255}; do
+  echo -e "\e[38;5;${code}m"'\\e[38;5;'"$code"m"\e[0m"
+done
+
+# 随机一个颜色
+echo -e "\e[38;5;$((RANDOM%256))m#######\e[0m"
+#+END_SRC
 
 ** 切换用户执行
 #+BEGIN_SRC sh
