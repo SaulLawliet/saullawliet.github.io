@@ -1,77 +1,81 @@
-#+TITLE: bash 笔记
+#+TITLE: Bash 笔记
 #+LANGUAGE: en
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
 #+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:nil *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
 
 -----
 
-* 基本语法
-** 数组
-#+BEGIN_SRC sh
-# 定义数组
-array=(1 2 3)
+* 基本
+  - 基本语法介绍: [[https://devhints.io/bash][Bash scripting cheatsheet]], 推荐 *熟读* 或 *随手查阅*.
+  - 脚本参数设计: [[http://docopt.org/][Command-line interface description language]]
+  - 进阶书籍: [[https://github.com/dylanaraps/pure-bash-bible][Pure Bash Bible]], 真·大佬出品.
 
-# 数组长度
-echo ${#array[@]}
-
-# 按索引输出元素
-echo ${array[0]}
-echo ${array[-1]}
-
-# 遍历数组
-for value in ${array[@]}; do
-  echo $value
-done
-#+END_SRC
+* 小提示
+  - 使用变量时, 一定要用引号. 如: ~echo "$var"~
+  - 声明函数时, 无需使用关键字 ~function~
+  - 执行命令时, 用 ~$()~ 代替 ~` `~. 如: ~var="$(command "$(command)")"~
 
 * 代码片段
-** 读文件
-#+BEGIN_SRC sh
-# 按空格, 制表符, 换行符等读取文件
-for value in $(cat filename); do
-  echo $value
+  下面保存一些常用的代码, 提高开发效率;)
+
+** 最小代码模板
+   #+BEGIN_SRC sh
+#!/usr/bin/env bash
+
+main() {
+  ...
+}
+
+main "$@"
+   #+END_SRC
+
+** 获取脚本的目录信息
+   #+BEGIN_SRC sh
+# 脚本真实链接
+script_link="$(readlink -f "$0")"
+printf '%s\n' "$script_link"
+
+# 脚本所在目录
+script_dir="$(dirname "$(readlink -f "$0")")"
+printf '%s\n' "$script_dir"
+
+# 脚本文件名
+script_file="$(basename "$(readlink -f "$0")")"
+printf '%s\n' "$script_file"
+   #+END_SRC
+
+** 从命令声明数组
+   #+BEGIN_SRC sh
+read -d "" -ra a1 <<< "$(seq 1 2)"
+echo "${a1[@]}"
+# output:
+# 1 2
+
+a2=("$(seq 1 5)")
+echo "${a2[@]}"
+# output:
+# 1
+# 2
+   #+END_SRC
+
+** 遍历文件的行
+   #+BEGIN_SRC sh
+while read -r line; do
+    printf '%s\n' "$line"
+done < "file"
+   #+END_SRC
+
+** 遍历文件和目录
+   #+BEGIN_SRC sh
+for file in *; do
+    printf '%s\n' "$file"
 done
-
-#按行读取文件
-while read line; do
-  echo $line
-done < filename
-#+END_SRC
-
-** 命令行参数相关
-#+BEGIN_SRC sh
-# 参数长度
-echo $#
-
-# 指定位置(第一个)
-echo $1
-
-# 遍历输出
-for value in $@; do
-  echo $value
-done
-#+END_SRC
-
-** 输出脚本绝对路径
-#+BEGIN_SRC sh
-echo $(readlink -f $0)
-#+END_SRC
-
-** 输出脚本所在目录
-#+BEGIN_SRC sh
-echo $(dirname $(readlink -f $0))
-#+END_SRC
-
-** 输出上条命令执行结果
-#+BEGIN_SRC sh
-if (( $? )); then echo "failure"; else echo "success"; fi
-#+END_SRC
+   #+END_SRC
 
 ** 切换用户执行
 #+BEGIN_SRC sh
-su other_user << !
-  __command1__
-  __command2__
+su <other_user> << !
+  ...
   exit
 !
 #+END_SRC
