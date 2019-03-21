@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-03-21 Thu 17:18 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>org-mode structure</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">org-mode structure</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org3a286d1">org-mode structure</a>
+<ul>
+<li><a href="#orgf59db70">A subheading</a></li>
+<li><a href="#org6620eca">navigation</a></li>
+<li><a href="#org87f7ca2">lists</a>
+<ul>
+<li><a href="#org81305cb">bullet lists</a></li>
+<li><a href="#org5963a18">numbered lists</a></li>
+<li><a href="#orgddca3a1">checklists <code>[0/5]</code></a></li>
+<li><a href="#orgb2412d6">definition lists</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org3a286d1" class="outline-2">
+<h2 id="org3a286d1">org-mode structure</h2>
+<div class="outline-text-2" id="text-org3a286d1">
+<p>
+Text in org is structured by headings, denoted by lines starting with
+one or more * so we are currently in a section!
+</p>
+</div>
+
+<div id="outline-container-orgf59db70" class="outline-3">
+<h3 id="orgf59db70">A subheading</h3>
+<div class="outline-text-3" id="text-orgf59db70">
+<p>
+Starts with an extra * and so on
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6620eca" class="outline-3">
+<h3 id="org6620eca">navigation</h3>
+<div class="outline-text-3" id="text-org6620eca">
+<p>
+Headings can be expanded or collapsed by moving to the (sub)heading
+and pressing TAB. S-TAB cycles all headings. You can jump to next and
+previous headings with C-c C-n and C-c C-p respectively.
+</p>
+
+<p>
+You can move headings up and down to reorder them with the arrow keys,
+using M-up or M-down. You can change the level of headings with M-left
+and M-right (and use M-S-left and M-S-right to also change the levels
+of and subheadings).
+</p>
+</div>
+</div>
+
+<div id="outline-container-org87f7ca2" class="outline-3">
+<h3 id="org87f7ca2">lists</h3>
+<div class="outline-text-3" id="text-org87f7ca2">
+</div>
+<div id="outline-container-org81305cb" class="outline-4">
+<h4 id="org81305cb">bullet lists</h4>
+<div class="outline-text-4" id="text-org81305cb">
+<ul class="org-ul">
+<li>bullet lists can be created like this (start a line with one or
+more space and a -</li>
+<li>pressing M-RET gives you a new bullet</li>
+<li>we might also like nested bullets
+<ul class="org-ul">
+<li>like this one (I pressed M-RET TAB to indent it)</li>
+<li>and another (M-RET now indents to the new level)</li>
+</ul></li>
+<li>the nice thing is that for long lines of text, emacs wraps them
+so that they line up with the bullet</li>
+<li>you can also reorder list items and change indentation using
+M-up or M-down just like with section headings</li>
+<li>you can change bullet style using S-left and S-right</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5963a18" class="outline-4">
+<h4 id="org5963a18">numbered lists</h4>
+<div class="outline-text-4" id="text-org5963a18">
+<ol class="org-ol">
+<li>numbered lists are also possible</li>
+<li>M-RET gives me a new number</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgddca3a1" class="outline-4">
+<h4 id="orgddca3a1">checklists <code>[0/5]</code></h4>
+<div class="outline-text-4" id="text-orgddca3a1">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> we can even have check lists</li>
+<li class="off"><code>[&#xa0;]</code> M-S-RET gives a new item with a check box</li>
+<li class="off"><code>[&#xa0;]</code> C-c C-c check/unchecks a box</li>
+<li class="off"><code>[&#xa0;]</code> you can have sub items
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> like this</li>
+<li class="off"><code>[&#xa0;]</code> that can be checked off individually</li>
+</ul></li>
+<li class="off"><code>[&#xa0;]</code> and you can track the number of items by adding <code>[0/0]</code> to the end
+of a line above a checklist - this updates when you check items off</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgb2412d6" class="outline-4">
+<h4 id="orgb2412d6">definition lists</h4>
+<div class="outline-text-4" id="text-orgb2412d6">
+<dl class="org-dl">
+<dt>definition lists</dt><dd>these are useful sometimes</dd>
+<dt>item 2</dt><dd>M-RET again gives another item, and long lines wrap in a
+tidy way underneath the definition</dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2019-03-21 Thu 17:18</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

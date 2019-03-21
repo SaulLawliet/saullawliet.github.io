@@ -3,18 +3,20 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2019-03-21 Thu 16:45 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SQL 笔记</title>
-<!-- 2016-09-22 Thu 23:06 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Saul Lawliet" />
-<link rel="stylesheet" type="text/css" href="/assets/css/org.css" />
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2013 Free Software Foundation, Inc.
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -63,127 +65,127 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">说明</a>
+<li><a href="#org49e506f">说明</a>
 <ul>
-<li><a href="#sec-1-1">本文约定</a></li>
-<li><a href="#sec-1-2">命名规则 (下划线命名法)</a></li>
+<li><a href="#org63e7275">本文约定</a></li>
+<li><a href="#orgd81a5de">命名规则 (下划线命名法)</a></li>
 </ul>
 </li>
-<li><a href="#sec-2">DATABASE 操作</a>
+<li><a href="#org49a2f46">DATABASE 操作</a>
 <ul>
-<li><a href="#sec-2-1">CREATE DATABASE</a></li>
-<li><a href="#sec-2-2">DROP DATABASE</a></li>
+<li><a href="#orgc215b7d">CREATE DATABASE</a></li>
+<li><a href="#orgb65c3d8">DROP DATABASE</a></li>
 </ul>
 </li>
-<li><a href="#sec-3">TABLE 操作</a>
+<li><a href="#org238c8ec">TABLE 操作</a>
 <ul>
-<li><a href="#sec-3-1">CREATE TABLE</a></li>
-<li><a href="#sec-3-2">DROP TABLE</a></li>
-<li><a href="#sec-3-3">ALTER TABLE</a>
+<li><a href="#org55ef1d8">CREATE TABLE</a></li>
+<li><a href="#org7ac73c3">DROP TABLE</a></li>
+<li><a href="#orgd27aa39">ALTER TABLE</a>
 <ul>
-<li><a href="#sec-3-3-1">ADD COLUMN</a></li>
-<li><a href="#sec-3-3-2">DROP COLUMN</a></li>
+<li><a href="#orgbddb097">ADD COLUMN</a></li>
+<li><a href="#org5f2b3ca">DROP COLUMN</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#sec-4">DATA 操作</a>
+<li><a href="#org4b330bb">DATA 操作</a>
 <ul>
-<li><a href="#sec-4-1">WHERE 组件</a></li>
-<li><a href="#sec-4-2">SELECT</a>
+<li><a href="#org0a05331">WHERE 组件</a></li>
+<li><a href="#org794c342">SELECT</a>
 <ul>
-<li><a href="#sec-4-2-1">ORDER BY 组件</a></li>
-<li><a href="#sec-4-2-2">基本</a></li>
-<li><a href="#sec-4-2-3">聚合函数 ( aggregate_function )</a></li>
-<li><a href="#sec-4-2-4">HAVING 组件</a></li>
-<li><a href="#sec-4-2-5">GROUP BY</a></li>
+<li><a href="#org1c72fc6">ORDER BY 组件</a></li>
+<li><a href="#org60bb65d">基本</a></li>
+<li><a href="#orga0b2098">聚合函数 ( aggregate_function )</a></li>
+<li><a href="#org9abd0d6">HAVING 组件</a></li>
+<li><a href="#org80e217a">GROUP BY</a></li>
 </ul>
 </li>
-<li><a href="#sec-4-3">INSERT</a></li>
-<li><a href="#sec-4-4">UPDATE</a></li>
-<li><a href="#sec-4-5">DELETE</a></li>
-<li><a href="#sec-4-6">TRUNCATE</a></li>
+<li><a href="#org05bf4df">INSERT</a></li>
+<li><a href="#orgabd7f8b">UPDATE</a></li>
+<li><a href="#org94bb41e">DELETE</a></li>
+<li><a href="#org0d0ec8a">TRUNCATE</a></li>
 </ul>
 </li>
-<li><a href="#sec-5">联合</a>
+<li><a href="#org62969b7">联合</a>
 <ul>
-<li><a href="#sec-5-1">INNER JOIN</a></li>
-<li><a href="#sec-5-2">OUTER JOIN</a></li>
+<li><a href="#orgddd42f5">INNER JOIN</a></li>
+<li><a href="#orgba885fd">OUTER JOIN</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<hr  />
+<hr />
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">说明</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">本文约定</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-org49e506f" class="outline-2">
+<h2 id="org49e506f">说明</h2>
+<div class="outline-text-2" id="text-org49e506f">
+</div>
+<div id="outline-container-org63e7275" class="outline-3">
+<h3 id="org63e7275">本文约定</h3>
+<div class="outline-text-3" id="text-org63e7275">
 <p>
-大写字母是SQL的关键字<br  />
-   小写字母是单词含义
+大写字母是SQL的关键字<br />
+小写字母是单词含义
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">命名规则 (下划线命名法)</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgd81a5de" class="outline-3">
+<h3 id="orgd81a5de">命名规则 (下划线命名法)</h3>
+<div class="outline-text-3" id="text-orgd81a5de">
 <p>
-<code>database</code>, <code>table</code> 通常是复数<br  />
-   <code>column</code> 通常是单数
+<code>database</code>, <code>table</code> 通常是复数<br />
+<code>column</code> 通常是单数
 </p>
 
 <p>
-主键一般是 <code>id</code><br  />
-   外键一般是 <code>table</code> 的单数 加 <code>_</code> 加 <code>id</code>, 例如 <code>movie_id</code>
+主键一般是 <code>id</code><br />
+外键一般是 <code>table</code> 的单数 加 <code>_</code> 加 <code>id</code>, 例如 <code>movie_id</code>
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">DATABASE 操作</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">CREATE DATABASE</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-org49a2f46" class="outline-2">
+<h2 id="org49a2f46">DATABASE 操作</h2>
+<div class="outline-text-2" id="text-org49a2f46">
+</div>
+<div id="outline-container-orgc215b7d" class="outline-3">
+<h3 id="orgc215b7d">CREATE DATABASE</h3>
+<div class="outline-text-3" id="text-orgc215b7d">
 <div class="org-src-container">
-
-<pre class="src src-sql">CREATE DATABASE database;
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">CREATE</span> DATABASE database;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">DROP DATABASE</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgb65c3d8" class="outline-3">
+<h3 id="orgb65c3d8">DROP DATABASE</h3>
+<div class="outline-text-3" id="text-orgb65c3d8">
 <div class="org-src-container">
-
-<pre class="src src-sql">DROP DATABASE database;
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">DROP</span> DATABASE database;
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">TABLE 操作</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">CREATE TABLE</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-org238c8ec" class="outline-2">
+<h2 id="org238c8ec">TABLE 操作</h2>
+<div class="outline-text-2" id="text-org238c8ec">
+</div>
+<div id="outline-container-org55ef1d8" class="outline-3">
+<h3 id="org55ef1d8">CREATE TABLE</h3>
+<div class="outline-text-3" id="text-org55ef1d8">
 <div class="org-src-container">
-
-<pre class="src src-sql">CREATE TABLE table (
-  column1 datatype constratint, -- 列约束 可选 (下同)
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">CREATE</span> <span style="color: #859900; font-weight: bold;">TABLE</span> <span style="color: #859900; font-weight: bold;">table</span> (
+  column1 datatype constratint, <span style="color: #93a1a1;">-- &#21015;&#32422;&#26463; &#21487;&#36873; (&#19979;&#21516;)</span>
   column2 datatype constratint,
   ...
-  constratints  -- 表约束 可选
+  constratints  <span style="color: #93a1a1;">-- &#34920;&#32422;&#26463; &#21487;&#36873;</span>
 );
 </pre>
 </div>
@@ -195,34 +197,34 @@ for the JavaScript code in this tag.
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <tbody>
 <tr>
-<td class="left">PRIMARY KEY</td>
-<td class="left">主键, 每个表只能有一个, 满足 NOT NULL + UNIQUE</td>
+<td class="org-left">PRIMARY KEY</td>
+<td class="org-left">主键, 每个表只能有一个, 满足 NOT NULL + UNIQUE</td>
 </tr>
 
 <tr>
-<td class="left">NOT NULL</td>
-<td class="left">此列不能为 NULL</td>
+<td class="org-left">NOT NULL</td>
+<td class="org-left">此列不能为 NULL</td>
 </tr>
 
 <tr>
-<td class="left">UNIQUE</td>
-<td class="left">此列不能有重复的值</td>
+<td class="org-left">UNIQUE</td>
+<td class="org-left">此列不能有重复的值</td>
 </tr>
 
 <tr>
-<td class="left">REFERENCES table(column)</td>
-<td class="left">外键, 当 column 省略的时候, column 取 table 中的主键</td>
+<td class="org-left">REFERENCES table(column)</td>
+<td class="org-left">外键, 当 column 省略的时候, column 取 table 中的主键</td>
 </tr>
 
 <tr>
-<td class="left">CHECK (column operator value)</td>
-<td class="left">值约束</td>
+<td class="org-left">CHECK (column operator value)</td>
+<td class="org-left">值约束</td>
 </tr>
 </tbody>
 </table>
@@ -231,49 +233,46 @@ for the JavaScript code in this tag.
 <code>constratints:</code> 表约束语法
 </p>
 <div class="org-src-container">
+<pre class="src src-sql"><span style="color: #93a1a1;">-- &#24403;&#20165;&#26377;&#19968;&#21015;&#32422;&#26463;&#30340;&#26102;&#20505;, &#31561;&#21516;&#20110;&#19978;&#38754;&#30340;&#20889;&#27861;</span>
+<span style="color: #93a1a1;">-- &#24403;&#26377;&#22810;&#21015;&#32422;&#26463;&#30340;&#26102;&#20505;, &#24212;&#37319;&#29992;&#36825;&#31181;&#20889;&#27861;</span>
+<span style="color: #859900; font-weight: bold;">CONSTRAINT</span> unique_name <span style="color: #859900; font-weight: bold;">UNIQUE</span>(column1, column2 ...)
 
-<pre class="src src-sql">-- 当仅有一列约束的时候, 等同于上面的写法
--- 当有多列约束的时候, 应采用这种写法
-CONSTRAINT unique_name UNIQUE(column1, column2 ...)
-
--- 外键
-FOREIGN KEY (column) REFERENCES table
+<span style="color: #93a1a1;">-- &#22806;&#38190;</span>
+<span style="color: #859900; font-weight: bold;">FOREIGN</span> <span style="color: #859900; font-weight: bold;">KEY</span> (<span style="color: #859900; font-weight: bold;">column</span>) <span style="color: #859900; font-weight: bold;">REFERENCES</span> <span style="color: #859900; font-weight: bold;">table</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">DROP TABLE</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-org7ac73c3" class="outline-3">
+<h3 id="org7ac73c3">DROP TABLE</h3>
+<div class="outline-text-3" id="text-org7ac73c3">
 <div class="org-src-container">
-
-<pre class="src src-sql">DROP TABLE table;
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">DROP</span> <span style="color: #859900; font-weight: bold;">TABLE</span> <span style="color: #859900; font-weight: bold;">table</span>;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3">ALTER TABLE</h3>
-<div class="outline-text-3" id="text-3-3">
-</div><div id="outline-container-sec-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1">ADD COLUMN</h4>
-<div class="outline-text-4" id="text-3-3-1">
+<div id="outline-container-orgd27aa39" class="outline-3">
+<h3 id="orgd27aa39">ALTER TABLE</h3>
+<div class="outline-text-3" id="text-orgd27aa39">
+</div>
+<div id="outline-container-orgbddb097" class="outline-4">
+<h4 id="orgbddb097">ADD COLUMN</h4>
+<div class="outline-text-4" id="text-orgbddb097">
 <div class="org-src-container">
-
-<pre class="src src-sql">ALTER TABLE table ADD COLUMN column datatype;
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">ALTER</span> <span style="color: #859900; font-weight: bold;">TABLE</span> <span style="color: #859900; font-weight: bold;">table</span> <span style="color: #859900; font-weight: bold;">ADD</span> <span style="color: #859900; font-weight: bold;">COLUMN</span> <span style="color: #859900; font-weight: bold;">column</span> datatype;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2">DROP COLUMN</h4>
-<div class="outline-text-4" id="text-3-3-2">
+<div id="outline-container-org5f2b3ca" class="outline-4">
+<h4 id="org5f2b3ca">DROP COLUMN</h4>
+<div class="outline-text-4" id="text-org5f2b3ca">
 <div class="org-src-container">
-
-<pre class="src src-sql">ALTER TABLE table DROP COLUMN column;
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">ALTER</span> <span style="color: #859900; font-weight: bold;">TABLE</span> <span style="color: #859900; font-weight: bold;">table</span> <span style="color: #859900; font-weight: bold;">DROP</span> <span style="color: #859900; font-weight: bold;">COLUMN</span> <span style="color: #859900; font-weight: bold;">column</span>;
 </pre>
 </div>
 </div>
@@ -281,18 +280,18 @@ FOREIGN KEY (column) REFERENCES table
 </div>
 </div>
 
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">DATA 操作</h2>
-<div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1">WHERE 组件</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-org4b330bb" class="outline-2">
+<h2 id="org4b330bb">DATA 操作</h2>
+<div class="outline-text-2" id="text-org4b330bb">
+</div>
+<div id="outline-container-org0a05331" class="outline-3">
+<h3 id="org0a05331">WHERE 组件</h3>
+<div class="outline-text-3" id="text-org0a05331">
 <div class="org-src-container">
-
-<pre class="src src-sql">WHERE
-colume1 operator value
-[AND|OR]
-colume2 operator value
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">WHERE</span>
+colume1 operator <span style="color: #859900; font-weight: bold;">value</span>
+[<span style="color: #859900; font-weight: bold;">AND</span>|<span style="color: #859900; font-weight: bold;">OR</span>]
+colume2 operator <span style="color: #859900; font-weight: bold;">value</span>
 ...
 </pre>
 </div>
@@ -301,83 +300,77 @@ colume2 operator value
 补充:
 </p>
 <ul class="org-ul">
-<li><code>value</code> 可以是 <code>subquery</code>, 例如:
+<li><p>
+<code>value</code> 可以是 <code>subquery</code>, 例如:
+</p>
 <div class="org-src-container">
-
-<pre class="src src-sql">-- 查询某列大于平均数的数据
-SELECT * FROM table WHERE column &gt; (SELECT AVG(column) FROM table);
+<pre class="src src-sql"><span style="color: #93a1a1;">-- &#26597;&#35810;&#26576;&#21015;&#22823;&#20110;&#24179;&#22343;&#25968;&#30340;&#25968;&#25454;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span> * <span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span> <span style="color: #859900; font-weight: bold;">WHERE</span> <span style="color: #859900; font-weight: bold;">column</span> &gt; (<span style="color: #859900; font-weight: bold;">SELECT</span> <span style="color: #657b83; font-weight: bold;">AVG</span>(<span style="color: #859900; font-weight: bold;">column</span>) <span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>);
 </pre>
-</div>
-</li>
+</div></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">SELECT</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-org794c342" class="outline-3">
+<h3 id="org794c342">SELECT</h3>
+<div class="outline-text-3" id="text-org794c342">
 <p>
 <b>EXAMPLE:</b>
 </p>
 <div class="org-src-container">
+<pre class="src src-sql"><span style="color: #93a1a1;">-- &#26597;&#35810;&#25152;&#26377;&#21015;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span> * <span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>;
 
-<pre class="src src-sql">-- 查询所有列
-SELECT * FROM table;
-
--- 查询指定列
-SELECT
+<span style="color: #93a1a1;">-- &#26597;&#35810;&#25351;&#23450;&#21015;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span>
 column1, column2 ...
-FROM table;
+<span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>;
 
--- 不显示重复行
-SELECT DISTINCT
+<span style="color: #93a1a1;">-- &#19981;&#26174;&#31034;&#37325;&#22797;&#34892;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span> <span style="color: #859900; font-weight: bold;">DISTINCT</span>
 column1, column2 ...
-FROM table;
+<span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>;
 </pre>
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-1" class="outline-4">
-<h4 id="sec-4-2-1">ORDER BY 组件</h4>
-<div class="outline-text-4" id="text-4-2-1">
+<div id="outline-container-org1c72fc6" class="outline-4">
+<h4 id="org1c72fc6">ORDER BY 组件</h4>
+<div class="outline-text-4" id="text-org1c72fc6">
 <div class="org-src-container">
-
-<pre class="src src-sql">ORDER BY
-column1 [ASC|DESC], column2 [ASC|DESC] ...
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">ORDER</span> <span style="color: #859900; font-weight: bold;">BY</span>
+column1 [<span style="color: #859900; font-weight: bold;">ASC</span>|<span style="color: #859900; font-weight: bold;">DESC</span>], column2 [<span style="color: #859900; font-weight: bold;">ASC</span>|<span style="color: #859900; font-weight: bold;">DESC</span>] ...
 </pre>
 </div>
 <ul class="org-ul">
-<li>ASC: 升序(默认)
-</li>
-<li>DESC: 降序
-</li>
+<li>ASC: 升序(默认)</li>
+<li>DESC: 降序</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-2" class="outline-4">
-<h4 id="sec-4-2-2">基本</h4>
-<div class="outline-text-4" id="text-4-2-2">
+<div id="outline-container-org60bb65d" class="outline-4">
+<h4 id="org60bb65d">基本</h4>
+<div class="outline-text-4" id="text-org60bb65d">
 <div class="org-src-container">
-
-<pre class="src src-sql">SELECT ...
-FROM table
-(WHERE ...)  -- 1. 使用 WHERE 组件; 2. 括号内表示可选. 下同
-(ORDER BY ...)
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">SELECT</span> ...
+<span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>
+(<span style="color: #859900; font-weight: bold;">WHERE</span> ...)  <span style="color: #93a1a1;">-- 1. &#20351;&#29992; WHERE &#32452;&#20214;; 2. &#25324;&#21495;&#20869;&#34920;&#31034;&#21487;&#36873;. &#19979;&#21516;</span>
+(<span style="color: #859900; font-weight: bold;">ORDER</span> <span style="color: #859900; font-weight: bold;">BY</span> ...)
 ;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-3" class="outline-4">
-<h4 id="sec-4-2-3">聚合函数 ( aggregate_function )</h4>
-<div class="outline-text-4" id="text-4-2-3">
+<div id="outline-container-orga0b2098" class="outline-4">
+<h4 id="orga0b2098">聚合函数 ( aggregate_function )</h4>
+<div class="outline-text-4" id="text-orga0b2098">
 <div class="org-src-container">
-
-<pre class="src src-sql">SELECT
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">SELECT</span>
 aggregate_function(column1), aggregate_function(column2) ...
-FROM table;
+<span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>;
 </pre>
 </div>
 
@@ -385,49 +378,49 @@ FROM table;
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">函数(列必须是数字)</th>
-<th scope="col" class="left">描述</th>
+<th scope="col" class="org-left">函数(列必须是数字)</th>
+<th scope="col" class="org-left">描述</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">AVG(column)</td>
-<td class="left">此列的平均数</td>
+<td class="org-left">AVG(column)</td>
+<td class="org-left">此列的平均数</td>
 </tr>
 
 <tr>
-<td class="left">COUNT(column) (其中 column 可以替换成 * )</td>
-<td class="left">此列(或此表)的总个数(不包括NULL)</td>
+<td class="org-left">COUNT(column) (其中 column 可以替换成 * )</td>
+<td class="org-left">此列(或此表)的总个数(不包括NULL)</td>
 </tr>
 
 <tr>
-<td class="left">MAX(column)</td>
-<td class="left">此列最大值</td>
+<td class="org-left">MAX(column)</td>
+<td class="org-left">此列最大值</td>
 </tr>
 
 <tr>
-<td class="left">MIN(column)</td>
-<td class="left">此列最小值</td>
+<td class="org-left">MIN(column)</td>
+<td class="org-left">此列最小值</td>
 </tr>
 
 <tr>
-<td class="left">SUM(column)</td>
-<td class="left">此列所有数累加</td>
+<td class="org-left">SUM(column)</td>
+<td class="org-left">此列所有数累加</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-4" class="outline-4">
-<h4 id="sec-4-2-4">HAVING 组件</h4>
-<div class="outline-text-4" id="text-4-2-4">
+<div id="outline-container-org9abd0d6" class="outline-4">
+<h4 id="org9abd0d6">HAVING 组件</h4>
+<div class="outline-text-4" id="text-org9abd0d6">
 <pre class="example">
 HAVING
 aggregate_function(column1) operator value
@@ -438,18 +431,17 @@ aggregate_function(column2) operator value
 </div>
 </div>
 
-<div id="outline-container-sec-4-2-5" class="outline-4">
-<h4 id="sec-4-2-5">GROUP BY</h4>
-<div class="outline-text-4" id="text-4-2-5">
+<div id="outline-container-org80e217a" class="outline-4">
+<h4 id="org80e217a">GROUP BY</h4>
+<div class="outline-text-4" id="text-org80e217a">
 <div class="org-src-container">
-
-<pre class="src src-sql">SELECT ${group_by_column},
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">SELECT</span> ${group_by_column},
 aggregate_function(column1), aggregate_function(column2) ...
-FROM table
-(WHERE ...)
-GROUP BY group_by_column
-(HAVING ...)
-(ORDER BY ...)
+<span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>
+(<span style="color: #859900; font-weight: bold;">WHERE</span> ...)
+<span style="color: #859900; font-weight: bold;">GROUP</span> <span style="color: #859900; font-weight: bold;">BY</span> group_by_column
+(<span style="color: #859900; font-weight: bold;">HAVING</span> ...)
+(<span style="color: #859900; font-weight: bold;">ORDER</span> <span style="color: #859900; font-weight: bold;">BY</span> ...)
 ;
 </pre>
 </div>
@@ -457,14 +449,13 @@ GROUP BY group_by_column
 </div>
 </div>
 
-<div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3">INSERT</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-org05bf4df" class="outline-3">
+<h3 id="org05bf4df">INSERT</h3>
+<div class="outline-text-3" id="text-org05bf4df">
 <div class="org-src-container">
-
-<pre class="src src-sql">INSERT INTO table
-(column1, column2 ...)  -- 此行省略时的含义是: 所有列
-VALUES
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">INSERT</span> <span style="color: #859900; font-weight: bold;">INTO</span> <span style="color: #859900; font-weight: bold;">table</span>
+(column1, column2 ...)  <span style="color: #93a1a1;">-- &#27492;&#34892;&#30465;&#30053;&#26102;&#30340;&#21547;&#20041;&#26159;: &#25152;&#26377;&#21015;</span>
+<span style="color: #859900; font-weight: bold;">VALUES</span>
 (value1, value2 ...)
 ;
 </pre>
@@ -472,79 +463,75 @@ VALUES
 </div>
 </div>
 
-<div id="outline-container-sec-4-4" class="outline-3">
-<h3 id="sec-4-4">UPDATE</h3>
-<div class="outline-text-3" id="text-4-4">
+<div id="outline-container-orgabd7f8b" class="outline-3">
+<h3 id="orgabd7f8b">UPDATE</h3>
+<div class="outline-text-3" id="text-orgabd7f8b">
 <div class="org-src-container">
-
-<pre class="src src-sql">UPDATE table SET
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">UPDATE</span> <span style="color: #859900; font-weight: bold;">table</span> <span style="color: #859900; font-weight: bold;">SET</span>
   column1 = new_value1,
   column2 = new_value2,
   ...
-  column = new_value
-(WHERE ...)
+  <span style="color: #859900; font-weight: bold;">column</span> = new_value
+(<span style="color: #859900; font-weight: bold;">WHERE</span> ...)
 ;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-4-5" class="outline-3">
-<h3 id="sec-4-5">DELETE</h3>
-<div class="outline-text-3" id="text-4-5">
+<div id="outline-container-org94bb41e" class="outline-3">
+<h3 id="org94bb41e">DELETE</h3>
+<div class="outline-text-3" id="text-org94bb41e">
 <div class="org-src-container">
-
-<pre class="src src-sql">DELETE FROM table
-(WHERE ...)
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">DELETE</span> <span style="color: #859900; font-weight: bold;">FROM</span> <span style="color: #859900; font-weight: bold;">table</span>
+(<span style="color: #859900; font-weight: bold;">WHERE</span> ...)
 ;
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-4-6" class="outline-3">
-<h3 id="sec-4-6">TRUNCATE</h3>
-<div class="outline-text-3" id="text-4-6">
+<div id="outline-container-org0d0ec8a" class="outline-3">
+<h3 id="org0d0ec8a">TRUNCATE</h3>
+<div class="outline-text-3" id="text-org0d0ec8a">
 <div class="org-src-container">
-
-<pre class="src src-sql">-- 当要删除表中的所有数据的时候, 请使用 TRUNCATE, 因为效率更高
-TRUNCATE TABLE table;
+<pre class="src src-sql"><span style="color: #93a1a1;">-- &#24403;&#35201;&#21024;&#38500;&#34920;&#20013;&#30340;&#25152;&#26377;&#25968;&#25454;&#30340;&#26102;&#20505;, &#35831;&#20351;&#29992; TRUNCATE, &#22240;&#20026;&#25928;&#29575;&#26356;&#39640;</span>
+TRUNCATE <span style="color: #859900; font-weight: bold;">TABLE</span> <span style="color: #859900; font-weight: bold;">table</span>;
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">联合</h2>
-<div class="outline-text-2" id="text-5">
-</div><div id="outline-container-sec-5-1" class="outline-3">
-<h3 id="sec-5-1">INNER JOIN</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-org62969b7" class="outline-2">
+<h2 id="org62969b7">联合</h2>
+<div class="outline-text-2" id="text-org62969b7">
+</div>
+<div id="outline-container-orgddd42f5" class="outline-3">
+<h3 id="orgddd42f5">INNER JOIN</h3>
+<div class="outline-text-3" id="text-orgddd42f5">
 <div class="org-src-container">
-
-<pre class="src src-sql">SELECT * FROM table1
-INNER JOIN table2
-ON table1.id = table2.table1_id
+<pre class="src src-sql"><span style="color: #859900; font-weight: bold;">SELECT</span> * <span style="color: #859900; font-weight: bold;">FROM</span> table1
+<span style="color: #859900; font-weight: bold;">INNER</span> <span style="color: #859900; font-weight: bold;">JOIN</span> table2
+<span style="color: #859900; font-weight: bold;">ON</span> table1.id = table2.table1_id
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2">OUTER JOIN</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-orgba885fd" class="outline-3">
+<h3 id="orgba885fd">OUTER JOIN</h3>
+<div class="outline-text-3" id="text-orgba885fd">
 <div class="org-src-container">
+<pre class="src src-sql"><span style="color: #93a1a1;">-- LEFT: table1&#30340;&#25152;&#26377;&#25968;&#25454;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span> * <span style="color: #859900; font-weight: bold;">FROM</span> table1
+<span style="color: #859900; font-weight: bold;">LEFT</span> <span style="color: #859900; font-weight: bold;">OUTER</span> <span style="color: #859900; font-weight: bold;">JOIN</span> table2
+<span style="color: #859900; font-weight: bold;">ON</span> table1.id = table2.table1_id
 
-<pre class="src src-sql">-- LEFT: table1的所有数据
-SELECT * FROM table1
-LEFT OUTER JOIN table2
-ON table1.id = table2.table1_id
-
--- RIGHT: table2的所有数据
-SELECT * FROM table1
-RIGHT OUTER JOIN table2
-ON table1.id = table2.table1_id
+<span style="color: #93a1a1;">-- RIGHT: table2&#30340;&#25152;&#26377;&#25968;&#25454;</span>
+<span style="color: #859900; font-weight: bold;">SELECT</span> * <span style="color: #859900; font-weight: bold;">FROM</span> table1
+<span style="color: #859900; font-weight: bold;">RIGHT</span> <span style="color: #859900; font-weight: bold;">OUTER</span> <span style="color: #859900; font-weight: bold;">JOIN</span> table2
+<span style="color: #859900; font-weight: bold;">ON</span> table1.id = table2.table1_id
 </pre>
 </div>
 </div>
@@ -553,8 +540,7 @@ ON table1.id = table2.table1_id
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2016-09-22 Thu 23:06</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2019-03-21 Thu 16:45</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

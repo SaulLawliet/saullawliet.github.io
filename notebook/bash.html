@@ -3,12 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-03-20 Wed 22:18 -->
+<!-- 2019-03-21 Thu 16:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bash 笔记</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
 /*
@@ -64,17 +65,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbcdd44b">基本</a></li>
-<li><a href="#org54fae8f">小提示</a></li>
-<li><a href="#org233577c">代码片段</a>
+<li><a href="#org539554d">基本</a></li>
+<li><a href="#org9bf45e4">小提示</a></li>
+<li><a href="#org88fb8ba">代码片段</a>
 <ul>
-<li><a href="#orgd4fba30">最小代码模板</a></li>
-<li><a href="#org9b006c9">获取脚本的目录信息</a></li>
-<li><a href="#org04f343d">从命令声明数组</a></li>
-<li><a href="#orgc0d1861">遍历文件的行</a></li>
-<li><a href="#org7ee0ac5">遍历文件和目录</a></li>
-<li><a href="#org2658936">输出带颜色的文字</a></li>
-<li><a href="#orge2e8d42">切换用户执行</a></li>
+<li><a href="#org3ef78c1">最小代码模板</a></li>
+<li><a href="#org4c78736">获取脚本的目录信息</a></li>
+<li><a href="#org0ef3974">从命令声明数组</a></li>
+<li><a href="#org00909fa">遍历文件的行</a></li>
+<li><a href="#org1fe2338">遍历文件和目录</a></li>
+<li><a href="#orgc0b7b54">输出带颜色的文字</a></li>
+<li><a href="#org1514bd8">切换用户执行</a></li>
 </ul>
 </li>
 </ul>
@@ -82,20 +83,21 @@ for the JavaScript code in this tag.
 </div>
 <hr />
 
-<div id="outline-container-orgbcdd44b" class="outline-2">
-<h2 id="orgbcdd44b">基本</h2>
-<div class="outline-text-2" id="text-orgbcdd44b">
+<div id="outline-container-org539554d" class="outline-2">
+<h2 id="org539554d">基本</h2>
+<div class="outline-text-2" id="text-org539554d">
 <ul class="org-ul">
 <li>基本语法介绍: <a href="https://devhints.io/bash">Bash scripting cheatsheet</a>, 推荐 <b>熟读</b> 或 <b>随手查阅</b>.</li>
-<li>脚本参数设计: <a href="http://docopt.org/">Command-line interface description language</a></li>
 <li>进阶书籍: <a href="https://github.com/dylanaraps/pure-bash-bible">Pure Bash Bible</a>, 真·大佬出品.</li>
+<li>脚本参数设计: <a href="http://docopt.org/">Command-line interface description language</a></li>
+<li>代码分析工具: <a href="https://github.com/koalaman/shellcheck">ShellCheck</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org54fae8f" class="outline-2">
-<h2 id="org54fae8f">小提示</h2>
-<div class="outline-text-2" id="text-org54fae8f">
+<div id="outline-container-org9bf45e4" class="outline-2">
+<h2 id="org9bf45e4">小提示</h2>
+<div class="outline-text-2" id="text-org9bf45e4">
 <ul class="org-ul">
 <li>使用变量时, 一定要用引号. 如: <code>echo "$var"</code></li>
 <li>声明函数时, 无需使用关键字 <code>function</code></li>
@@ -104,17 +106,17 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org233577c" class="outline-2">
-<h2 id="org233577c">代码片段</h2>
-<div class="outline-text-2" id="text-org233577c">
+<div id="outline-container-org88fb8ba" class="outline-2">
+<h2 id="org88fb8ba">代码片段</h2>
+<div class="outline-text-2" id="text-org88fb8ba">
 <p>
 下面保存一些常用的代码, 提高开发效率;)
 </p>
 </div>
 
-<div id="outline-container-orgd4fba30" class="outline-3">
-<h3 id="orgd4fba30">最小代码模板</h3>
-<div class="outline-text-3" id="text-orgd4fba30">
+<div id="outline-container-org3ef78c1" class="outline-3">
+<h3 id="org3ef78c1">最小代码模板</h3>
+<div class="outline-text-3" id="text-org3ef78c1">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/usr/bin/</span><span style="color: #859900; font-weight: bold;">env</span><span style="color: #93a1a1;"> bash</span>
 
@@ -128,9 +130,9 @@ main <span style="color: #2aa198;">"$@"</span>
 </div>
 </div>
 
-<div id="outline-container-org9b006c9" class="outline-3">
-<h3 id="org9b006c9">获取脚本的目录信息</h3>
-<div class="outline-text-3" id="text-org9b006c9">
+<div id="outline-container-org4c78736" class="outline-3">
+<h3 id="org4c78736">获取脚本的目录信息</h3>
+<div class="outline-text-3" id="text-org4c78736">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#33050;&#26412;&#30495;&#23454;&#38142;&#25509;</span>
 <span style="color: #268bd2;">script_link</span>=<span style="color: #2aa198;">"$(readlink -f "$0")"</span>
@@ -148,9 +150,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org04f343d" class="outline-3">
-<h3 id="org04f343d">从命令声明数组</h3>
-<div class="outline-text-3" id="text-org04f343d">
+<div id="outline-container-org0ef3974" class="outline-3">
+<h3 id="org0ef3974">从命令声明数组</h3>
+<div class="outline-text-3" id="text-org0ef3974">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">read</span> -d <span style="color: #2aa198;">""</span> -ra a1 &lt;&lt;&lt; <span style="color: #2aa198;">"$(seq 1 2)"</span>
 <span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"${a1[@]}"</span>
@@ -167,9 +169,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-orgc0d1861" class="outline-3">
-<h3 id="orgc0d1861">遍历文件的行</h3>
-<div class="outline-text-3" id="text-orgc0d1861">
+<div id="outline-container-org00909fa" class="outline-3">
+<h3 id="org00909fa">遍历文件的行</h3>
+<div class="outline-text-3" id="text-org00909fa">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">read</span> -r line; <span style="color: #859900; font-weight: bold;">do</span>
   printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$line"</span>
@@ -179,9 +181,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org7ee0ac5" class="outline-3">
-<h3 id="org7ee0ac5">遍历文件和目录</h3>
-<div class="outline-text-3" id="text-org7ee0ac5">
+<div id="outline-container-org1fe2338" class="outline-3">
+<h3 id="org1fe2338">遍历文件和目录</h3>
+<div class="outline-text-3" id="text-org1fe2338">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #859900; font-weight: bold;">for</span> file<span style="color: #859900; font-weight: bold;"> in</span> *; <span style="color: #859900; font-weight: bold;">do</span>
   printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$file"</span>
@@ -191,9 +193,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org2658936" class="outline-3">
-<h3 id="org2658936">输出带颜色的文字</h3>
-<div class="outline-text-3" id="text-org2658936">
+<div id="outline-container-orgc0b7b54" class="outline-3">
+<h3 id="orgc0b7b54">输出带颜色的文字</h3>
+<div class="outline-text-3" id="text-orgc0b7b54">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#36755;&#20986;&#25152;&#26377;&#39068;&#33394;(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)</span>
 <span style="color: #859900; font-weight: bold;">for</span> code<span style="color: #859900; font-weight: bold;"> in</span> {0..255}; <span style="color: #859900; font-weight: bold;">do</span>
@@ -207,9 +209,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-orge2e8d42" class="outline-3">
-<h3 id="orge2e8d42">切换用户执行</h3>
-<div class="outline-text-3" id="text-orge2e8d42">
+<div id="outline-container-org1514bd8" class="outline-3">
+<h3 id="org1514bd8">切换用户执行</h3>
+<div class="outline-text-3" id="text-org1514bd8">
 <div class="org-src-container">
 <pre class="src src-sh">su &lt;other_user&gt; &lt;&lt; !
   ...
@@ -223,7 +225,7 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2019-03-20 Wed 22:18</p>
+<p class="date">Created: 2019-03-21 Thu 16:49</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
