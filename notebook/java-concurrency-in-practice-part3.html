@@ -6,7 +6,7 @@
 <!-- 2020-03-26 Thu 16:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NOTEBOOK</title>
+<title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part3: 活跃, 性能与测试</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
@@ -60,49 +60,46 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">NOTEBOOK</h1>
-<ul class="org-ul">
-<li>Programming languages
-<ul class="org-ul">
-<li><a href="bash.html">Bash 笔记</a></li>
-</ul></li>
-
-<li>Query languages
-<ul class="org-ul">
-<li><a href="sql.html">SQL 笔记</a></li>
-</ul></li>
-
-<li>Unix commands
-<ul class="org-ul">
-<li><a href="awk.html">AWK 笔记</a></li>
-<li><a href="sed.html">sed 笔记</a></li>
-</ul></li>
-
-<li>Softwares
-<ul class="org-ul">
-<li><a href="git.html">Git 笔记</a></li>
-</ul></li>
-
-<li>读书笔记 (方便自己回忆)
-<ul class="org-ul">
-<li><a href="effective-java.html">&lt;Effective Java&gt;</a></li>
-<li><a href="java-concurrency-in-practice-part1.html">&lt;Java Concurrency in Practice&gt; - Part1: 基础部分</a></li>
-<li><a href="java-concurrency-in-practice-part2.html">&lt;Java Concurrency in Practice&gt; - Part2: 结构化并发应用程序</a></li>
-<li><a href="java-concurrency-in-practice-part3.html">&lt;Java Concurrency in Practice&gt; - Part3: 活跃, 性能与测试</a></li>
-</ul></li>
-
-<li>Java 源码分析
-<ul class="org-ul">
-<li><a href="java/AtomicInteger.html">AtomicInteger</a></li>
-<li><a href="java/ReentrantLock.html">ReentrantLock</a></li>
-</ul></li>
-
-<li>Others
-<ul class="org-ul">
-<li><a href="regular-expression.html">正则表达式</a></li>
-<li><a href="org-mode.html">org-mode 结构</a></li>
-</ul></li>
+<h1 class="title">&lt;Java Concurrency in Practice&gt; 读书笔记 - Part3: 活跃, 性能与测试</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org77c1fd7">第10章</a>
+<ul>
+<li><a href="#orgcf827f8">死锁</a></li>
 </ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org77c1fd7" class="outline-2">
+<h2 id="org77c1fd7">第10章</h2>
+<div class="outline-text-2" id="text-org77c1fd7">
+</div>
+<div id="outline-container-orgcf827f8" class="outline-3">
+<h3 id="orgcf827f8">死锁</h3>
+<div class="outline-text-3" id="text-orgcf827f8">
+<pre class="example">
+如果所有线程以固定的顺序来获得锁, 那么在程序中就不会出现锁顺序的死锁问题.
+</pre>
+
+<p>
+通过锁顺序来避免死锁. 在制定锁顺序时, 可以使用 System.identityHashCode 方法, 该方法将返回由 Object.hashCode 返回的值.<br />
+在极少数的情况下, 两个对象可能拥有相同的散列值, 为了避免这种情况, 在获得两个锁之前, 可以首先获得一个"加时赛"锁, 从而保证每次只有一个线程以未知的顺序获得这两个锁.<br />
+</p>
+
+<pre class="example">
+如果在持有锁时调用某个外部方法, 那么将出现活跃性问题. 在这个外部方法中可能获得其他锁(这可能会产生死锁), 或者阻塞时间过长, 导致其他线程无法及时获得当前被持有的锁.
+</pre>
+
+<pre class="example">
+在程序中应尽量使用开放调用. 与那些在持有锁时调用外部方法的程序相比, 更易于对依赖于开放调用的程序进行死锁分析.
+</pre>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>

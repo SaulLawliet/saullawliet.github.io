@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-23 Mon 10:40 -->
+<!-- 2020-03-24 Tue 17:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ReentrantLock 源码分析</title>
@@ -75,8 +75,8 @@ for the JavaScript code in this tag.
 </li>
 <li><a href="#org604a096">FairSync</a>
 <ul>
-<li><a href="#org2fda4b2">lock()</a></li>
-<li><a href="#org984ad78">unlock()</a></li>
+<li><a href="#org1817f9a">lock() 方法</a></li>
+<li><a href="#orgbcd1762">unlock() 方法</a></li>
 </ul>
 </li>
 <li><a href="#org1ebba64">小结</a></li>
@@ -438,9 +438,9 @@ unparkSuccessor(h) 唤醒下一个节点<br />
 详细代码在 NonfairSync 小节内已经贴过了, 本小节只贴变动的代码<br />
 </p>
 </div>
-<div id="outline-container-org2fda4b2" class="outline-3">
-<h3 id="org2fda4b2">lock()</h3>
-<div class="outline-text-3" id="text-org2fda4b2">
+<div id="outline-container-org1817f9a" class="outline-3">
+<h3 id="org1817f9a">lock() 方法</h3>
+<div class="outline-text-3" id="text-org1817f9a">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java FairSync</span>
 <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">lock</span>() {
@@ -491,9 +491,9 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 </div>
 
-<div id="outline-container-org984ad78" class="outline-3">
-<h3 id="org984ad78">unlock()</h3>
-<div class="outline-text-3" id="text-org984ad78">
+<div id="outline-container-orgbcd1762" class="outline-3">
+<h3 id="orgbcd1762">unlock() 方法</h3>
+<div class="outline-text-3" id="text-orgbcd1762">
 <p>
 跟 Nonfair 的版本一样<br />
 </p>
@@ -516,7 +516,7 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-03-23 Mon 10:40</p>
+<p class="date">Created: 2020-03-24 Tue 17:58</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
