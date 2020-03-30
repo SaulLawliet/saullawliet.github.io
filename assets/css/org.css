@@ -275,6 +275,9 @@ td, th {
   /* calendar-today */
   text-decoration: underline;
 }
+.org-center {
+  text-align: center;
+}
 .org-comment {
   /* font-lock-comment-face */
   color: #b22222;
@@ -307,9 +310,6 @@ td, th {
 .org-escape-glyph {
   /* escape-glyph */
   color: #a52a2a;
-}
-.org-example {
-  text-align: center;
 }
 .org-file-name-shadow {
   /* file-name-shadow */
