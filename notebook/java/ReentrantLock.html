@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-24 Tue 17:58 -->
+<!-- 2020-03-30 Mon 18:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ReentrantLock 源码分析</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://orgmode.org/worg/style/worg.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -69,14 +69,14 @@ for the JavaScript code in this tag.
 <li><a href="#org19555c4">ReentrantLock 定义</a></li>
 <li><a href="#org11d81f8">NonfairSync</a>
 <ul>
-<li><a href="#orgd63fe1d">lock() 方法</a></li>
-<li><a href="#org61beb9c">unlock() 方法</a></li>
+<li><a href="#org1817f9a">lock() 方法</a></li>
+<li><a href="#orgbcd1762">unlock() 方法</a></li>
 </ul>
 </li>
 <li><a href="#org604a096">FairSync</a>
 <ul>
-<li><a href="#org1817f9a">lock() 方法</a></li>
-<li><a href="#orgbcd1762">unlock() 方法</a></li>
+<li><a href="#org94ab894">lock() 方法</a></li>
+<li><a href="#orgceb62e0">unlock() 方法</a></li>
 </ul>
 </li>
 <li><a href="#org1ebba64">小结</a></li>
@@ -115,7 +115,7 @@ for the JavaScript code in this tag.
 顾名思义, ReentrantLock 为重入锁, 意味着一个线程可以多次获得锁而不会阻塞, 类的基本定义如下.<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock</span>
+<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java</span>
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">ReentrantLock</span> <span style="color: #859900; font-weight: bold;">implements</span> <span style="color: #b58900;">Lock</span>, <span style="color: #268bd2; font-weight: bold;">java</span>.<span style="color: #268bd2; font-weight: bold;">io</span>.<span style="color: #b58900;">Serializable</span> {
     <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Sync</span> <span style="color: #268bd2;">sync</span>;
     <span style="color: #859900; font-weight: bold;">abstract</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">Sync</span> <span style="color: #859900; font-weight: bold;">extends</span> <span style="color: #b58900;">AbstractQueuedSynchronizer</span> {...}
@@ -140,9 +140,9 @@ for the JavaScript code in this tag.
 <h2 id="org11d81f8">NonfairSync</h2>
 <div class="outline-text-2" id="text-org11d81f8">
 </div>
-<div id="outline-container-orgd63fe1d" class="outline-3">
-<h3 id="orgd63fe1d">lock() 方法</h3>
-<div class="outline-text-3" id="text-orgd63fe1d">
+<div id="outline-container-org1817f9a" class="outline-3">
+<h3 id="org1817f9a">lock() 方法</h3>
+<div class="outline-text-3" id="text-org1817f9a">
 <p>
 注意 Sync 继承于 AbstractQueuedSynchronizer, AQS 是许多并发类的核心.<br />
 </p>
@@ -172,7 +172,7 @@ for the JavaScript code in this tag.
 </div>
 
 <p>
-tryAcquire(arg), 尝试再获取一次锁<br />
+tryAcquire(arg), 尝试获取一次锁<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
@@ -267,7 +267,7 @@ addWaiter(Node.EXCLUSIVE)<br />
 
 <p>
 acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
-独占模式下, 线程已经加入队列, 堵塞直到获取到锁或者中断<br />
+独占模式下, 线程已经加入队列, 堵塞直到获取到锁.<br />
 </p>
 
 <div class="org-src-container">
@@ -278,7 +278,7 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
         <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">interrupted</span> = <span style="color: #268bd2; font-weight: bold;">false</span>;
         <span style="color: #859900; font-weight: bold;">for</span> (;;) {
             <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">p</span> = node.predecessor();
-            <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#19978;&#20010;&#33410;&#28857;&#26159;&#22836;&#33410;&#28857;&#24182;&#19988;&#25343;&#21040;&#20102;&#38145;, &#21017;&#25104;&#21151; */</span>
+            <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20165;&#24403;&#19978;&#20010;&#33410;&#28857;&#26159;&#22836;&#33410;&#28857;&#24182;&#19988;&#25343;&#21040;&#20102;&#38145;, &#21017;&#36820;&#22238; */</span>
             <span style="color: #859900; font-weight: bold;">if</span> (p == head &amp;&amp; tryAcquire(arg)) {
                 setHead(node); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#25226;&#24403;&#21069;node&#35774;&#32622;&#25104;&#22836;&#33410;&#28857;, &#24182;&#28165;&#31354;&#25968;&#25454;, &#20351;&#20043;&#25104;&#20026;'&#38646;&#20540;' */</span>
                 p.next = <span style="color: #268bd2; font-weight: bold;">null</span>; <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">help GC</span>
@@ -295,7 +295,7 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
     }
 }
 
-<span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#26356;&#26032;node&#30340;&#29366;&#24577;, &#36820;&#22238;&#25104;&#21151;&#34920;&#31034;&#21487;&#20197; park */</span>
+<span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21482;&#26377;&#21069;&#39537;&#33410;&#28857;&#30340;&#29366;&#24577;&#26159; SIGNAL &#26102;, &#25165;&#36820;&#22238; true, &#34920;&#31034;&#21487;&#20197; park. &#21542;&#21017;&#36820;&#22238; false */</span>
 <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">shouldParkAfterFailedAcquire</span>(<span style="color: #b58900;">Node</span> <span style="color: #268bd2;">pred</span>, <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span>) {
     <span style="color: #b58900;">int</span> <span style="color: #268bd2;">ws</span> = pred.waitStatus;
     <span style="color: #859900; font-weight: bold;">if</span> (ws == <span style="color: #268bd2; font-weight: bold;">Node</span>.SIGNAL)
@@ -344,9 +344,9 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
 </div>
 </div>
 
-<div id="outline-container-org61beb9c" class="outline-3">
-<h3 id="org61beb9c">unlock() 方法</h3>
-<div class="outline-text-3" id="text-org61beb9c">
+<div id="outline-container-orgbcd1762" class="outline-3">
+<h3 id="orgbcd1762">unlock() 方法</h3>
+<div class="outline-text-3" id="text-orgbcd1762">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java</span>
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">unlock</span>() {
@@ -438,9 +438,9 @@ unparkSuccessor(h) 唤醒下一个节点<br />
 详细代码在 NonfairSync 小节内已经贴过了, 本小节只贴变动的代码<br />
 </p>
 </div>
-<div id="outline-container-org1817f9a" class="outline-3">
-<h3 id="org1817f9a">lock() 方法</h3>
-<div class="outline-text-3" id="text-org1817f9a">
+<div id="outline-container-org94ab894" class="outline-3">
+<h3 id="org94ab894">lock() 方法</h3>
+<div class="outline-text-3" id="text-org94ab894">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java FairSync</span>
 <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">lock</span>() {
@@ -491,9 +491,9 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 </div>
 
-<div id="outline-container-orgbcd1762" class="outline-3">
-<h3 id="orgbcd1762">unlock() 方法</h3>
-<div class="outline-text-3" id="text-orgbcd1762">
+<div id="outline-container-orgceb62e0" class="outline-3">
+<h3 id="orgceb62e0">unlock() 方法</h3>
+<div class="outline-text-3" id="text-orgceb62e0">
 <p>
 跟 Nonfair 的版本一样<br />
 </p>
@@ -509,14 +509,14 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 <li>非公平锁: 加锁时直接尝试获取锁, 抢不到, 则排队.<br /></li>
 </ul>
 <p>
-至此, ReentrantLock 的主要代码都已看完, 通过这个类, 我们也简单的了解了一下 AQS 类.<br />
+至此, ReentrantLock 的主要代码都已看完, 通过这个类, 我们也简单的了解了一下 AQS 类的独占模式, 理解起来还是比较容易的.<br />
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-03-24 Tue 17:58</p>
+<p class="date">Created: 2020-03-30 Mon 18:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

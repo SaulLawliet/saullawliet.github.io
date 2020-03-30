@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-23 Mon 10:38 -->
+<!-- 2020-03-30 Mon 18:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AtomicInteger 源码分析</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://orgmode.org/worg/style/worg.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -152,6 +152,10 @@ for the JavaScript code in this tag.
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #859900; font-weight: bold;">native</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">compareAndSwapInt</span>(<span style="color: #b58900;">Object</span> <span style="color: #268bd2;">o</span>, <span style="color: #b58900;">long</span> <span style="color: #268bd2;">offset</span>,
                                               <span style="color: #b58900;">int</span> <span style="color: #268bd2;">expected</span>,
                                               <span style="color: #b58900;">int</span> <span style="color: #268bd2;">x</span>);
+
+<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">get</span>() {
+    <span style="color: #859900; font-weight: bold;">return</span> value;
+}
 </pre>
 </div>
 </div>
@@ -174,7 +178,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-03-23 Mon 10:38</p>
+<p class="date">Created: 2020-03-30 Mon 18:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
