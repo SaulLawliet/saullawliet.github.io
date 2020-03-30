@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-03-30 Mon 10:53 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part4: 高级主题 (TODO)</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">&lt;Java Concurrency in Practice&gt; 读书笔记 - Part4: 高级主题 (TODO)</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org008b51f">第13章 显式锁</a>
+<ul>
+<li><a href="#org45d7283">Lock 与 RenentrantLock</a></li>
+<li><a href="#org3fa6dbc">性能考虑因素</a></li>
+<li><a href="#org0f779e7">公平性</a></li>
+<li><a href="#org74ed096">在 synchronized 和 ReentrantLock 之间进行选择</a></li>
+<li><a href="#org86b3a8c">读 - 写锁</a></li>
+</ul>
+</li>
+<li><a href="#orga5e9ab2">第14章 构建自定义的同步工具</a></li>
+<li><a href="#orgb85964c">第15章 原子变量与非阻塞同步机制</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org008b51f" class="outline-2">
+<h2 id="org008b51f">第13章 显式锁</h2>
+<div class="outline-text-2" id="text-org008b51f">
+</div>
+<div id="outline-container-org45d7283" class="outline-3">
+<h3 id="org45d7283">Lock 与 RenentrantLock</h3>
+<div class="outline-text-3" id="text-org45d7283">
+<p>
+ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互斥性和内存可见性.<br />
+在获取 ReentrantLock 时, 有着与进入同步代码块相同的内存语义, 在释放 ReentrantLock 时, 同样有着与退出同步代码块相同的内存语义.<br />
+此外, 与 synchronized 一样, ReentrantLock 还提供了可重入的加锁语义.<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3fa6dbc" class="outline-3">
+<h3 id="org3fa6dbc">性能考虑因素</h3>
+<div class="outline-text-3" id="text-org3fa6dbc">
+<p>
+在 Java6 之后内置锁与 ReentrantLock 的性能基本差不多<br />
+</p>
+
+<pre class="example">
+性能是一个不断变化的指标, 如果在昨天的测试基准中发现 X 比 Y 更快, 那么在今天就可能已经过时了.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org0f779e7" class="outline-3">
+<h3 id="org0f779e7">公平性</h3>
+<div class="outline-text-3" id="text-org0f779e7">
+<p>
+在 ReentrantLock 的构造函数中提供了两种公平性选择: 创建一个非公平的锁(默认)或者一个公平的锁.<br />
+</p>
+<ul class="org-ul">
+<li>　公平锁. 线程将按照他们发出请求的顺序来获得锁.<br /></li>
+<li>非公平锁. 当一个线程请求非公平的锁时, 如果在发出请求的同时该锁的状态变为可用, 那么这个线程将跳过队列中所有的等待线程并获得这个锁.<br /></li>
+</ul>
+
+<p>
+公平性把性能降低了约两个数量级. 不必要的话, 不要为公平性付出代价.<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org74ed096" class="outline-3">
+<h3 id="org74ed096">在 synchronized 和 ReentrantLock 之间进行选择</h3>
+<div class="outline-text-3" id="text-org74ed096">
+<pre class="example">
+在一些内置锁无法满足需求的情况下, RenentrantLock 可以作为一种高级工具. 当需要一些高级功能时才应该使用 ReentrantLock,
+这些功能包括: 可定时的, 可轮询的与可中断的锁获取操作, 公平对列, 以及非块结构的锁. 否则应该优先使用 synchronized.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org86b3a8c" class="outline-3">
+<h3 id="org86b3a8c">读 - 写锁</h3>
+<div class="outline-text-3" id="text-org86b3a8c">
+<p>
+互斥是一种传统的加锁策略, 虽然可以避免"写/写"冲突和"写/读"冲突, 但同样也避免了"读/读"冲突.<br />
+如果大部分访问操作都是读操作, 可以使用读/写锁, 一个资源可以被多个读操作访问, 或者被一个写操作访问, 但两者不能同时进行.<br />
+</p>
+
+<p>
+ReadWriteLock中的一些可选实现包括:<br />
+</p>
+<ul class="org-ul">
+<li><b>释放优先</b>. 当一个写入操作释放写入锁时, 并且队列中同时存在读线程和写线程, 那么应该优先选择读线程, 写线程, 还是最先发出请求的线程?<br /></li>
+<li><b>读线程插队</b>. 如果锁是由读线程持有, 但有写线程正在等待, 那么新到达的读线程能否立即获得访问全, 还是应该在写线程后面等待?<br /></li>
+<li><b>重入性</b>. 读取锁和写入锁是否是可重入的?<br /></li>
+<li><b>降级</b>. 如果一个线程持有写入锁, 那么它能否在不释放该锁的情况下获取读取锁?<br /></li>
+<li><b>升级</b>. 读取锁能否优先于其他正常等待的读线程和写线程而升级为一个写入锁?<br /></li>
+</ul>
+
+<p>
+ReentrantReadWriteLock 为这两种锁都提供了可重入的加锁语义.<br />
+在公平锁中, 等待时间最长的线程将优先获得锁. 如果这个锁由读线程持有, 而另一个线程请求写入锁, 那么其他线程都不能获得读取锁, 直到写线程使用完并且释放了写入锁.<br />
+在非公平锁中, 线程获得访问许可的顺序是不确定的. 写线程降级为读线程是可以的, 但从读线程升级为写线程则是不可以的(这样做会导致死锁).<br />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga5e9ab2" class="outline-2">
+<h2 id="orga5e9ab2">第14章 构建自定义的同步工具</h2>
+<div class="outline-text-2" id="text-orga5e9ab2">
+<p>
+TODO<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgb85964c" class="outline-2">
+<h2 id="orgb85964c">第15章 原子变量与非阻塞同步机制</h2>
+<div class="outline-text-2" id="text-orgb85964c">
+<p>
+TODO<br />
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2020-03-30 Mon 10:53</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
