@@ -1,10 +1,9 @@
 ---
 layout: page-no-title
 share: false
-title:
 ---
 
-# About me
+## About me
 
 - 程序员
 - 游戏服务端开发(2013年-至今).
