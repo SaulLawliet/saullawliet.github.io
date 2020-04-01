@@ -1,0 +1,72 @@
+#+TITLE: AtomicInteger 源码分析
+#+LANGUAGE: en
+#+OPTIONS: H:3 num:nil toc:t \n:t
+
+环境: [[http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d][jdk8]]
+
+* sun.misc.Unsafe
+[[http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/misc/Unsafe.java][Unsafe类]]是单例模式, 主要提供了一些操作内存的方法, 为了安全起见, 只有jdk源码才能使用该类
+#+BEGIN_SRC java
+// Unsafe.java
+private Unsafe() {}
+private static final Unsafe theUnsafe = new Unsafe();
+public static Unsafe getUnsafe() {
+    Class<?> caller = Reflection.getCallerClass();
+    /* 当调用者类的启动器为null表示源码, 否则抛出异常 */
+    if (!VM.isSystemDomainLoader(caller.getClassLoader()))
+        throw new SecurityException("Unsafe");
+    return theUnsafe;
+}
+#+END_SRC
+
+* java.util.concurrent.atomic.AtomicInteger
+** 类定义
+#+BEGIN_SRC java
+// AtomicInteger.java
+public class AtomicInteger extends Number implements java.io.Serializable {
+    // setup to use Unsafe.compareAndSwapInt for updates
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final long valueOffset; /* 缓存变量 value 在内存的位置 */
+
+    static {
+        try {
+            valueOffset = unsafe.objectFieldOffset
+                (AtomicInteger.class.getDeclaredField("value"));
+        } catch (Exception ex) { throw new Error(ex); }
+    }
+
+    private volatile int value; /* 保证在不同线程的可见性 */
+}
+#+END_SRC
+
+** 主要方法
+#+BEGIN_SRC java
+// AtomicInger.java
+public final int addAndGet(int delta) {
+    return unsafe.getAndAddInt(this, valueOffset, delta) + delta;
+}
+
+// Unsafe.java
+public final int getAndAddInt(Object o, long offset, int delta) {
+    int v;
+    do {
+        v = getIntVolatile(o, offset); /* 拿到当前变量的值 */
+    } while (!compareAndSwapInt(o, offset, v, v + delta)); /* 不断重试, 直到成功为止 */
+    return v;
+}
+
+/* native 方法, 原子操作, 仅当值等于 expected 时, 设置值为 x, 成功返回 true */
+public final native boolean compareAndSwapInt(Object o, long offset,
+                                              int expected,
+                                              int x);
+
+public final int get() {
+    return value;
+}
+#+END_SRC
+
+
+* 小结
+这个类很简单, 仅仅用了关键字 volatile 和 Unsafe 类, 就实现了一个线程安全的 int 类型.
+- 线程间的可见性: volatile
+- 原子操作: Unsafe.compareAndSwap()

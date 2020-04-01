@@ -1,0 +1,57 @@
+#+TITLE: 软件开发相关概念
+#+LANGUAGE: en
+#+OPTIONS: H:3 num:nil toc:t \n:t TeX:t
+
+* CPU 缓存
+[[https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png]]
+CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.
+越靠近 CPU 的部分速度越快.
+
+* Linux 网络 I/O 模型
+*基本概念*
+| df          | file descriptor                    |
+| 同步/异步   | 关注的是消息通信机制               |
+| 阻塞/非阻塞 | 关注的是程序在等待调用结果时的状态 |
+
+*5种模型*
+| Blocking I/O      | 阻塞 I/O     |                            | 常用 |
+| Nonblocking I/O   | 非阻塞 I/O   |                            | -    |
+| I/O Multiplexing  | I/O 复用     | (select and poll)          | 常用 |
+| Signal-Driven I/O | 信号驱动 I/O | (SIGIO)                    | 罕见 |
+| Asynchronous I/O  | 异步 I/O     | (the POSIX aio_ functions) | -    |
+http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf
+[[https://notes.shichao.io/unp/figure_6.6.png]]
+
+*阻塞 I/O 和 非阻塞 I/O*
+[[https://notes.shichao.io/unp/figure_6.1.png]] [[https://notes.shichao.io/unp/figure_6.2.png]]
+https://linux.die.net/man/2/recvfrom
+If no messages are available at the socket, the receive calls wait for a message to arrive,
+unless the socket is nonblocking, in which case the value -1 is returned and the external variable errno is set to EAGAIN or EWOULDBLOCK.
+
+*I/O 复用*
+[[https://notes.shichao.io/unp/figure_6.3.png]]
+- *select*
+  https://linux.die.net/man/2/select synchronous I/O multiplexing
+  几个问题:
+  - 使用数组存储, 被监控的 fds 集合限制为1024
+  - fds 集合需要从用户空间拷贝到内核空间的问题
+  - 当被监控的 fds 中某些有数据可读的时候, 需要遍历整个 fds 来收集
+- *poll*
+  https://linux.die.net/man/2/poll wait for some event on a file descriptor
+  对 select 的改进:
+  - 改用链表存储, fds 集合限制远大 于select 的1024
+- *epoll* (性能最优, Linux中的Java Selector默认选择)
+  https://linux.die.net/man/4/epoll I/O event notification facility
+  终极改进:
+  - 改用红黑树来管理fds集合, 提高增、删、改的性能
+  - 拷贝问题: epoll通过内核与用户空间mmap(内存映射)同一块内存来解决
+  - (低频)epoll_ctl通过(ADD、MOD、DEL)更改fds集合的状态
+  - (高频)epoll_wait只处理修改的fds集合
+
+*信号驱动 I/O*
+[[https://notes.shichao.io/unp/figure_6.4.png]]
+由内核通知开发者何时可以开始一个 I/O 操作.
+
+*异步 I/O*
+[[https://notes.shichao.io/unp/figure_6.5.png]]
+由内核通知开发者 I/O 操作何时已经完成.

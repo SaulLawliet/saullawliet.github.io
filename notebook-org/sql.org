@@ -1,0 +1,213 @@
+#+TITLE: SQL 笔记
+#+LANGUAGE: en
+#+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:nil *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
+
+-----
+
+* 说明
+** 本文约定
+   大写字母是SQL的关键字\\
+   小写字母是单词含义
+
+** 命名规则 (下划线命名法)
+   ~database~, ~table~ 通常是复数\\
+   ~column~ 通常是单数
+
+   主键一般是 ~id~\\
+   外键一般是 ~table~ 的单数 加 ~_~ 加 ~id~, 例如 ~movie_id~
+
+* DATABASE 操作
+** CREATE DATABASE
+#+BEGIN_SRC sql
+CREATE DATABASE database;
+#+END_SRC
+
+** DROP DATABASE
+#+BEGIN_SRC sql
+DROP DATABASE database;
+#+END_SRC
+
+* TABLE 操作
+** CREATE TABLE
+#+BEGIN_SRC sql
+CREATE TABLE table (
+  column1 datatype constratint, -- 列约束 可选 (下同)
+  column2 datatype constratint,
+  ...
+  constratints  -- 表约束 可选
+);
+#+END_SRC
+
+~constratint:~ 列约束语法
+| PRIMARY KEY                   | 主键, 每个表只能有一个, 满足 NOT NULL + UNIQUE                         |
+| NOT NULL                      | 此列不能为 NULL                                                        |
+| UNIQUE                        | 此列不能有重复的值                                                     |
+| REFERENCES table(column)      | 外键, 当 column 省略的时候, column 取 table 中的主键 |
+| CHECK (column operator value) | 值约束                                                                 |
+
+~constratints:~ 表约束语法
+#+BEGIN_SRC sql
+-- 当仅有一列约束的时候, 等同于上面的写法
+-- 当有多列约束的时候, 应采用这种写法
+CONSTRAINT unique_name UNIQUE(column1, column2 ...)
+
+-- 外键
+FOREIGN KEY (column) REFERENCES table
+#+END_SRC
+
+** DROP TABLE
+#+BEGIN_SRC sql
+DROP TABLE table;
+#+END_SRC
+
+** ALTER TABLE
+*** ADD COLUMN
+#+BEGIN_SRC sql
+ALTER TABLE table ADD COLUMN column datatype;
+#+END_SRC
+
+*** DROP COLUMN
+#+BEGIN_SRC sql
+ALTER TABLE table DROP COLUMN column;
+#+END_SRC
+
+* DATA 操作
+** WHERE 组件
+#+BEGIN_SRC sql
+WHERE
+colume1 operator value
+[AND|OR]
+colume2 operator value
+...
+#+END_SRC
+
+补充:
++ ~value~ 可以是 ~subquery~, 例如:
+  #+BEGIN_SRC sql
+  -- 查询某列大于平均数的数据
+  SELECT * FROM table WHERE column > (SELECT AVG(column) FROM table);
+  #+END_SRC
+
+** SELECT
+*EXAMPLE:*
+#+BEGIN_SRC sql
+-- 查询所有列
+SELECT * FROM table;
+
+-- 查询指定列
+SELECT
+column1, column2 ...
+FROM table;
+
+-- 不显示重复行
+SELECT DISTINCT
+column1, column2 ...
+FROM table;
+#+END_SRC
+
+*** ORDER BY 组件
+#+BEGIN_SRC sql
+ORDER BY
+column1 [ASC|DESC], column2 [ASC|DESC] ...
+#+END_SRC
++ ASC: 升序(默认)
++ DESC: 降序
+
+*** 基本
+#+BEGIN_SRC sql
+SELECT ...
+FROM table
+(WHERE ...)  -- 1. 使用 WHERE 组件; 2. 括号内表示可选. 下同
+(ORDER BY ...)
+;
+#+END_SRC
+
+*** 聚合函数 ( aggregate_function )
+#+BEGIN_SRC sql
+SELECT
+aggregate_function(column1), aggregate_function(column2) ...
+FROM table;
+#+END_SRC
+
+| 函数(列必须是数字)                        | 描述                     |
+|-------------------------------------------+--------------------------|
+| AVG(column)                               | 此列的平均数             |
+| COUNT(column) (其中 column 可以替换成 * ) | 此列(或此表)的总个数(不包括NULL) |
+| MAX(column)                               | 此列最大值               |
+| MIN(column)                               | 此列最小值               |
+| SUM(column)                               | 此列所有数累加           |
+
+*** HAVING 组件
+#+BEGIN_SRC
+HAVING
+aggregate_function(column1) operator value
+[AND|OR]
+aggregate_function(column2) operator value
+...
+#+END_SRC
+
+*** GROUP BY
+#+BEGIN_SRC sql
+SELECT ${group_by_column},
+aggregate_function(column1), aggregate_function(column2) ...
+FROM table
+(WHERE ...)
+GROUP BY group_by_column
+(HAVING ...)
+(ORDER BY ...)
+;
+#+END_SRC
+
+** INSERT
+#+BEGIN_SRC sql
+INSERT INTO table
+(column1, column2 ...)  -- 此行省略时的含义是: 所有列
+VALUES
+(value1, value2 ...)
+;
+#+END_SRC
+
+** UPDATE
+#+BEGIN_SRC sql
+UPDATE table SET
+  column1 = new_value1,
+  column2 = new_value2,
+  ...
+  column = new_value
+(WHERE ...)
+;
+#+END_SRC
+
+** DELETE
+#+BEGIN_SRC sql
+DELETE FROM table
+(WHERE ...)
+;
+#+END_SRC
+
+** TRUNCATE
+#+BEGIN_SRC sql
+-- 当要删除表中的所有数据的时候, 请使用 TRUNCATE, 因为效率更高
+TRUNCATE TABLE table;
+#+END_SRC
+
+* 联合
+** INNER JOIN
+#+BEGIN_SRC sql
+SELECT * FROM table1
+INNER JOIN table2
+ON table1.id = table2.table1_id
+#+END_SRC
+
+** OUTER JOIN
+#+BEGIN_SRC sql
+-- LEFT: table1的所有数据
+SELECT * FROM table1
+LEFT OUTER JOIN table2
+ON table1.id = table2.table1_id
+
+-- RIGHT: table2的所有数据
+SELECT * FROM table1
+RIGHT OUTER JOIN table2
+ON table1.id = table2.table1_id
+#+END_SRC

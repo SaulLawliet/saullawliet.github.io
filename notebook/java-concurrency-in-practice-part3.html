@@ -3,14 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-30 Mon 10:53 -->
+<!-- 2020-04-01 Wed 20:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part3: 活跃, 性能与测试</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -87,40 +86,40 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org07d5c62">第10章 避免活跃性危险</a>
+<li><a href="#orge4dec37">第10章 避免活跃性危险</a>
 <ul>
-<li><a href="#orgcf827f8">死锁</a></li>
-<li><a href="#orgd6c0ebc">死锁的避免与诊断</a></li>
-<li><a href="#org61b08e1">其他活跃性危险</a></li>
+<li><a href="#orgf78eb5f">死锁</a></li>
+<li><a href="#org79e6ebc">死锁的避免与诊断</a></li>
+<li><a href="#org01c8c8b">其他活跃性危险</a></li>
 </ul>
 </li>
-<li><a href="#org788c460">第11章 性能与可伸缩性</a>
+<li><a href="#orgeb748cb">第11章 性能与可伸缩性</a>
 <ul>
-<li><a href="#org398de92">对性能的思考</a></li>
-<li><a href="#org51f20a9">Amdahl 定律</a></li>
-<li><a href="#org9f19746">线程引入的开销</a></li>
-<li><a href="#orgc3a0393">减少锁的竞争</a></li>
+<li><a href="#orgc9cd28f">对性能的思考</a></li>
+<li><a href="#orgaa5d80e">Amdahl 定律</a></li>
+<li><a href="#orgd2c0de0">线程引入的开销</a></li>
+<li><a href="#orgb3cd559">减少锁的竞争</a></li>
 </ul>
 </li>
-<li><a href="#org36263f2">第12章 并发程序的测试</a>
+<li><a href="#org5ff5264">第12章 并发程序的测试</a>
 <ul>
-<li><a href="#org092b6f5">正确性测试</a></li>
-<li><a href="#orgb1e3b58">性能测试</a></li>
-<li><a href="#org0b863a1">避免性能测试的陷阱</a></li>
-<li><a href="#orgb351611">其他的测试方法</a></li>
+<li><a href="#orgdcae1ad">正确性测试</a></li>
+<li><a href="#orgea4932b">性能测试</a></li>
+<li><a href="#orgeec5368">避免性能测试的陷阱</a></li>
+<li><a href="#org88bd384">其他的测试方法</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org07d5c62" class="outline-2">
-<h2 id="org07d5c62">第10章 避免活跃性危险</h2>
-<div class="outline-text-2" id="text-org07d5c62">
+<div id="outline-container-orge4dec37" class="outline-2">
+<h2 id="orge4dec37">第10章 避免活跃性危险</h2>
+<div class="outline-text-2" id="text-orge4dec37">
 </div>
-<div id="outline-container-orgcf827f8" class="outline-3">
-<h3 id="orgcf827f8">死锁</h3>
-<div class="outline-text-3" id="text-orgcf827f8">
+<div id="outline-container-orgf78eb5f" class="outline-3">
+<h3 id="orgf78eb5f">死锁</h3>
+<div class="outline-text-3" id="text-orgf78eb5f">
 <pre class="example">
 如果所有线程以固定的顺序来获得锁, 那么在程序中就不会出现锁顺序的死锁问题.
 </pre>
@@ -140,9 +139,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd6c0ebc" class="outline-3">
-<h3 id="orgd6c0ebc">死锁的避免与诊断</h3>
-<div class="outline-text-3" id="text-orgd6c0ebc">
+<div id="outline-container-org79e6ebc" class="outline-3">
+<h3 id="org79e6ebc">死锁的避免与诊断</h3>
+<div class="outline-text-3" id="text-org79e6ebc">
 <p>
 通过线程转储(Thread Dump)来帮助识别死锁的发生.<br />
 线程转储包括各个运行中的线程的栈追踪信息, 这类似于发生异常时的栈追踪信息,<br />
@@ -156,9 +155,9 @@ jmap -dump:live,<span style="color: #268bd2;">format</span>=b,<span style="color
 </div>
 </div>
 
-<div id="outline-container-org61b08e1" class="outline-3">
-<h3 id="org61b08e1">其他活跃性危险</h3>
-<div class="outline-text-3" id="text-org61b08e1">
+<div id="outline-container-org01c8c8b" class="outline-3">
+<h3 id="org01c8c8b">其他活跃性危险</h3>
+<div class="outline-text-3" id="text-org01c8c8b">
 <p>
 <b>饥饿</b><br />
 当线程由于无法访问它锁需要的资源而不能继续执行时, 就发生了"饥饿". 引发饥饿的最常见的资源就是 CPU 时钟周期.<br />
@@ -187,13 +186,13 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-org788c460" class="outline-2">
-<h2 id="org788c460">第11章 性能与可伸缩性</h2>
-<div class="outline-text-2" id="text-org788c460">
+<div id="outline-container-orgeb748cb" class="outline-2">
+<h2 id="orgeb748cb">第11章 性能与可伸缩性</h2>
+<div class="outline-text-2" id="text-orgeb748cb">
 </div>
-<div id="outline-container-org398de92" class="outline-3">
-<h3 id="org398de92">对性能的思考</h3>
-<div class="outline-text-3" id="text-org398de92">
+<div id="outline-container-orgc9cd28f" class="outline-3">
+<h3 id="orgc9cd28f">对性能的思考</h3>
+<div class="outline-text-3" id="text-orgc9cd28f">
 <p>
 提升性能意味着用更少的资源做更多的事情. 对于一个给定的操作, 通常会缺乏某种特定的资源, 例如 CPU 时钟周期, 内存, 网络带宽, I/O带宽, 数据库请求, 磁盘空间以及其他资源.<br />
 当操作性能由于某种特定的资源而受到限制时, 我们通常将该操作称为资源密集型的操作, 例如 CPU 密集型, 数据库密集型等.<br />
@@ -229,9 +228,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-org51f20a9" class="outline-3">
-<h3 id="org51f20a9">Amdahl 定律</h3>
-<div class="outline-text-3" id="text-org51f20a9">
+<div id="outline-container-orgaa5d80e" class="outline-3">
+<h3 id="orgaa5d80e">Amdahl 定律</h3>
+<div class="outline-text-3" id="text-orgaa5d80e">
 <p>
 假定 \(F\) 是必须被串行执行的部分, 在包含 \(N\) 个处理器的机器中, 最高的加速比为:<br />
 \[ Speedup \leq \frac {1} {F + \frac {(1-F)} {N} } \]<br />
@@ -248,9 +247,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-org9f19746" class="outline-3">
-<h3 id="org9f19746">线程引入的开销</h3>
-<div class="outline-text-3" id="text-org9f19746">
+<div id="outline-container-orgd2c0de0" class="outline-3">
+<h3 id="orgd2c0de0">线程引入的开销</h3>
+<div class="outline-text-3" id="text-orgd2c0de0">
 <p>
 单线程程序既不存在线程调度, 也不存在同步开销, 而且不需要使用锁来保证数据结构的一致性.<br />
 在多个线程的调度和协调过程中都需要一定的性能开销: 对于为了提升性能而引入的线程来说, 并行带来的性能提升必须超过并发导致的开销.<br />
@@ -270,9 +269,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-orgc3a0393" class="outline-3">
-<h3 id="orgc3a0393">减少锁的竞争</h3>
-<div class="outline-text-3" id="text-orgc3a0393">
+<div id="outline-container-orgb3cd559" class="outline-3">
+<h3 id="orgb3cd559">减少锁的竞争</h3>
+<div class="outline-text-3" id="text-orgb3cd559">
 <p>
 串行操作会降低可伸缩性, 并且上下文切换也会降低性能. 在锁上发生竞争时将同事导致这两种问题, 因此减少锁的竞争能够提高性能和可伸缩性.<br />
 </p>
@@ -318,9 +317,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-org36263f2" class="outline-2">
-<h2 id="org36263f2">第12章 并发程序的测试</h2>
-<div class="outline-text-2" id="text-org36263f2">
+<div id="outline-container-org5ff5264" class="outline-2">
+<h2 id="org5ff5264">第12章 并发程序的测试</h2>
+<div class="outline-text-2" id="text-org5ff5264">
 <p>
 性能测试可以通过多个方便来衡量, 包括:<br />
 </p>
@@ -331,9 +330,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </ul>
 </div>
 
-<div id="outline-container-org092b6f5" class="outline-3">
-<h3 id="org092b6f5">正确性测试</h3>
-<div class="outline-text-3" id="text-org092b6f5">
+<div id="outline-container-orgdcae1ad" class="outline-3">
+<h3 id="orgdcae1ad">正确性测试</h3>
+<div class="outline-text-3" id="text-orgdcae1ad">
 <ul class="org-ul">
 <li><b>基本的单元测试</b>. 找出需要检查的不变性条件和后验条件.<br /></li>
 <li><b>对阻塞操作的测试</b>. 每个测试必须等待它锁创建的全部线程结束以后才能完成.<br /></li>
@@ -354,9 +353,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-orgb1e3b58" class="outline-3">
-<h3 id="orgb1e3b58">性能测试</h3>
-<div class="outline-text-3" id="text-orgb1e3b58">
+<div id="outline-container-orgea4932b" class="outline-3">
+<h3 id="orgea4932b">性能测试</h3>
+<div class="outline-text-3" id="text-orgea4932b">
 <ul class="org-ul">
 <li><b>增加计时功能</b><br /></li>
 <li><b>多种算法比较</b><br /></li>
@@ -365,9 +364,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-org0b863a1" class="outline-3">
-<h3 id="org0b863a1">避免性能测试的陷阱</h3>
-<div class="outline-text-3" id="text-org0b863a1">
+<div id="outline-container-orgeec5368" class="outline-3">
+<h3 id="orgeec5368">避免性能测试的陷阱</h3>
+<div class="outline-text-3" id="text-orgeec5368">
 <ul class="org-ul">
 <li><b>垃圾回收</b>. 垃圾回收的执行时序是福娃预测的.<br /></li>
 <li><b>动态编译</b>. 当某个类第一次被加载时, JVM 会通过解译字节码的方式来执行它. 如果一个方法运行的次数足够多, 那么动态编译器会将它编译为机器代码, 当编译完成后, 代码的执行方式将从解释执行变成直接执行.<br /></li>
@@ -383,9 +382,9 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 </div>
 
-<div id="outline-container-orgb351611" class="outline-3">
-<h3 id="orgb351611">其他的测试方法</h3>
-<div class="outline-text-3" id="text-orgb351611">
+<div id="outline-container-org88bd384" class="outline-3">
+<h3 id="org88bd384">其他的测试方法</h3>
+<div class="outline-text-3" id="text-org88bd384">
 <ul class="org-ul">
 <li><b>代码审查</b>. 正如单元测试和压力测试在查找并发错误时是非常高效和重要的手段, 多人参与的代码审查通常是不可替代的.<br /></li>
 <li><b>静态分析工具</b>. 成为正式测试与代码审查的有效补充.<br /></li>
@@ -398,8 +397,8 @@ CPU 密集型的后台任务可能对响应性造成影响, 因为它们会与�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-03-30 Mon 10:53</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
 </html>

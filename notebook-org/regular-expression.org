@@ -1,0 +1,46 @@
+#+TITLE: 正则表达式
+#+LANGUAGE: en
+#+OPTIONS: H:3 num:nil toc:t \n:nil @:t ::t |:t ^:nil -:t f:t *:t TeX:nil LaTeX:nil skip:nil d:nil tags:not-in-toc
+
+-----
+
+* 基本概念
+| ~.~                          | 匹配任意字符           |                                                                |
+| ~[ ]~                        | 匹配指定字符           | ~[abcdXYZ0123456789]~ 等同 ~[a-dX-Z0-9]~                       |
+| ~[^ ]~                       | 排除指定字符           | ~[^abc]~ 等同 ~[^a-c]~, 将匹配任意字符但除了 ~a~, ~b~, ~c~     |
+| ~^~                          | 行首                   |                                                                |
+| ~$~                          | 行尾                   |                                                                |
+| @@html:<code>&#124;</code>@@ | 选择操作               | @@html:<code>gray&#124;grey</code>@@ 将会匹配 ~gray~ 或 ~grey~ |
+| ~( )~                        | 分组(定义一个子表达式) | @@html:<code>gr(a&#124;e)y</code>@@ 将会匹配 ~gray~ 或 ~grey~  |
+
+* 量化
+| ~{n}~                        | times == n                   |                                                                |
+| ~{min,}~                     | times >= min                 |                                                                |
+| ~{min, max}~                 | times >= min && times <= max |                                                                |
+| ~?~                          | 等同 ~{0, 1}~                | ~colou?r~ 将会匹配 ~color~ 和 ~colour~                         |
+| ~*~                          | 等同 ~{0,}~                  | ~ab*c~ 将会匹配 ~ac~, ~abc~, ~abbc~, ~abbbc~...                |
+| ~+~                          | 等同 ~{1,}~                  | ~ab+c~ 将会匹配 ~abc~, ~abbc~, ~abbbc~... 但不会匹配 ~ac~      |
+
+* 字符集
+| POSIX      | Non-standard | Perl/Tcl    | Vim            | ASCII (不要忽视'[]'里面的空格;)           |
+|------------+--------------+-------------+----------------+-------------------------------------------|
+| [:alnum:]  |              |             |                | [A-Za-z0-9]                               |
+|            | [:word:]     | @@html:\w@@ | @@html:\w@@    | [A-Za-z0-9_]                              |
+|            |              | @@html:\W@@ | @@html:\W@@    | [^A-Za-z0-9_]                             |
+| [:alpha:]  |              |             | @@html:\a@@    | [A-Za-z]                                  |
+| [:blank:]  |              |             | @@html:\s@@    | @@html:[ \t]@@                            |
+|            |              | @@html:\b@@ | @@html:\< \>@@ | @@html:(?<=\W)(?=\w)&#124;(?<=\w)(?=\W)@@ |
+| [:cntrl:]  |              |             |                | @@html:[\x00-\x1F\x7F]@@                  |
+| [:digit:]  |              | @@html:\d@@ | @@html:\d@@    | [0-9]                                     |
+|            |              | @@html:\D@@ | @@html:\D@@    | [^0-9]                                    |
+| [:graph:]  |              |             |                | @@html:[\x21-\x7E]@@                      |
+| [:lower:]  |              |             | @@html:\l@@    | [a-z]                                     |
+| [:print:]  |              |             | @@html:\p@@    | @@html:[\x20-\x7E]@@                      |
+| [:punct:]  |              |             |                | [][!"#$%&'()*+,./:;<=>?@\^_`{\vert}~-]    |
+| [:space:]  |              | @@html:\s@@ | @@html:\_s@@   | @@html:[ \t\r\n\v\f]@@                    |
+|            |              | @@html:\S@@ | @@html:\S@@    | @@html:[^ \t\r\n\v\f]@@                   |
+| [:upper:]  |              |             | @@html:\u@@    | [A-Z]                                     |
+| [:xdigit:] |              |             | @@html:\x@@    | [A-Fa-f0-9]                               |
+
+* 参考
+1. https://en.wikipedia.org/wiki/Regular_expression#Character_classes

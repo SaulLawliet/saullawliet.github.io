@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-03-30 Mon 18:08 -->
+<!-- 2020-04-01 Wed 20:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Semaphore 源码分析</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
-<link rel="stylesheet" href="https://orgmode.org/worg/style/worg.css" type="text/css" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
@@ -64,21 +64,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org95236f7">使用示例</a></li>
-<li><a href="#org33fe2b0">Semaphore 定义</a></li>
-<li><a href="#orgd6826a6">NonfairSync</a>
+<li><a href="#org192a41b">使用示例</a></li>
+<li><a href="#org3ff0e9f">Semaphore 定义</a></li>
+<li><a href="#org45268d6">NonfairSync</a>
 <ul>
-<li><a href="#org06cebdb">acquire()</a></li>
-<li><a href="#org90b35ff">release()</a></li>
+<li><a href="#org745ffa9">acquire()</a></li>
+<li><a href="#org691cbda">release()</a></li>
 </ul>
 </li>
-<li><a href="#orgca3a242">FairSync</a>
+<li><a href="#orgb30e233">FairSync</a>
 <ul>
-<li><a href="#org13c0e70">acquire()</a></li>
-<li><a href="#orgc1d5201">release()</a></li>
+<li><a href="#org825797e">acquire()</a></li>
+<li><a href="#org99e54a2">release()</a></li>
 </ul>
 </li>
-<li><a href="#org3adad70">小结</a></li>
+<li><a href="#org6a9e4ab">小结</a></li>
 </ul>
 </div>
 </div>
@@ -86,9 +86,9 @@ for the JavaScript code in this tag.
 环境: <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d">jdk8</a><br />
 </p>
 
-<div id="outline-container-org95236f7" class="outline-2">
-<h2 id="org95236f7">使用示例</h2>
-<div class="outline-text-2" id="text-org95236f7">
+<div id="outline-container-org192a41b" class="outline-2">
+<h2 id="org192a41b">使用示例</h2>
+<div class="outline-text-2" id="text-org192a41b">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">Pool</span> {
   <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">MAX_AVAILABLE</span> = 100;
@@ -137,9 +137,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org33fe2b0" class="outline-2">
-<h2 id="org33fe2b0">Semaphore 定义</h2>
-<div class="outline-text-2" id="text-org33fe2b0">
+<div id="outline-container-org3ff0e9f" class="outline-2">
+<h2 id="org3ff0e9f">Semaphore 定义</h2>
+<div class="outline-text-2" id="text-org3ff0e9f">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Semaphore.java</span>
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">Semaphore</span> <span style="color: #859900; font-weight: bold;">implements</span> <span style="color: #268bd2; font-weight: bold;">java</span>.<span style="color: #268bd2; font-weight: bold;">io</span>.<span style="color: #b58900;">Serializable</span> {
@@ -161,13 +161,13 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd6826a6" class="outline-2">
-<h2 id="orgd6826a6">NonfairSync</h2>
-<div class="outline-text-2" id="text-orgd6826a6">
+<div id="outline-container-org45268d6" class="outline-2">
+<h2 id="org45268d6">NonfairSync</h2>
+<div class="outline-text-2" id="text-org45268d6">
 </div>
-<div id="outline-container-org06cebdb" class="outline-3">
-<h3 id="org06cebdb">acquire()</h3>
-<div class="outline-text-3" id="text-org06cebdb">
+<div id="outline-container-org745ffa9" class="outline-3">
+<h3 id="org745ffa9">acquire()</h3>
+<div class="outline-text-3" id="text-org745ffa9">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Semaphore.java</span>
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">acquire</span>() <span style="color: #859900; font-weight: bold;">throws</span> <span style="color: #b58900;">InterruptedException</span> {
@@ -276,9 +276,9 @@ doAcquireSharedInterruptibly(arg),<br />
 </div>
 </div>
 </div>
-<div id="outline-container-org90b35ff" class="outline-3">
-<h3 id="org90b35ff">release()</h3>
-<div class="outline-text-3" id="text-org90b35ff">
+<div id="outline-container-org691cbda" class="outline-3">
+<h3 id="org691cbda">release()</h3>
+<div class="outline-text-3" id="text-org691cbda">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Semaphore.java</span>
 <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">release</span>() {
@@ -347,17 +347,17 @@ doAcquireSharedInterruptibly(arg),<br />
 </div>
 </div>
 
-<div id="outline-container-orgca3a242" class="outline-2">
-<h2 id="orgca3a242">FairSync</h2>
-<div class="outline-text-2" id="text-orgca3a242">
+<div id="outline-container-orgb30e233" class="outline-2">
+<h2 id="orgb30e233">FairSync</h2>
+<div class="outline-text-2" id="text-orgb30e233">
 <p>
 详细代码在 NonfairSync 小节内已经贴过了, 本小节只贴变动的代码<br />
 </p>
 </div>
 
-<div id="outline-container-org13c0e70" class="outline-3">
-<h3 id="org13c0e70">acquire()</h3>
-<div class="outline-text-3" id="text-org13c0e70">
+<div id="outline-container-org825797e" class="outline-3">
+<h3 id="org825797e">acquire()</h3>
+<div class="outline-text-3" id="text-org825797e">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">tryAcquireShared</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">acquires</span>) {
     <span style="color: #859900; font-weight: bold;">for</span> (;;) {
@@ -376,9 +376,9 @@ doAcquireSharedInterruptibly(arg),<br />
 </div>
 </div>
 
-<div id="outline-container-orgc1d5201" class="outline-3">
-<h3 id="orgc1d5201">release()</h3>
-<div class="outline-text-3" id="text-orgc1d5201">
+<div id="outline-container-org99e54a2" class="outline-3">
+<h3 id="org99e54a2">release()</h3>
+<div class="outline-text-3" id="text-org99e54a2">
 <p>
 跟 Nonfair 的版本一样.<br />
 </p>
@@ -386,9 +386,9 @@ doAcquireSharedInterruptibly(arg),<br />
 </div>
 </div>
 
-<div id="outline-container-org3adad70" class="outline-2">
-<h2 id="org3adad70">小结</h2>
-<div class="outline-text-2" id="text-org3adad70">
+<div id="outline-container-org6a9e4ab" class="outline-2">
+<h2 id="org6a9e4ab">小结</h2>
+<div class="outline-text-2" id="text-org6a9e4ab">
 <p>
 同样, Semaphore 也分公平模式和非公平模式, 实现这两种模式的代码也很简单.<br />
 至此, Semaphore 的主要代码都已看完, 通过这个类, 我们也简单的了解了一下 AQS 类的共享模式.<br />
@@ -398,8 +398,8 @@ doAcquireSharedInterruptibly(arg),<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-03-30 Mon 18:08</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
 </html>

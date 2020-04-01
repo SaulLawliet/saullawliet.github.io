@@ -1,0 +1,35 @@
+#+TITLE: NOTEBOOK
+#+LANGUAGE: en
+
+#+BEGIN_CENTER
+个人回忆专用
+#+END_CENTER
+
+- Programming languages
+  - [[file:bash.org][Bash 笔记]]
+  - [[file:java.org][Java 笔记]]
+    - 读书笔记
+      - [[file:effective-java.org][<Effective Java>]]
+      - [[file:java-concurrency-in-practice-part1.org][<Java Concurrency in Practice> - Part1: 基础部分]]
+      - [[file:java-concurrency-in-practice-part2.org][<Java Concurrency in Practice> - Part2: 结构化并发应用程序]]
+      - [[file:java-concurrency-in-practice-part3.org][<Java Concurrency in Practice> - Part3: 活跃, 性能与测试]]
+      - [[file:java-concurrency-in-practice-part4.org][<Java Concurrency in Practice> - Part4: 高级主题]]
+    - 源码分析
+      - [[file:java/AtomicInteger.org][AtomicInteger]]
+      - [[file:java/ReentrantLock.org][ReentrantLock]]
+      - [[file:java/Semaphore.org][Semaphore]]
+
+- Query languages
+  - [[file:sql.org][SQL 笔记]]
+
+- Unix commands
+  - [[file:awk.org][AWK 笔记]]
+  - [[file:sed.org][sed 笔记]]
+
+- Others
+  - [[file:software-concept.org][软件开发相关概念]]
+  - [[file:regular-expression.org][正则表达式]]
+
+- Softwares
+  - [[file:git.org][Git 笔记]]
+  - [[file:org-mode.org][org-mode 结构]]

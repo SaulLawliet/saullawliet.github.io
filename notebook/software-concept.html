@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-04-01 Wed 20:30 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>软件开发相关概念</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">软件开发相关概念</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org45af138">CPU 缓存</a></li>
+<li><a href="#org67b00aa">Linux 网络 I/O 模型</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org45af138" class="outline-2">
+<h2 id="org45af138">CPU 缓存</h2>
+<div class="outline-text-2" id="text-org45af138">
+<p>
+<img src="https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png" alt="CPU-Cache-explained.png" /><br />
+CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.<br />
+越靠近 CPU 的部分速度越快.<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67b00aa" class="outline-2">
+<h2 id="org67b00aa">Linux 网络 I/O 模型</h2>
+<div class="outline-text-2" id="text-org67b00aa">
+<p>
+<b>基本概念</b><br />
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">df</td>
+<td class="org-left">file descriptor</td>
+</tr>
+
+<tr>
+<td class="org-left">同步/异步</td>
+<td class="org-left">关注的是消息通信机制</td>
+</tr>
+
+<tr>
+<td class="org-left">阻塞/非阻塞</td>
+<td class="org-left">关注的是程序在等待调用结果时的状态</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<b>5种模型</b><br />
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Blocking I/O</td>
+<td class="org-left">阻塞 I/O</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">常用</td>
+</tr>
+
+<tr>
+<td class="org-left">Nonblocking I/O</td>
+<td class="org-left">非阻塞 I/O</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">-</td>
+</tr>
+
+<tr>
+<td class="org-left">I/O Multiplexing</td>
+<td class="org-left">I/O 复用</td>
+<td class="org-left">(select and poll)</td>
+<td class="org-left">常用</td>
+</tr>
+
+<tr>
+<td class="org-left">Signal-Driven I/O</td>
+<td class="org-left">信号驱动 I/O</td>
+<td class="org-left">(SIGIO)</td>
+<td class="org-left">罕见</td>
+</tr>
+
+<tr>
+<td class="org-left">Asynchronous I/O</td>
+<td class="org-left">异步 I/O</td>
+<td class="org-left">(the POSIX aio_ functions)</td>
+<td class="org-left">-</td>
+</tr>
+</tbody>
+</table>
+<p>
+<a href="http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf">http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf</a><br />
+<img src="https://notes.shichao.io/unp/figure_6.6.png" alt="figure_6.6.png" /><br />
+</p>
+
+<p>
+<b>阻塞 I/O 和 非阻塞 I/O</b><br />
+<img src="https://notes.shichao.io/unp/figure_6.1.png" alt="figure_6.1.png" /> <img src="https://notes.shichao.io/unp/figure_6.2.png" alt="figure_6.2.png" /><br />
+<a href="https://linux.die.net/man/2/recvfrom">https://linux.die.net/man/2/recvfrom</a><br />
+If no messages are available at the socket, the receive calls wait for a message to arrive,<br />
+unless the socket is nonblocking, in which case the value -1 is returned and the external variable errno is set to EAGAIN or EWOULDBLOCK.<br />
+</p>
+
+<p>
+<b>I/O 复用</b><br />
+<img src="https://notes.shichao.io/unp/figure_6.3.png" alt="figure_6.3.png" /><br />
+</p>
+<ul class="org-ul">
+<li><b>select</b><br />
+<a href="https://linux.die.net/man/2/select">https://linux.die.net/man/2/select</a> synchronous I/O multiplexing<br />
+几个问题:<br />
+<ul class="org-ul">
+<li>使用数组存储, 被监控的 fds 集合限制为1024<br /></li>
+<li>fds 集合需要从用户空间拷贝到内核空间的问题<br /></li>
+<li>当被监控的 fds 中某些有数据可读的时候, 需要遍历整个 fds 来收集<br /></li>
+</ul></li>
+<li><b>poll</b><br />
+<a href="https://linux.die.net/man/2/poll">https://linux.die.net/man/2/poll</a> wait for some event on a file descriptor<br />
+对 select 的改进:<br />
+<ul class="org-ul">
+<li>改用链表存储, fds 集合限制远大 于select 的1024<br /></li>
+</ul></li>
+<li><b>epoll</b> (性能最优, Linux中的Java Selector默认选择)<br />
+<a href="https://linux.die.net/man/4/epoll">https://linux.die.net/man/4/epoll</a> I/O event notification facility<br />
+终极改进:<br />
+<ul class="org-ul">
+<li>改用红黑树来管理fds集合, 提高增、删、改的性能<br /></li>
+<li>拷贝问题: epoll通过内核与用户空间mmap(内存映射)同一块内存来解决<br /></li>
+<li>(低频)epoll_ctl通过(ADD、MOD、DEL)更改fds集合的状态<br /></li>
+<li>(高频)epoll_wait只处理修改的fds集合<br /></li>
+</ul></li>
+</ul>
+
+<p>
+<b>信号驱动 I/O</b><br />
+<img src="https://notes.shichao.io/unp/figure_6.4.png" alt="figure_6.4.png" /><br />
+由内核通知开发者何时可以开始一个 I/O 操作.<br />
+</p>
+
+<p>
+<b>异步 I/O</b><br />
+<img src="https://notes.shichao.io/unp/figure_6.5.png" alt="figure_6.5.png" /><br />
+由内核通知开发者 I/O 操作何时已经完成.<br />
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+</div>
+</body>
+</html>
