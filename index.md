@@ -1,6 +1,7 @@
 ---
 layout: page-no-title
 share: false
+title:
 ---
 
 # About me
