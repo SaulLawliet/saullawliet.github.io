@@ -17,6 +17,9 @@ $ git help <command>
 $ git config --global user.name "saul"
 $ git config --global user.email "saul@example.com"
 $ git config --global color.ui true
+
+# 提交消息的生成器. https://github.com/ngerakines/commitment
+git config --global alias.yolo '!git commit -m "$(curl -s whatthecommit.com/index.txt)"'
 #+END_EXAMPLE
 
 * 基本操作
