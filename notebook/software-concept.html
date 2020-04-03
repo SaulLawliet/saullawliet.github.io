@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-01 Wed 20:30 -->
+<!-- 2020-04-03 Fri 10:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>软件开发相关概念</title>
@@ -64,19 +64,80 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org45af138">CPU 缓存</a></li>
+<li><a href="#org85eb8e9">OSI 模型</a></li>
+<li><a href="#orge042e06">TCP</a></li>
 <li><a href="#org67b00aa">Linux 网络 I/O 模型</a></li>
+<li><a href="#org45af138">CPU 缓存</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org45af138" class="outline-2">
-<h2 id="org45af138">CPU 缓存</h2>
-<div class="outline-text-2" id="text-org45af138">
+<div id="outline-container-org85eb8e9" class="outline-2">
+<h2 id="org85eb8e9">OSI 模型</h2>
+<div class="outline-text-2" id="text-org85eb8e9">
 <p>
-<img src="https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png" alt="CPU-Cache-explained.png" /><br />
-CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.<br />
-越靠近 CPU 的部分速度越快.<br />
+开放式系统互联模型(英语: Open System Interconnection Model，缩写: OSI; 简称为OSI模型)<br />
+<img src="https://i.loli.net/2018/06/13/5b20f6a05fafd.jpg" alt="5b20f6a05fafd.jpg" /><br />
+</p>
+
+<p>
+用wireshark抓取 <a href="http://example.com">http://example.com</a> 请求, 同时标注了实际应用的5层模型<br />
+<img src="https://i.loli.net/2020/04/02/3X1RoVPCOrJMs2L.png" alt="3X1RoVPCOrJMs2L.png" /><br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge042e06" class="outline-2">
+<h2 id="orge042e06">TCP</h2>
+<div class="outline-text-2" id="text-orge042e06">
+<p>
+详细资料: <a href="http://www.tcpipguide.com/free/t_TCPBasicOperationConnectionEstablishmentManagement.htm">http://www.tcpipguide.com/free/t_TCPBasicOperationConnectionEstablishmentManagement.htm</a><br />
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">ACK</td>
+<td class="org-left">确认序号有效(用来应答)</td>
+</tr>
+
+<tr>
+<td class="org-left">SYN</td>
+<td class="org-left">发起一个连接(用来同步)</td>
+</tr>
+
+<tr>
+<td class="org-left">FIN</td>
+<td class="org-left">释放一个连接</td>
+</tr>
+
+<tr>
+<td class="org-left">Seq number</td>
+<td class="org-left">序列号, 初始值随机, 其他情况下: Seq(send) = Ack(recv)</td>
+</tr>
+
+<tr>
+<td class="org-left">Ack number</td>
+<td class="org-left">确认序号, 有效的情况下: Ack(send) = Seq(recv) + 1</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<b>TCP 有限状态机</b><br />
+<img src="http://www.tcpipguide.com/free/diagrams/tcpfsm.png" alt="tcpfsm.png" /> <img src="https://i.loli.net/2020/04/02/L4MnYXeoW6SNA83.png" alt="L4MnYXeoW6SNA83.png" /><br />
+</p>
+
+<p>
+<b>三次握手和四次挥手</b><br />
+<img src="http://www.tcpipguide.com/free/diagrams/tcp3waysynch.png" alt="tcp3waysynch.png" /> <img src="http://www.tcpipguide.com/free/diagrams/tcpclose.png" alt="tcpclose.png" /><br />
 </p>
 </div>
 </div>
@@ -185,7 +246,7 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
 <ul class="org-ul">
 <li><b>select</b><br />
 <a href="https://linux.die.net/man/2/select">https://linux.die.net/man/2/select</a> synchronous I/O multiplexing<br />
-几个问题:<br />
+几个缺点:<br />
 <ul class="org-ul">
 <li>使用数组存储, 被监控的 fds 集合限制为1024<br /></li>
 <li>fds 集合需要从用户空间拷贝到内核空间的问题<br /></li>
@@ -221,10 +282,21 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
 </p>
 </div>
 </div>
+
+<div id="outline-container-org45af138" class="outline-2">
+<h2 id="org45af138">CPU 缓存</h2>
+<div class="outline-text-2" id="text-org45af138">
+<p>
+<img src="https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png" alt="CPU-Cache-explained.png" /><br />
+CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.<br />
+越靠近 CPU 的部分速度越快.<br />
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="date">Created: 2020-04-03 Fri 10:11</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
