@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-03 Fri 10:11 -->
+<!-- 2020-04-03 Fri 23:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>软件开发相关概念</title>
@@ -132,12 +132,12 @@ for the JavaScript code in this tag.
 
 <p>
 <b>TCP 有限状态机</b><br />
-<img src="http://www.tcpipguide.com/free/diagrams/tcpfsm.png" alt="tcpfsm.png" /> <img src="https://i.loli.net/2020/04/02/L4MnYXeoW6SNA83.png" alt="L4MnYXeoW6SNA83.png" /><br />
+<img src="https://i.loli.net/2020/04/03/QS24R8DsBmIKjNk.png" alt="QS24R8DsBmIKjNk.png" /> <img src="https://i.loli.net/2020/04/02/L4MnYXeoW6SNA83.png" alt="L4MnYXeoW6SNA83.png" /><br />
 </p>
 
 <p>
 <b>三次握手和四次挥手</b><br />
-<img src="http://www.tcpipguide.com/free/diagrams/tcp3waysynch.png" alt="tcp3waysynch.png" /> <img src="http://www.tcpipguide.com/free/diagrams/tcpclose.png" alt="tcpclose.png" /><br />
+<img src="https://i.loli.net/2020/04/03/7kghoIMcBSDbJHa.png" alt="7kghoIMcBSDbJHa.png" /> <img src="https://i.loli.net/2020/04/03/knU9zhBx3NlbG84.png" alt="knU9zhBx3NlbG84.png" /><br />
 </p>
 </div>
 </div>
@@ -228,12 +228,12 @@ for the JavaScript code in this tag.
 </table>
 <p>
 <a href="http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf">http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf</a><br />
-<img src="https://notes.shichao.io/unp/figure_6.6.png" alt="figure_6.6.png" /><br />
+<img src="https://i.loli.net/2020/04/03/niMUahKf69jqtT7.png" alt="niMUahKf69jqtT7.png" /><br />
 </p>
 
 <p>
 <b>阻塞 I/O 和 非阻塞 I/O</b><br />
-<img src="https://notes.shichao.io/unp/figure_6.1.png" alt="figure_6.1.png" /> <img src="https://notes.shichao.io/unp/figure_6.2.png" alt="figure_6.2.png" /><br />
+<img src="https://i.loli.net/2020/04/03/hbTCFViasw72Opu.png" alt="hbTCFViasw72Opu.png" /> <img src="https://i.loli.net/2020/04/03/Jdx1FK3Mof9wuHL.png" alt="Jdx1FK3Mof9wuHL.png" /><br />
 <a href="https://linux.die.net/man/2/recvfrom">https://linux.die.net/man/2/recvfrom</a><br />
 If no messages are available at the socket, the receive calls wait for a message to arrive,<br />
 unless the socket is nonblocking, in which case the value -1 is returned and the external variable errno is set to EAGAIN or EWOULDBLOCK.<br />
@@ -241,7 +241,7 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
 
 <p>
 <b>I/O 复用</b><br />
-<img src="https://notes.shichao.io/unp/figure_6.3.png" alt="figure_6.3.png" /><br />
+<img src="https://i.loli.net/2020/04/03/jhq1xTznOV6Db2H.png" alt="jhq1xTznOV6Db2H.png" /><br />
 </p>
 <ul class="org-ul">
 <li><b>select</b><br />
@@ -271,13 +271,13 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
 
 <p>
 <b>信号驱动 I/O</b><br />
-<img src="https://notes.shichao.io/unp/figure_6.4.png" alt="figure_6.4.png" /><br />
+<img src="https://i.loli.net/2020/04/03/l69HAwuEpF5Wk2t.png" alt="l69HAwuEpF5Wk2t.png" /><br />
 由内核通知开发者何时可以开始一个 I/O 操作.<br />
 </p>
 
 <p>
 <b>异步 I/O</b><br />
-<img src="https://notes.shichao.io/unp/figure_6.5.png" alt="figure_6.5.png" /><br />
+<img src="https://i.loli.net/2020/04/03/4OqgV3hGC9SP67f.png" alt="4OqgV3hGC9SP67f.png" /><br />
 由内核通知开发者 I/O 操作何时已经完成.<br />
 </p>
 </div>
@@ -287,7 +287,7 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
 <h2 id="org45af138">CPU 缓存</h2>
 <div class="outline-text-2" id="text-org45af138">
 <p>
-<img src="https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png" alt="CPU-Cache-explained.png" /><br />
+<img src="https://i.loli.net/2020/04/03/RsP6dowmW8Icf4k.png" alt="RsP6dowmW8Icf4k.png" /><br />
 CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.<br />
 越靠近 CPU 的部分速度越快.<br />
 </p>
@@ -296,7 +296,7 @@ CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-04-03 Fri 10:11</p>
+<p class="date">Created: 2020-04-03 Fri 23:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

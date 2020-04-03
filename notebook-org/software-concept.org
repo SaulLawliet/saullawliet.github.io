@@ -19,10 +19,10 @@
 | Ack number | 确认序号, 有效的情况下: Ack(send) = Seq(recv) + 1     |
 
 *TCP 有限状态机*
-[[http://www.tcpipguide.com/free/diagrams/tcpfsm.png]] [[https://i.loli.net/2020/04/02/L4MnYXeoW6SNA83.png]]
+[[https://i.loli.net/2020/04/03/QS24R8DsBmIKjNk.png]] [[https://i.loli.net/2020/04/02/L4MnYXeoW6SNA83.png]]
 
 *三次握手和四次挥手*
-[[http://www.tcpipguide.com/free/diagrams/tcp3waysynch.png]] [[http://www.tcpipguide.com/free/diagrams/tcpclose.png]]
+[[https://i.loli.net/2020/04/03/7kghoIMcBSDbJHa.png]] [[https://i.loli.net/2020/04/03/knU9zhBx3NlbG84.png]]
 
 * Linux 网络 I/O 模型
 *基本概念*
@@ -37,16 +37,16 @@
 | Signal-Driven I/O | 信号驱动 I/O | (SIGIO)                    | 罕见 |
 | Asynchronous I/O  | 异步 I/O     | (the POSIX aio_ functions) | -    |
 http://www.cs.toronto.edu/~krueger/csc209h/lectures/Week11-Select-4.pdf
-[[https://notes.shichao.io/unp/figure_6.6.png]]
+[[https://i.loli.net/2020/04/03/niMUahKf69jqtT7.png]]
 
 *阻塞 I/O 和 非阻塞 I/O*
-[[https://notes.shichao.io/unp/figure_6.1.png]] [[https://notes.shichao.io/unp/figure_6.2.png]]
+https://i.loli.net/2020/04/03/hbTCFViasw72Opu.png https://i.loli.net/2020/04/03/Jdx1FK3Mof9wuHL.png
 https://linux.die.net/man/2/recvfrom
 If no messages are available at the socket, the receive calls wait for a message to arrive,
 unless the socket is nonblocking, in which case the value -1 is returned and the external variable errno is set to EAGAIN or EWOULDBLOCK.
 
 *I/O 复用*
-[[https://notes.shichao.io/unp/figure_6.3.png]]
+https://i.loli.net/2020/04/03/jhq1xTznOV6Db2H.png
 - *select*
   https://linux.die.net/man/2/select synchronous I/O multiplexing
   几个缺点:
@@ -66,14 +66,14 @@ unless the socket is nonblocking, in which case the value -1 is returned and the
   - (高频)epoll_wait只处理修改的fds集合
 
 *信号驱动 I/O*
-[[https://notes.shichao.io/unp/figure_6.4.png]]
+https://i.loli.net/2020/04/03/l69HAwuEpF5Wk2t.png
 由内核通知开发者何时可以开始一个 I/O 操作.
 
 *异步 I/O*
-[[https://notes.shichao.io/unp/figure_6.5.png]]
+https://i.loli.net/2020/04/03/4OqgV3hGC9SP67f.png
 由内核通知开发者 I/O 操作何时已经完成.
 
 * CPU 缓存
-[[https://cdn.guidingtech.com/media/assets/WordPress-Import/2015/11/CPU-Cache-explained.png]]
+[[https://i.loli.net/2020/04/03/RsP6dowmW8Icf4k.png]]
 CPU 缓存的出现主要是为了解决 CPU 运算速度与内存读写速度不匹配的矛盾, 因为 CPU 运算速度要比内存读写速度快的多.
 越靠近 CPU 的部分速度越快.

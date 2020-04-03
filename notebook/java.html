@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-04-03 Fri 23:09 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Java 笔记</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Java 笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org2328da7">技术博客推荐</a></li>
+<li><a href="#orgc1ea99a">Java 主流锁</a>
+<ul>
+<li><a href="#orgdc38cd9">悲观锁 vs 乐观锁</a></li>
+<li><a href="#org7d636b4">自旋锁 vs 适应性自旋锁</a></li>
+<li><a href="#orge1f22b4">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</a></li>
+<li><a href="#org64eb86b">公平锁 vs 非公平锁</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org2328da7" class="outline-2">
+<h2 id="org2328da7">技术博客推荐</h2>
+<div class="outline-text-2" id="text-org2328da7">
+<ul class="org-ul">
+<li>美团技术团队 <a href="https://tech.meituan.com/tags/java.html">https://tech.meituan.com/tags/java.html</a><br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgc1ea99a" class="outline-2">
+<h2 id="orgc1ea99a">Java 主流锁</h2>
+<div class="outline-text-2" id="text-orgc1ea99a">
+<ul class="org-ul">
+<li>线程要不要锁住同步资源?<br />
+<ul class="org-ul">
+<li>锁住: <b>悲观锁</b><br /></li>
+<li>不锁住: <b>乐观锁</b><br /></li>
+</ul></li>
+<li>锁住同步资源失败, 线程要不要阻塞?<br />
+<ul class="org-ul">
+<li>阻塞<br /></li>
+<li>不阻塞: <b>自旋锁</b> / <b>适应性自旋锁</b><br /></li>
+</ul></li>
+<li>多个线程竞争同步资源的流程细节有没有区别?<br />
+<ul class="org-ul">
+<li>不锁住资源, 多个线程中只有一个能修改资源成功, 其它线程会重试: <b>无锁</b><br /></li>
+<li>同一个线程执行同步资源时自动获取资源: <b>偏向锁</b><br /></li>
+<li>多个线程竞争同步资源时, 没有获取资源的线程自旋等待锁释放: <b>轻量级锁</b><br /></li>
+<li>多个线程竞争同步资源时, 没有获取资源的线程阻塞等待唤醒: <b>重量级锁</b><br /></li>
+</ul></li>
+<li>多个线程竞争锁时要不要排队?<br />
+<ul class="org-ul">
+<li>排队: <b>公平锁</b><br /></li>
+<li>先尝试插队, 插队失败再排队: <b>非公平锁</b><br /></li>
+</ul></li>
+<li>一个线程中的多个线程能不能获得同一把锁?<br />
+<ul class="org-ul">
+<li>能: <b>可重入锁</b><br /></li>
+<li>不能: <b>不可重入锁</b><br /></li>
+</ul></li>
+<li>多个线程能不能共享一把锁?<br />
+<ul class="org-ul">
+<li>能: <b>共享锁</b><br /></li>
+<li>不能: <b>互斥锁(排他锁)</b><br /></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="outline-container-orgdc38cd9" class="outline-3">
+<h3 id="orgdc38cd9">悲观锁 vs 乐观锁</h3>
+<div class="outline-text-3" id="text-orgdc38cd9">
+<ul class="org-ul">
+<li>悲观锁: 使用前加锁, 使用后释放锁. 例如: synchronized 与 Lock<br /></li>
+<li>乐观锁: 在更新数据前判断有没有别的线程更新了这个值. 例如: Atomic 相关类, 底层使用 volatile 和 CAS 算法.<br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org7d636b4" class="outline-3">
+<h3 id="org7d636b4">自旋锁 vs 适应性自旋锁</h3>
+<div class="outline-text-3" id="text-org7d636b4">
+<ul class="org-ul">
+<li>自旋锁: 不放弃 CPU 时间片, 通过 for(;;) {&#x2026;} 等待锁释放.<br /></li>
+<li>适应性自旋锁: 在自旋锁的基础上, 如果超出失败次数上限(失败次数上限不固定, 由 JVM 调整), 线程将会阻塞.<br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge1f22b4" class="outline-3">
+<h3 id="orge1f22b4">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</h3>
+<div class="outline-text-3" id="text-orge1f22b4">
+<p>
+<b>Header Word</b> (Mark Word)<br />
+默认存储对象的 HashCode, 分代年龄和锁标志位信息.<br />
+这些信息都是与对象自身定义无关的数据, 它会根据对象的锁状态复用自己的存储空间.<br />
+</p>
+
+<p>
+<b>Klass Point</b><br />
+对象指向它的类元数据的指针, 虚拟机通过这个指针来确定这个对象是哪个类的实例.<br />
+</p>
+
+<p>
+每一个 Java 对象都有一把看不见的锁, 称为内部锁或 Monitor 锁.<br />
+Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Monitor.<br />
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">无锁</td>
+<td class="org-left">0 01</td>
+<td class="org-left">对象的hashCode, 对象分代年龄、是否是偏向锁(0)</td>
+</tr>
+
+<tr>
+<td class="org-left">偏向锁</td>
+<td class="org-left">1 01</td>
+<td class="org-left">偏向线程ID, 偏向时间戳, 对象分代年龄, 是否是偏向锁(1)</td>
+</tr>
+
+<tr>
+<td class="org-left">轻量级锁</td>
+<td class="org-left">　00</td>
+<td class="org-left">指向栈中锁记录的指针</td>
+</tr>
+
+<tr>
+<td class="org-left">重量级锁</td>
+<td class="org-left">　10</td>
+<td class="org-left">指向互斥量(重量级锁)的指针</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+<b>简单总结</b>:<br />
+偏向锁通过对比 Mark Word 解决加锁问题, 避免执行CAS操作.<br />
+轻量级锁是通过 用CAS 操作和自旋来解决加锁问题，避免线程阻塞和唤醒而影响性能.<br />
+重量级锁是将除了拥有锁的线程以外的线程都阻塞.<br />
+</p>
+
+<p>
+<b>官方文档</b>: <a href="https://wiki.openjdk.java.net/display/HotSpot/Synchronization">OpenJDK - Synchronization and Object Locking</a><br />
+</p>
+
+
+<div class="figure">
+<p><img src="https://i.loli.net/2020/04/03/1AXmgTt5hp3QdJO.gif" alt="1AXmgTt5hp3QdJO.gif" /><br />
+</p>
+</div>
+
+<p>
+插图的右侧是标准的加锁过程, 只要一个对象没有无锁, 标志位一定是 <code>01</code>.<br />
+当 synchronized 一个对象时, Header Word 和指向对象的指针会存储在当前栈帧的锁记录中. 然后 VM 尝试通过 CAS 操作将 <b>指向锁记录的指针</b> 设置到 Header Word 里.<br />
+如果成功, 当前的线程就会拥有锁, 标志位变成 <code>00</code>, 表示这个对象被锁住了.<br />
+如果该对象已经被锁, 而导致 CAS 操作失败, VM 会先判断 Header Word 是否指向当前线程的方法栈. 如果是的话, 表示当前线程已经持有锁, 可以进入同步块继续执行.<br />
+否则, 该线程通过自旋来获得锁(初始次数为0). 但是当自旋超过一定的次数, 或者一个线程在持有锁, 一个在自旋, 又有第三个来访时, 那么轻量级锁一定会升级成重量级锁来管理等待的线程, 标志位变成 <code>10</code>.<br />
+在大多数情况下, 锁总是由同一线程多次获得, 不存在多线程竞争. 所以在 1.6 中引入了偏向锁的技术, 第一个获得该对象锁的的线程 ID 会设置到 Header Word 中. 表示该对象偏向于这个线程.<br />
+偏向锁只有遇到其他线程尝试竞争偏向锁时, 持有偏向锁的线程才会释放锁, 线程不会主动释放偏向锁.<br />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org64eb86b" class="outline-3">
+<h3 id="org64eb86b">公平锁 vs 非公平锁</h3>
+<div class="outline-text-3" id="text-org64eb86b">
+<ul class="org-ul">
+<li>公平锁: 线程会严格按照获取锁的顺序排队.<br /></li>
+<li>非公平锁: 线程优先插队, 插队失败才会排队. (RenentrantLock等同步类的默认选择, 性能更优)<br /></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2020-04-03 Fri 23:09</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+</div>
+</body>
+</html>
