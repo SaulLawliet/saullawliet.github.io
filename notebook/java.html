@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-08 Wed 23:36 -->
+<!-- 2020-04-14 Tue 16:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Java 笔记</title>
@@ -65,11 +65,11 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#org663e0aa">资料</a></li>
-<li><a href="#orge82496a">Java Memory Model</a></li>
-<li><a href="#orgbbd97be">并发特性</a></li>
-<li><a href="#org14cdf3f">Happens-Before</a></li>
-<li><a href="#orgebe27ca">同步工具类</a></li>
-<li><a href="#orgd9613ff">引用类型</a></li>
+<li><a href="#orgd14a03c">Java Memory Model</a></li>
+<li><a href="#org1a8f5a7">并发特性</a></li>
+<li><a href="#org15e18b3">Happens-Before</a></li>
+<li><a href="#org9f1f8cf">同步工具类</a></li>
+<li><a href="#orgea28c17">引用类型</a></li>
 <li><a href="#orgf7b2d13">Java 主流锁</a>
 <ul>
 <li><a href="#org20b6b9b">悲观锁 vs 乐观锁</a></li>
@@ -78,12 +78,12 @@ for the JavaScript code in this tag.
 <li><a href="#org3083468">公平锁 vs 非公平锁</a></li>
 </ul>
 </li>
-<li><a href="#orgeb47a6c">垃圾回收</a>
+<li><a href="#org8c517c5">垃圾回收</a>
 <ul>
-<li><a href="#orgf3e5075">垃圾回收算法</a></li>
-<li><a href="#orgea2c5db">垃圾回收器</a></li>
-<li><a href="#orge9ab466">参数基本策略</a></li>
-<li><a href="#orgee0f36c">HotSpot JVM 手册</a></li>
+<li><a href="#org96b9469">垃圾回收算法</a></li>
+<li><a href="#orgdfef408">垃圾回收器</a></li>
+<li><a href="#org02e4fd4">参数基本策略</a></li>
+<li><a href="#orgf5ff5c1">HotSpot JVM 手册</a></li>
 </ul>
 </li>
 </ul>
@@ -100,9 +100,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge82496a" class="outline-2">
-<h2 id="orge82496a">Java Memory Model</h2>
-<div class="outline-text-2" id="text-orge82496a">
+<div id="outline-container-orgd14a03c" class="outline-2">
+<h2 id="orgd14a03c">Java Memory Model</h2>
+<div class="outline-text-2" id="text-orgd14a03c">
 <p>
 分为 <b>主内存</b> 和 <b>工作内存(线程)</b><br />
 不同线程拥有自己的工作内存, 同一个变量在主内存只有一份, 当线程用到时, 会从主内存中拷贝一个副本, 线程执行完的时候, 再将变量同步到主内存.<br />
@@ -154,9 +154,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbbd97be" class="outline-2">
-<h2 id="orgbbd97be">并发特性</h2>
-<div class="outline-text-2" id="text-orgbbd97be">
+<div id="outline-container-org1a8f5a7" class="outline-2">
+<h2 id="org1a8f5a7">并发特性</h2>
+<div class="outline-text-2" id="text-org1a8f5a7">
 <p>
 <b>原子性</b><br />
 一个操作或者多个操作, 要么全部执行并且执行的过程不回被任何因素打断, 要么就都不执行.<br />
@@ -168,9 +168,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org14cdf3f" class="outline-2">
-<h2 id="org14cdf3f">Happens-Before</h2>
-<div class="outline-text-2" id="text-org14cdf3f">
+<div id="outline-container-org15e18b3" class="outline-2">
+<h2 id="org15e18b3">Happens-Before</h2>
+<div class="outline-text-2" id="text-org15e18b3">
 <ul class="org-ul">
 <li>程序顺序规则<br /></li>
 <li>监视器锁规则<br /></li>
@@ -184,9 +184,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgebe27ca" class="outline-2">
-<h2 id="orgebe27ca">同步工具类</h2>
-<div class="outline-text-2" id="text-orgebe27ca">
+<div id="outline-container-org9f1f8cf" class="outline-2">
+<h2 id="org9f1f8cf">同步工具类</h2>
+<div class="outline-text-2" id="text-org9f1f8cf">
 <p>
 <b>CountDownLatch</b> - 闭锁 (底层: AQS)<br />
 初始化一个值, countdown(), countdown() &#x2026; await()<br />
@@ -200,9 +200,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd9613ff" class="outline-2">
-<h2 id="orgd9613ff">引用类型</h2>
-<div class="outline-text-2" id="text-orgd9613ff">
+<div id="outline-container-orgea28c17" class="outline-2">
+<h2 id="orgea28c17">引用类型</h2>
+<div class="outline-text-2" id="text-orgea28c17">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -391,13 +391,13 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </div>
 </div>
 
-<div id="outline-container-orgeb47a6c" class="outline-2">
-<h2 id="orgeb47a6c">垃圾回收</h2>
-<div class="outline-text-2" id="text-orgeb47a6c">
+<div id="outline-container-org8c517c5" class="outline-2">
+<h2 id="org8c517c5">垃圾回收</h2>
+<div class="outline-text-2" id="text-org8c517c5">
 </div>
-<div id="outline-container-orgf3e5075" class="outline-3">
-<h3 id="orgf3e5075">垃圾回收算法</h3>
-<div class="outline-text-3" id="text-orgf3e5075">
+<div id="outline-container-org96b9469" class="outline-3">
+<h3 id="org96b9469">垃圾回收算法</h3>
+<div class="outline-text-3" id="text-org96b9469">
 <ul class="org-ul">
 <li>复制算法 (<b>用于新生代</b>)<br />
 将内存分成两半, 一半用完后, 将存活的数据移动到另一半<br /></li>
@@ -416,9 +416,9 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-orgea2c5db" class="outline-3">
-<h3 id="orgea2c5db">垃圾回收器</h3>
-<div class="outline-text-3" id="text-orgea2c5db">
+<div id="outline-container-orgdfef408" class="outline-3">
+<h3 id="orgdfef408">垃圾回收器</h3>
+<div class="outline-text-3" id="text-orgdfef408">
 
 <div class="figure">
 <p><img src="https://i.loli.net/2020/04/08/JAixmhlzv1Mqe36.jpg" alt="JAixmhlzv1Mqe36.jpg" /><br />
@@ -434,9 +434,9 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-orge9ab466" class="outline-3">
-<h3 id="orge9ab466">参数基本策略</h3>
-<div class="outline-text-3" id="text-orge9ab466">
+<div id="outline-container-org02e4fd4" class="outline-3">
+<h3 id="org02e4fd4">参数基本策略</h3>
+<div class="outline-text-3" id="text-org02e4fd4">
 <p>
 活跃数据: 应用程序稳定运行时长期存活对象在堆中占用的空间大小, 也就是Full GC后堆中老年代占用空间的大小.<br />
 </p>
@@ -478,12 +478,12 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-orgee0f36c" class="outline-3">
-<h3 id="orgee0f36c">HotSpot JVM 手册</h3>
-<div class="outline-text-3" id="text-orgee0f36c">
+<div id="outline-container-orgf5ff5c1" class="outline-3">
+<h3 id="orgf5ff5c1">HotSpot JVM 手册</h3>
+<div class="outline-text-3" id="text-orgf5ff5c1">
 
 <div class="figure">
-<p><img src="https://i.loli.net/2020/04/08/Hya9SOdfgvDGEm1.png" alt="Hya9SOdfgvDGEm1.png" /><br />
+<p><img src="https://saullawliet.github.io/images/Java%208%20-%20GC%20cheatsheet.png" alt="Java%208%20-%20GC%20cheatsheet.png" /><br />
 </p>
 </div>
 </div>
@@ -492,7 +492,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-04-08 Wed 23:36</p>
+<p class="date">Created: 2020-04-14 Tue 16:22</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

@@ -154,4 +154,4 @@ https://i.loli.net/2020/04/08/JAixmhlzv1Mqe36.jpg
 如果应用存在大量的持久对象, 应该选择较大的老年代.
 
 ** HotSpot JVM 手册
-https://i.loli.net/2020/04/08/Hya9SOdfgvDGEm1.png
+[[https://saullawliet.github.io/images/Java 8 - GC cheatsheet.png]]
