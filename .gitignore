@@ -8,4 +8,4 @@ node_modules
 _asset_bundler_cache
 .jekyll-metadata
 
-notebook-org/*.html
+notebook-org
