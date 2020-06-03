@@ -3,20 +3,19 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-11-14 Thu 11:42 -->
+<!-- 2020-06-03 Wed 18:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bash 笔记</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
 /*
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -65,17 +64,18 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org539554d">基本</a></li>
-<li><a href="#org9bf45e4">小提示</a></li>
-<li><a href="#org88fb8ba">代码片段</a>
+<li><a href="#org4686773">基本</a></li>
+<li><a href="#org7d8e766">小提示</a></li>
+<li><a href="#org0ab7ca2">MacOS</a></li>
+<li><a href="#orgdf65cea">代码片段</a>
 <ul>
-<li><a href="#org3ef78c1">最小代码模板</a></li>
-<li><a href="#org4c78736">获取脚本的目录信息</a></li>
-<li><a href="#org0ef3974">从命令声明数组</a></li>
-<li><a href="#org00909fa">遍历文件的行</a></li>
-<li><a href="#org1fe2338">遍历文件和目录</a></li>
-<li><a href="#orgc0b7b54">输出带颜色的文字</a></li>
-<li><a href="#org1514bd8">切换用户执行</a></li>
+<li><a href="#org446833d">最小代码模板</a></li>
+<li><a href="#orge320097">获取脚本的目录信息</a></li>
+<li><a href="#org2b860f7">从命令声明数组</a></li>
+<li><a href="#org213d953">遍历文件的行</a></li>
+<li><a href="#org68c2895">遍历文件和目录</a></li>
+<li><a href="#org26b5f92">输出带颜色的文字</a></li>
+<li><a href="#orge3bd61d">切换用户执行</a></li>
 </ul>
 </li>
 </ul>
@@ -83,40 +83,54 @@ for the JavaScript code in this tag.
 </div>
 <hr />
 
-<div id="outline-container-org539554d" class="outline-2">
-<h2 id="org539554d">基本</h2>
-<div class="outline-text-2" id="text-org539554d">
+<div id="outline-container-org4686773" class="outline-2">
+<h2 id="org4686773">基本</h2>
+<div class="outline-text-2" id="text-org4686773">
 <ul class="org-ul">
-<li>基本语法介绍: <a href="https://devhints.io/bash">Bash scripting cheatsheet</a>, 推荐 <b>熟读</b> 或 <b>随手查阅</b>.</li>
-<li>进阶书籍: <a href="https://github.com/dylanaraps/pure-bash-bible">Pure Bash Bible</a>, 真·大佬出品.</li>
-<li>脚本参数设计: <a href="http://docopt.org/">Command-line interface description language</a></li>
-<li>代码分析工具: <a href="https://github.com/koalaman/shellcheck">ShellCheck</a></li>
+<li>基本语法介绍: <a href="https://devhints.io/bash">Bash scripting cheatsheet</a>, 推荐 <b>熟读</b> 或 <b>随手查阅</b>.<br /></li>
+<li>进阶书籍: <a href="https://github.com/dylanaraps/pure-bash-bible">Pure Bash Bible</a>, 真·大佬出品.<br /></li>
+<li>脚本参数设计: <a href="http://docopt.org/">Command-line interface description language</a><br /></li>
+<li>代码分析工具: <a href="https://github.com/koalaman/shellcheck">ShellCheck</a><br /></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org9bf45e4" class="outline-2">
-<h2 id="org9bf45e4">小提示</h2>
-<div class="outline-text-2" id="text-org9bf45e4">
+<div id="outline-container-org7d8e766" class="outline-2">
+<h2 id="org7d8e766">小提示</h2>
+<div class="outline-text-2" id="text-org7d8e766">
 <ul class="org-ul">
-<li>使用变量时, 一定要用引号. 如: <code>echo "$var"</code></li>
-<li>声明函数时, 无需使用关键字 <code>function</code></li>
-<li>执行命令时, 用 <code>$()</code> 代替 <code>` `</code>. 如: <code>var="$(command "$(command)")"</code></li>
+<li>使用变量时, 一定要用引号. 如: <code>echo "$var"</code><br /></li>
+<li>声明函数时, 无需使用关键字 <code>function</code><br /></li>
+<li>执行命令时, 用 <code>$()</code> 代替 <code>` `</code>. 如: <code>var="$(command "$(command)")"</code><br /></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org88fb8ba" class="outline-2">
-<h2 id="org88fb8ba">代码片段</h2>
-<div class="outline-text-2" id="text-org88fb8ba">
+<div id="outline-container-org0ab7ca2" class="outline-2">
+<h2 id="org0ab7ca2">MacOS</h2>
+<div class="outline-text-2" id="text-org0ab7ca2">
 <p>
-下面保存一些常用的代码, 提高开发效率;)
+MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前加上以下代码.<br />
+需要依赖: coreutils (<code>brew install coreutils</code>)<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">[[ $(uname) == <span style="color: #2aa198;">"Darwin"</span> ]] &amp;&amp; <span style="color: #268bd2;">PATH</span>=<span style="color: #2aa198;">"/usr/local/opt/coreutils/libexec/gnubin:$PATH"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdf65cea" class="outline-2">
+<h2 id="orgdf65cea">代码片段</h2>
+<div class="outline-text-2" id="text-orgdf65cea">
+<p>
+下面保存一些常用的代码, 提高开发效率;)<br />
 </p>
 </div>
 
-<div id="outline-container-org3ef78c1" class="outline-3">
-<h3 id="org3ef78c1">最小代码模板</h3>
-<div class="outline-text-3" id="text-org3ef78c1">
+<div id="outline-container-org446833d" class="outline-3">
+<h3 id="org446833d">最小代码模板</h3>
+<div class="outline-text-3" id="text-org446833d">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/usr/bin/</span><span style="color: #859900; font-weight: bold;">env</span><span style="color: #93a1a1;"> bash</span>
 
@@ -130,9 +144,9 @@ main <span style="color: #2aa198;">"$@"</span>
 </div>
 </div>
 
-<div id="outline-container-org4c78736" class="outline-3">
-<h3 id="org4c78736">获取脚本的目录信息</h3>
-<div class="outline-text-3" id="text-org4c78736">
+<div id="outline-container-orge320097" class="outline-3">
+<h3 id="orge320097">获取脚本的目录信息</h3>
+<div class="outline-text-3" id="text-orge320097">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#33050;&#26412;&#30495;&#23454;&#38142;&#25509;</span>
 <span style="color: #268bd2;">script_link</span>=<span style="color: #2aa198;">"$(readlink -f "$0")"</span>
@@ -150,9 +164,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org0ef3974" class="outline-3">
-<h3 id="org0ef3974">从命令声明数组</h3>
-<div class="outline-text-3" id="text-org0ef3974">
+<div id="outline-container-org2b860f7" class="outline-3">
+<h3 id="org2b860f7">从命令声明数组</h3>
+<div class="outline-text-3" id="text-org2b860f7">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">read</span> -d <span style="color: #2aa198;">""</span> -ra a1 &lt;&lt;&lt; <span style="color: #2aa198;">"$(seq 1 5)"</span>
 <span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"${a1[@]}"</span>
@@ -172,9 +186,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org00909fa" class="outline-3">
-<h3 id="org00909fa">遍历文件的行</h3>
-<div class="outline-text-3" id="text-org00909fa">
+<div id="outline-container-org213d953" class="outline-3">
+<h3 id="org213d953">遍历文件的行</h3>
+<div class="outline-text-3" id="text-org213d953">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">read</span> -r line; <span style="color: #859900; font-weight: bold;">do</span>
   printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$line"</span>
@@ -184,9 +198,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org1fe2338" class="outline-3">
-<h3 id="org1fe2338">遍历文件和目录</h3>
-<div class="outline-text-3" id="text-org1fe2338">
+<div id="outline-container-org68c2895" class="outline-3">
+<h3 id="org68c2895">遍历文件和目录</h3>
+<div class="outline-text-3" id="text-org68c2895">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #859900; font-weight: bold;">for</span> file<span style="color: #859900; font-weight: bold;"> in</span> *; <span style="color: #859900; font-weight: bold;">do</span>
   printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$file"</span>
@@ -196,9 +210,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-orgc0b7b54" class="outline-3">
-<h3 id="orgc0b7b54">输出带颜色的文字</h3>
-<div class="outline-text-3" id="text-orgc0b7b54">
+<div id="outline-container-org26b5f92" class="outline-3">
+<h3 id="org26b5f92">输出带颜色的文字</h3>
+<div class="outline-text-3" id="text-org26b5f92">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#36755;&#20986;&#25152;&#26377;&#39068;&#33394;(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)</span>
 <span style="color: #859900; font-weight: bold;">for</span> code<span style="color: #859900; font-weight: bold;"> in</span> {0..255}; <span style="color: #859900; font-weight: bold;">do</span>
@@ -212,9 +226,9 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 </div>
 
-<div id="outline-container-org1514bd8" class="outline-3">
-<h3 id="org1514bd8">切换用户执行</h3>
-<div class="outline-text-3" id="text-org1514bd8">
+<div id="outline-container-orge3bd61d" class="outline-3">
+<h3 id="orge3bd61d">切换用户执行</h3>
+<div class="outline-text-3" id="text-orge3bd61d">
 <div class="org-src-container">
 <pre class="src src-sh">su &lt;other_user&gt; &lt;&lt; !
   ...
@@ -228,8 +242,8 @@ printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;"
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2019-11-14 Thu 11:42</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2020-06-03 Wed 18:06</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
 </html>
