@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-03 Wed 18:06 -->
+<!-- 2020-06-03 Wed 21:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GIT 笔记</title>
@@ -66,6 +66,7 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#org4013ef9">获得帮助</a></li>
 <li><a href="#org1251c5f">全局设置</a></li>
+<li><a href="#org2f9b2e9">Git flow</a></li>
 <li><a href="#orgc5d6132">基本操作</a>
 <ul>
 <li><a href="#org5290304">Initialize</a>
@@ -137,11 +138,33 @@ git config --global alias.yolo '!git commit -m "$(curl -s whatthecommit.com/inde
 </div>
 </div>
 
+<div id="outline-container-org2f9b2e9" class="outline-2">
+<h2 id="org2f9b2e9">Git flow</h2>
+<div class="outline-text-2" id="text-org2f9b2e9">
+<p>
+<a href="https://github.com/petervanderdoes/gitflow-avh">https://github.com/petervanderdoes/gitflow-avh</a><br />
+</p>
+
+<p>
+The overall flow of Gitflow is<br />
+</p>
+<ul class="org-ul">
+<li>A develop branch is created from master<br /></li>
+<li>A release branch is created from develop<br /></li>
+<li>Feature branches are created from develop<br /></li>
+<li>When a feature is complete it is merged into the develop branch<br /></li>
+<li>When the release branch is done it is merged into develop and master<br /></li>
+<li>If an issue in master is detected a hotfix branch is created from master<br /></li>
+<li>Once the hotfix is complete it is merged to both develop and master<br /></li>
+</ul>
+</div>
+</div>
+
 <div id="outline-container-orgc5d6132" class="outline-2">
 <h2 id="orgc5d6132">基本操作</h2>
 <div class="outline-text-2" id="text-orgc5d6132">
 <p>
-workflow:
+workflow:<br />
 </p>
 <pre class="example">
 	    +-----------+   +-----------+   +------------+   +------------+
@@ -379,15 +402,15 @@ $ git push --tags           # push
 <h2 id="orgea559cf">参考</h2>
 <div class="outline-text-2" id="text-orgea559cf">
 <ol class="org-ol">
-<li><a href="https://www.codeschool.com/courses/git-real">Code School - Git Real</a></li>
-<li><a href="https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git">https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git</a></li>
+<li><a href="https://www.codeschool.com/courses/git-real">Code School - Git Real</a><br /></li>
+<li><a href="https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git">https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git</a><br /></li>
 </ol>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-03 Wed 18:06</p>
+<p class="date">Created: 2020-06-03 Wed 21:43</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
