@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-04 Thu 18:01 -->
+<!-- 2020-06-05 Fri 16:26 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bash 笔记</title>
@@ -67,6 +67,7 @@ for the JavaScript code in this tag.
 <li><a href="#org4686773">基本</a></li>
 <li><a href="#org7d8e766">小提示</a></li>
 <li><a href="#org0ab7ca2">MacOS</a></li>
+<li><a href="#org71552f3">字符串操作</a></li>
 <li><a href="#orgdf65cea">代码片段</a>
 <ul>
 <li><a href="#org446833d">最小代码模板</a></li>
@@ -119,6 +120,164 @@ MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前�
 </div>
 </div>
 </div>
+
+<div id="outline-container-org71552f3" class="outline-2">
+<h2 id="org71552f3">字符串操作</h2>
+<div class="outline-text-2" id="text-org71552f3">
+<p>
+常用操作<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #268bd2;">str</span>=<span style="color: #2aa198;">"foo.bar"</span>
+<span style="color: #657b83; font-weight: bold;">echo</span> ${<span style="color: #268bd2;">str</span>%%.*} <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">=&gt; foo (&#25991;&#20214;&#21517;)</span>
+<span style="color: #657b83; font-weight: bold;">echo</span> ${<span style="color: #268bd2;">str</span>//*.} <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">=&gt; bar (&#25991;&#20214;&#25193;&#23637;&#21517;)</span>
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>删除和替换<br /></li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">${FOO%suffix}</td>
+<td class="org-left">Remove suffix</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO#prefix}</td>
+<td class="org-left">Remove prefix</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO%%suffix}</td>
+<td class="org-left">Remove long suffix</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO##prefix}</td>
+<td class="org-left">Remove long prefix</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO/from/to}</td>
+<td class="org-left">Replace first match</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO//from/to}</td>
+<td class="org-left">Replace all</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO/%from/to}</td>
+<td class="org-left">Replace suffix</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO/#from/to}</td>
+<td class="org-left">Replace prefix</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>截取<br /></li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">${FOO:0:3}</td>
+<td class="org-left">Substring(position, length)</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO:-3:3}</td>
+<td class="org-left">Substring from the right</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>其他<br /></li>
+</ul>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">${#FOO}</td>
+<td class="org-left">Length of $FOO</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO:=val}</td>
+<td class="org-left">Set $FOO to val if not set</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO:-val}</td>
+<td class="org-left">val if $FOO is not set</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO:+val}</td>
+<td class="org-left">val if $FOO is set</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO,}</td>
+<td class="org-left">lowercase 1st letter</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO,,}</td>
+<td class="org-left">all lowercase</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO^}</td>
+<td class="org-left">uppercase 1st letter</td>
+</tr>
+
+<tr>
+<td class="org-left">${FOO^^}</td>
+<td class="org-left">all uppercase</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
 
 <div id="outline-container-orgdf65cea" class="outline-2">
 <h2 id="orgdf65cea">代码片段</h2>
@@ -246,7 +405,7 @@ cat <span style="color: #2aa198;">"file"</span> | <span style="color: #859900; f
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-04 Thu 18:01</p>
+<p class="date">Created: 2020-06-05 Fri 16:26</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
