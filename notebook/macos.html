@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2020-06-05 Fri 16:40 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MacOS 操作备忘</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Saul Lawliet" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">MacOS 操作备忘</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org435d015">brew</a></li>
+<li><a href="#orgdd00d34">读取 ext4 分区</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org435d015" class="outline-2">
+<h2 id="org435d015">brew</h2>
+<div class="outline-text-2" id="text-org435d015">
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#26356;&#26032;&#24050;&#23433;&#35013;&#30340; Formulae</span>
+brew leaves |xargs brew upgrade
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdd00d34" class="outline-2">
+<h2 id="orgdd00d34">读取 ext4 分区</h2>
+<div class="outline-text-2" id="text-orgdd00d34">
+<p>
+<a href="https://github.com/gerard/ext4fuse">https://github.com/gerard/ext4fuse</a><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#20934;&#22791;&#29615;&#22659;</span>
+brew cask install osxfuse
+brew install ext4fuse
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#21015;&#20986;&#20998;&#21306;</span>
+diskutil list
+
+<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#23558; /dev/disk1s4 &#20998;&#21306;, &#25346;&#22312;&#21040; linux &#30446;&#24405;</span>
+sudo ext4fuse /dev/disk1s4 linux -o allow_other
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2020-06-05 Fri 16:40</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
