@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 11:02 -->
+<!-- 2020-11-29 Sun 11:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>macOS/Linux 命令备忘</title>
@@ -44,7 +44,6 @@
 <ul>
 <li><a href="#orgafd62ca">brew</a></li>
 <li><a href="#orgc232b9a">Others</a></li>
-<li><a href="#orgea7a9ac">读取 ext4 分区</a></li>
 </ul>
 </li>
 </ul>
@@ -60,9 +59,10 @@
 <h3 id="orgafd62ca">brew</h3>
 <div class="outline-text-3" id="text-orgafd62ca">
 <div class="org-src-container">
-<pre class="src src-sh">   brew list
-   brew outdated
-   brew leaves <span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#21015;&#20986;&#19981;&#34987;&#21035;&#30340; formula &#20381;&#36182;&#30340; formula</span>
+<pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#21015;&#20986;&#19981;&#34987;&#21035;&#30340; formula &#20381;&#36182;&#30340; formula</span>
+brew leaves
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#26356;&#26032; formulas</span>
+brew leaves |xargs brew upgrade
 </pre>
 </div>
 </div>
@@ -75,17 +75,12 @@
 Reset Launchpad Apps Order<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">  defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
+<pre class="src src-sh">defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
 </pre>
 </div></li>
-</ul>
-</div>
-</div>
 
-<div id="outline-container-orgea7a9ac" class="outline-3">
-<h3 id="orgea7a9ac">读取 ext4 分区</h3>
-<div class="outline-text-3" id="text-orgea7a9ac">
-<p>
+<li><p>
+读取 ext4 分区<br />
 <a href="https://github.com/gerard/ext4fuse">https://github.com/gerard/ext4fuse</a><br />
 </p>
 <div class="org-src-container">
@@ -99,14 +94,15 @@ diskutil list
 <span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#23558; /dev/disk1s4 &#20998;&#21306;, &#25346;&#22312;&#21040; linux &#30446;&#24405;</span>
 <span style="color: #ECBE7B;">sudo</span> ext4fuse /dev/disk1s4 linux -o allow_other
 </pre>
-</div>
+</div></li>
+</ul>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 11:02</p>
+<p class="date">Created: 2020-11-29 Sun 11:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
