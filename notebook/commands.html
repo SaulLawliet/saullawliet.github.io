@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 10:58 -->
+<!-- 2020-11-29 Sun 11:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>MacOS 操作备忘</title>
+<title>macOS/Linux 命令备忘</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
@@ -35,31 +35,56 @@
 </head>
 <body>
 <div id="content">
-<h1 class="title">MacOS 操作备忘</h1>
+<h1 class="title">macOS/Linux 命令备忘</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orge08540c">brew</a></li>
-<li><a href="#orgabe5af8">读取 ext4 分区</a></li>
+<li><a href="#org8d11ed1">macOS</a>
+<ul>
+<li><a href="#orgafd62ca">brew</a></li>
+<li><a href="#orgc232b9a">Others</a></li>
+<li><a href="#orgea7a9ac">读取 ext4 分区</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
+<hr />
 
-<div id="outline-container-orge08540c" class="outline-2">
-<h2 id="orge08540c">brew</h2>
-<div class="outline-text-2" id="text-orge08540c">
+<div id="outline-container-org8d11ed1" class="outline-2">
+<h2 id="org8d11ed1">macOS</h2>
+<div class="outline-text-2" id="text-org8d11ed1">
+</div>
+<div id="outline-container-orgafd62ca" class="outline-3">
+<h3 id="orgafd62ca">brew</h3>
+<div class="outline-text-3" id="text-orgafd62ca">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#26356;&#26032;&#24050;&#23433;&#35013;&#30340; Formulae</span>
-brew leaves |xargs brew upgrade
+<pre class="src src-sh">   brew list
+   brew outdated
+   brew leaves <span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#21015;&#20986;&#19981;&#34987;&#21035;&#30340; formula &#20381;&#36182;&#30340; formula</span>
 </pre>
 </div>
 </div>
 </div>
+<div id="outline-container-orgc232b9a" class="outline-3">
+<h3 id="orgc232b9a">Others</h3>
+<div class="outline-text-3" id="text-orgc232b9a">
+<ul class="org-ul">
+<li><p>
+Reset Launchpad Apps Order<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-sh">  defaults write com.apple.dock ResetLaunchPad -bool true; killall Dock
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
 
-<div id="outline-container-orgabe5af8" class="outline-2">
-<h2 id="orgabe5af8">读取 ext4 分区</h2>
-<div class="outline-text-2" id="text-orgabe5af8">
+<div id="outline-container-orgea7a9ac" class="outline-3">
+<h3 id="orgea7a9ac">读取 ext4 分区</h3>
+<div class="outline-text-3" id="text-orgea7a9ac">
 <p>
 <a href="https://github.com/gerard/ext4fuse">https://github.com/gerard/ext4fuse</a><br />
 </p>
@@ -78,9 +103,10 @@ diskutil list
 </div>
 </div>
 </div>
+</div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 10:58</p>
+<p class="date">Created: 2020-11-29 Sun 11:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

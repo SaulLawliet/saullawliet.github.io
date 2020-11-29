@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-03 Wed 21:43 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>GIT 笔记</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,58 +40,59 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4013ef9">获得帮助</a></li>
-<li><a href="#org1251c5f">全局设置</a></li>
-<li><a href="#org2f9b2e9">Git flow</a></li>
-<li><a href="#orgc5d6132">基本操作</a>
+<li><a href="#org9a35474">获得帮助</a></li>
+<li><a href="#orgcba0a71">全局设置</a></li>
+<li><a href="#org7e8c7ea">Git flow</a></li>
+<li><a href="#org95d86f2">基本操作</a>
 <ul>
-<li><a href="#org5290304">Initialize</a>
+<li><a href="#org55601b1">Initialize</a>
 <ul>
-<li><a href="#org68e1296">1. Local Repository -&gt; Workspace</a></li>
-<li><a href="#orgf19451a">2. Remote Repository -&gt; Workspace</a></li>
+<li><a href="#org27a2077">1. Local Repository -&gt; Workspace</a></li>
+<li><a href="#org9a96e9b">2. Remote Repository -&gt; Workspace</a></li>
 </ul>
 </li>
-<li><a href="#org6ffab3c">Update</a>
+<li><a href="#org54c937f">Update</a>
 <ul>
-<li><a href="#orgd32ad06">3. Remote Repository -&gt; Workspace</a></li>
-<li><a href="#orgcf6e9e8">4. Remote Repository -&gt; Local Repository</a></li>
+<li><a href="#orga295a35">3. Remote Repository -&gt; Workspace</a></li>
+<li><a href="#org0337c68">4. Remote Repository -&gt; Local Repository</a></li>
 </ul>
 </li>
-<li><a href="#orgdc7c374">Changes</a>
+<li><a href="#org3b31129">Changes</a>
 <ul>
-<li><a href="#org2345b6d">5. Workspace -&gt; Staging</a></li>
-<li><a href="#orga6ddbc3">6. Staging -&gt; Local Repository</a></li>
-<li><a href="#org7b2ae3f">7. Workspace -&gt; Local Repository</a></li>
-<li><a href="#org1a71528">8. Local Repository -&gt; Remote Repository</a></li>
+<li><a href="#orgf85e9ea">5. Workspace -&gt; Staging</a></li>
+<li><a href="#org104d1f2">6. Staging -&gt; Local Repository</a></li>
+<li><a href="#org40b4e40">7. Workspace -&gt; Local Repository</a></li>
+<li><a href="#orgea046c8">8. Local Repository -&gt; Remote Repository</a></li>
 </ul>
 </li>
-<li><a href="#org88029ce">Revert</a>
+<li><a href="#org66886a8">Revert</a>
 <ul>
-<li><a href="#org0e2c191">9. Local Repository -&gt; Staging</a></li>
-<li><a href="#org1b3bf85">10. Staging -&gt; Workspace</a></li>
-<li><a href="#org7ee45ac">11. Local Repository -&gt; Workspace</a></li>
+<li><a href="#org9d8ac93">9. Local Repository -&gt; Staging</a></li>
+<li><a href="#org571ca04">10. Staging -&gt; Workspace</a></li>
+<li><a href="#orgfa44344">11. Local Repository -&gt; Workspace</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgb797171">其他操作</a>
+<li><a href="#org67ac7a5">其他操作</a>
 <ul>
-<li><a href="#org1ab5c00">Diff</a></li>
-<li><a href="#orga81e74f">Log</a></li>
-<li><a href="#org41f8d46">Branch</a></li>
-<li><a href="#org4c6c5c0">Tag</a></li>
+<li><a href="#orgaa99ee0">Diff</a></li>
+<li><a href="#org8740a72">Log</a></li>
+<li><a href="#orgbd1d532">Branch</a></li>
+<li><a href="#org1ee5af9">Tag</a></li>
+<li><a href="#org0d55901">Export</a></li>
 </ul>
 </li>
-<li><a href="#orgea559cf">参考</a></li>
+<li><a href="#orgfb7f784">参考</a></li>
 </ul>
 </div>
 </div>
 <hr />
 
-<div id="outline-container-org4013ef9" class="outline-2">
-<h2 id="org4013ef9">获得帮助</h2>
-<div class="outline-text-2" id="text-org4013ef9">
-<pre class="example">
+<div id="outline-container-org9a35474" class="outline-2">
+<h2 id="org9a35474">获得帮助</h2>
+<div class="outline-text-2" id="text-org9a35474">
+<pre class="example" id="org273f352">
 $ git help
 
 # 获取指定命令的帮助
@@ -124,10 +101,10 @@ $ git help &lt;command&gt;
 </div>
 </div>
 
-<div id="outline-container-org1251c5f" class="outline-2">
-<h2 id="org1251c5f">全局设置</h2>
-<div class="outline-text-2" id="text-org1251c5f">
-<pre class="example">
+<div id="outline-container-orgcba0a71" class="outline-2">
+<h2 id="orgcba0a71">全局设置</h2>
+<div class="outline-text-2" id="text-orgcba0a71">
+<pre class="example" id="orgb50e8cc">
 $ git config --global user.name "saul"
 $ git config --global user.email "saul@example.com"
 $ git config --global color.ui true
@@ -138,9 +115,9 @@ git config --global alias.yolo '!git commit -m "$(curl -s whatthecommit.com/inde
 </div>
 </div>
 
-<div id="outline-container-org2f9b2e9" class="outline-2">
-<h2 id="org2f9b2e9">Git flow</h2>
-<div class="outline-text-2" id="text-org2f9b2e9">
+<div id="outline-container-org7e8c7ea" class="outline-2">
+<h2 id="org7e8c7ea">Git flow</h2>
+<div class="outline-text-2" id="text-org7e8c7ea">
 <p>
 <a href="https://github.com/petervanderdoes/gitflow-avh">https://github.com/petervanderdoes/gitflow-avh</a><br />
 </p>
@@ -160,112 +137,112 @@ The overall flow of Gitflow is<br />
 </div>
 </div>
 
-<div id="outline-container-orgc5d6132" class="outline-2">
-<h2 id="orgc5d6132">基本操作</h2>
-<div class="outline-text-2" id="text-orgc5d6132">
+<div id="outline-container-org95d86f2" class="outline-2">
+<h2 id="org95d86f2">基本操作</h2>
+<div class="outline-text-2" id="text-org95d86f2">
 <p>
 workflow:<br />
 </p>
-<pre class="example">
-	    +-----------+   +-----------+   +------------+   +------------+
-	    |           |   |           |   |   Local    |   |   Remote   |
-	    | Workspace |   |  Staging  |   | Repository |   | Repository |
-	    +-----------+   +-----------+   +------------+   +------------+
-		  |               |               |                 |
-Initialize        |&lt;--(1)-------------------------|                 |
-		  |&lt;--(2)-------------------------------------------|
-		  |               |               |                 |
-		  |               |               |                 |
-    Update        |&lt;--(3)-------------------------------------------|
-		  |               |               |&lt;--(4)-----------|
-		  |               |               |                 |
-		  |               |               |                 |
-   Changes        |---------(5)--&gt;|               |                 |
-		  |               |---------(6)--&gt;|                 |
-		  |-------------------------(7)--&gt;|                 |
-		  |               |               |-----------(8)--&gt;|
-		  |               |               |                 |
-		  |               |               |                 |
-    Revert        |               |&lt;--(9)---------|                 |
-		  |&lt;--(10)--------|               |                 |
-		  |&lt;--(11)------------------------|                 |
-		  |               |               |                 |
+<pre class="example" id="org1498e09">
+	     +-----------+   +-----------+   +------------+   +------------+
+	     |           |   |           |   |   Local    |   |   Remote   |
+	     | Workspace |   |  Staging  |   | Repository |   | Repository |
+	     +-----------+   +-----------+   +------------+   +------------+
+		   |               |               |                 |
+ Initialize        |&lt;--(1)-------------------------|                 |
+		   |&lt;--(2)-------------------------------------------|
+		   |               |               |                 |
+		   |               |               |                 |
+     Update        |&lt;--(3)-------------------------------------------|
+		   |               |               |&lt;--(4)-----------|
+		   |               |               |                 |
+		   |               |               |                 |
+    Changes        |---------(5)--&gt;|               |                 |
+		   |               |---------(6)--&gt;|                 |
+		   |-------------------------(7)--&gt;|                 |
+		   |               |               |-----------(8)--&gt;|
+		   |               |               |                 |
+		   |               |               |                 |
+     Revert        |               |&lt;--(9)---------|                 |
+		   |&lt;--(10)--------|               |                 |
+		   |&lt;--(11)------------------------|                 |
+		   |               |               |                 |
 </pre>
 </div>
 
-<div id="outline-container-org5290304" class="outline-3">
-<h3 id="org5290304">Initialize</h3>
-<div class="outline-text-3" id="text-org5290304">
+<div id="outline-container-org55601b1" class="outline-3">
+<h3 id="org55601b1">Initialize</h3>
+<div class="outline-text-3" id="text-org55601b1">
 </div>
-<div id="outline-container-org68e1296" class="outline-4">
-<h4 id="org68e1296">1. Local Repository -&gt; Workspace</h4>
-<div class="outline-text-4" id="text-org68e1296">
-<pre class="example">
+<div id="outline-container-org27a2077" class="outline-4">
+<h4 id="org27a2077">1. Local Repository -&gt; Workspace</h4>
+<div class="outline-text-4" id="text-org27a2077">
+<pre class="example" id="org3107b70">
 # 不指定 &lt;directory&gt; 时指当前目录
 $ git init [&lt;directory&gt;]
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf19451a" class="outline-4">
-<h4 id="orgf19451a">2. Remote Repository -&gt; Workspace</h4>
-<div class="outline-text-4" id="text-orgf19451a">
-<pre class="example">
+<div id="outline-container-org9a96e9b" class="outline-4">
+<h4 id="org9a96e9b">2. Remote Repository -&gt; Workspace</h4>
+<div class="outline-text-4" id="text-org9a96e9b">
+<pre class="example" id="org3a065f6">
 $ git clone &lt;url of remote repository&gt; [&lt;directory&gt;]
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6ffab3c" class="outline-3">
-<h3 id="org6ffab3c">Update</h3>
-<div class="outline-text-3" id="text-org6ffab3c">
+<div id="outline-container-org54c937f" class="outline-3">
+<h3 id="org54c937f">Update</h3>
+<div class="outline-text-3" id="text-org54c937f">
 </div>
-<div id="outline-container-orgd32ad06" class="outline-4">
-<h4 id="orgd32ad06">3. Remote Repository -&gt; Workspace</h4>
-<div class="outline-text-4" id="text-orgd32ad06">
-<pre class="example">
+<div id="outline-container-orga295a35" class="outline-4">
+<h4 id="orga295a35">3. Remote Repository -&gt; Workspace</h4>
+<div class="outline-text-4" id="text-orga295a35">
+<pre class="example" id="orgf51ae86">
 $ git pull
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgcf6e9e8" class="outline-4">
-<h4 id="orgcf6e9e8">4. Remote Repository -&gt; Local Repository</h4>
-<div class="outline-text-4" id="text-orgcf6e9e8">
-<pre class="example">
+<div id="outline-container-org0337c68" class="outline-4">
+<h4 id="org0337c68">4. Remote Repository -&gt; Local Repository</h4>
+<div class="outline-text-4" id="text-org0337c68">
+<pre class="example" id="org98d5031">
 $ git fetch
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgdc7c374" class="outline-3">
-<h3 id="orgdc7c374">Changes</h3>
-<div class="outline-text-3" id="text-orgdc7c374">
+<div id="outline-container-org3b31129" class="outline-3">
+<h3 id="org3b31129">Changes</h3>
+<div class="outline-text-3" id="text-org3b31129">
 </div>
-<div id="outline-container-org2345b6d" class="outline-4">
-<h4 id="org2345b6d">5. Workspace -&gt; Staging</h4>
-<div class="outline-text-4" id="text-org2345b6d">
-<pre class="example">
+<div id="outline-container-orgf85e9ea" class="outline-4">
+<h4 id="orgf85e9ea">5. Workspace -&gt; Staging</h4>
+<div class="outline-text-4" id="text-orgf85e9ea">
+<pre class="example" id="org515a3ef">
 $ git add &lt;./dir/file&gt;...
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orga6ddbc3" class="outline-4">
-<h4 id="orga6ddbc3">6. Staging -&gt; Local Repository</h4>
-<div class="outline-text-4" id="text-orga6ddbc3">
-<pre class="example">
+<div id="outline-container-org104d1f2" class="outline-4">
+<h4 id="org104d1f2">6. Staging -&gt; Local Repository</h4>
+<div class="outline-text-4" id="text-org104d1f2">
+<pre class="example" id="org4388f9f">
 $ git commit -m &lt;message&gt;
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org7b2ae3f" class="outline-4">
-<h4 id="org7b2ae3f">7. Workspace -&gt; Local Repository</h4>
-<div class="outline-text-4" id="text-org7b2ae3f">
-<pre class="example">
+<div id="outline-container-org40b4e40" class="outline-4">
+<h4 id="org40b4e40">7. Workspace -&gt; Local Repository</h4>
+<div class="outline-text-4" id="text-org40b4e40">
+<pre class="example" id="org21342cf">
 # 不会提交 untracked 文件
 $ git commit -a -m &lt;message&gt;
 
@@ -275,34 +252,34 @@ $ git commit --amend -m &lt;message&gt;
 </div>
 </div>
 
-<div id="outline-container-org1a71528" class="outline-4">
-<h4 id="org1a71528">8. Local Repository -&gt; Remote Repository</h4>
-<div class="outline-text-4" id="text-org1a71528">
-<pre class="example">
+<div id="outline-container-orgea046c8" class="outline-4">
+<h4 id="orgea046c8">8. Local Repository -&gt; Remote Repository</h4>
+<div class="outline-text-4" id="text-orgea046c8">
+<pre class="example" id="org8804f69">
 $ git push [-u &lt;name&gt; &lt;branch&gt;]
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org88029ce" class="outline-3">
-<h3 id="org88029ce">Revert</h3>
-<div class="outline-text-3" id="text-org88029ce">
+<div id="outline-container-org66886a8" class="outline-3">
+<h3 id="org66886a8">Revert</h3>
+<div class="outline-text-3" id="text-org66886a8">
 </div>
-<div id="outline-container-org0e2c191" class="outline-4">
-<h4 id="org0e2c191">9. Local Repository -&gt; Staging</h4>
-<div class="outline-text-4" id="text-org0e2c191">
-<pre class="example">
+<div id="outline-container-org9d8ac93" class="outline-4">
+<h4 id="org9d8ac93">9. Local Repository -&gt; Staging</h4>
+<div class="outline-text-4" id="text-org9d8ac93">
+<pre class="example" id="orgbde8ddb">
 # 撤销上次提交, 将所有的改动放到 Staging
 $ git reset --soft HEAD^
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org1b3bf85" class="outline-4">
-<h4 id="org1b3bf85">10. Staging -&gt; Workspace</h4>
-<div class="outline-text-4" id="text-org1b3bf85">
-<pre class="example">
+<div id="outline-container-org571ca04" class="outline-4">
+<h4 id="org571ca04">10. Staging -&gt; Workspace</h4>
+<div class="outline-text-4" id="text-org571ca04">
+<pre class="example" id="orge9d327c">
 # 将文件状态从 Staging 移出, 不指定 &lt;file&gt; 时表示所有在 Staging 的文件
 $ git reset HEAD [&lt;file&gt;...]
 
@@ -312,10 +289,10 @@ $ git checkout -- &lt;file&gt;...
 </div>
 </div>
 
-<div id="outline-container-org7ee45ac" class="outline-4">
-<h4 id="org7ee45ac">11. Local Repository -&gt; Workspace</h4>
-<div class="outline-text-4" id="text-org7ee45ac">
-<pre class="example">
+<div id="outline-container-orgfa44344" class="outline-4">
+<h4 id="orgfa44344">11. Local Repository -&gt; Workspace</h4>
+<div class="outline-text-4" id="text-orgfa44344">
+<pre class="example" id="orgb47b481">
 # 撤销上次的提交以及所有的改动(慎用)
 $ git reset --hard HEAD^
 </pre>
@@ -324,14 +301,14 @@ $ git reset --hard HEAD^
 </div>
 </div>
 
-<div id="outline-container-orgb797171" class="outline-2">
-<h2 id="orgb797171">其他操作</h2>
-<div class="outline-text-2" id="text-orgb797171">
+<div id="outline-container-org67ac7a5" class="outline-2">
+<h2 id="org67ac7a5">其他操作</h2>
+<div class="outline-text-2" id="text-org67ac7a5">
 </div>
-<div id="outline-container-org1ab5c00" class="outline-3">
-<h3 id="org1ab5c00">Diff</h3>
-<div class="outline-text-3" id="text-org1ab5c00">
-<pre class="example">
+<div id="outline-container-orgaa99ee0" class="outline-3">
+<h3 id="orgaa99ee0">Diff</h3>
+<div class="outline-text-3" id="text-orgaa99ee0">
+<pre class="example" id="org11a6503">
 # unstaged 与 last commit 比较
 $ git diff [&lt;file&gt;]
 
@@ -350,10 +327,10 @@ $ git diff --since=1.week.ago --until=1.minute.ago
 </div>
 </div>
 
-<div id="outline-container-orga81e74f" class="outline-3">
-<h3 id="orga81e74f">Log</h3>
-<div class="outline-text-3" id="text-orga81e74f">
-<pre class="example">
+<div id="outline-container-org8740a72" class="outline-3">
+<h3 id="org8740a72">Log</h3>
+<div class="outline-text-3" id="text-org8740a72">
+<pre class="example" id="orgc8b2d10">
 $ git log
 $ git log --pretty=oneline
 $ git log --oneline
@@ -369,10 +346,10 @@ $ git log --since=2000-01-01 --until=2012-12-21
 </div>
 </div>
 
-<div id="outline-container-org41f8d46" class="outline-3">
-<h3 id="org41f8d46">Branch</h3>
-<div class="outline-text-3" id="text-org41f8d46">
-<pre class="example">
+<div id="outline-container-orgbd1d532" class="outline-3">
+<h3 id="orgbd1d532">Branch</h3>
+<div class="outline-text-3" id="text-orgbd1d532">
+<pre class="example" id="org35af3d6">
 $ git branch               # 列出分支
 $ git branch -r            # 列出远程分支
 $ git branch &lt;branch&gt;      # 创建分支
@@ -386,10 +363,10 @@ $ git checkout -b &lt;branch&gt; # 创建并切换分支
 </div>
 </div>
 
-<div id="outline-container-org4c6c5c0" class="outline-3">
-<h3 id="org4c6c5c0">Tag</h3>
-<div class="outline-text-3" id="text-org4c6c5c0">
-<pre class="example">
+<div id="outline-container-org1ee5af9" class="outline-3">
+<h3 id="org1ee5af9">Tag</h3>
+<div class="outline-text-3" id="text-org1ee5af9">
+<pre class="example" id="orge57b686">
 $ git tag                   # 列出标签
 $ git checkout &lt;tag&gt;        # 切换标签
 $ git tag -a &lt;tag&gt; -m &lt;msg&gt; # 新建标签
@@ -397,10 +374,21 @@ $ git push --tags           # push
 </pre>
 </div>
 </div>
+
+<div id="outline-container-org0d55901" class="outline-3">
+<h3 id="org0d55901">Export</h3>
+<div class="outline-text-3" id="text-org0d55901">
+<pre class="example" id="orged81454">
+$ git archive master | gzip &gt; latest.tgz
+$ git archive master | bzip2 &gt; latest.tar.bz2
+</pre>
 </div>
-<div id="outline-container-orgea559cf" class="outline-2">
-<h2 id="orgea559cf">参考</h2>
-<div class="outline-text-2" id="text-orgea559cf">
+</div>
+</div>
+
+<div id="outline-container-orgfb7f784" class="outline-2">
+<h2 id="orgfb7f784">参考</h2>
+<div class="outline-text-2" id="text-orgfb7f784">
 <ol class="org-ol">
 <li><a href="https://www.codeschool.com/courses/git-real">Code School - Git Real</a><br /></li>
 <li><a href="https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git">https://sselab.de/lab2/public/wiki/sselab/index.php?title=Git</a><br /></li>
@@ -410,7 +398,7 @@ $ git push --tags           # push
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-03 Wed 21:43</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

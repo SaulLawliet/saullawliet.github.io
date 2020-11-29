@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-01 Wed 20:30 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ReentrantLock 源码分析</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,21 +40,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org8c32de9">使用方式</a></li>
-<li><a href="#orgd964eec">ReentrantLock 定义</a></li>
-<li><a href="#orgc40a5a7">NonfairSync</a>
+<li><a href="#orgf857744">使用方式</a></li>
+<li><a href="#orge6ca592">ReentrantLock 定义</a></li>
+<li><a href="#org138af88">NonfairSync</a>
 <ul>
-<li><a href="#orge1e7823">lock() 方法</a></li>
-<li><a href="#org8832a00">unlock() 方法</a></li>
+<li><a href="#org3e3c639">lock() 方法</a></li>
+<li><a href="#orgbd3552d">unlock() 方法</a></li>
 </ul>
 </li>
-<li><a href="#org76e2d71">FairSync</a>
+<li><a href="#org5b58703">FairSync</a>
 <ul>
-<li><a href="#orgfefa273">lock() 方法</a></li>
-<li><a href="#orge7dddd4">unlock() 方法</a></li>
+<li><a href="#org3a36067">lock() 方法</a></li>
+<li><a href="#org1616aec">unlock() 方法</a></li>
 </ul>
 </li>
-<li><a href="#orgeae4291">小结</a></li>
+<li><a href="#org4dcd13a">小结</a></li>
 </ul>
 </div>
 </div>
@@ -86,18 +62,18 @@ for the JavaScript code in this tag.
 环境: <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d">jdk8</a><br />
 </p>
 
-<div id="outline-container-org8c32de9" class="outline-2">
-<h2 id="org8c32de9">使用方式</h2>
-<div class="outline-text-2" id="text-org8c32de9">
+<div id="outline-container-orgf857744" class="outline-2">
+<h2 id="orgf857744">使用方式</h2>
+<div class="outline-text-2" id="text-orgf857744">
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">X</span> {
-  <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">ReentrantLock</span> <span style="color: #268bd2;">lock</span> = <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">ReentrantLock</span>();
-  <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">...</span>
-  <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">m</span>() {
-    lock.lock();  <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">block until condition holds</span>
-    <span style="color: #859900; font-weight: bold;">try</span> {
-      <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">... method body</span>
-    } <span style="color: #859900; font-weight: bold;">finally</span> {
+<pre class="src src-java"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">X</span> {
+  <span style="color: #51afef;">private</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">ReentrantLock</span> <span style="color: #dcaeea;">lock</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">ReentrantLock</span>();
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">...</span>
+  <span style="color: #51afef;">public</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">m</span>() {
+    lock.lock();  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">block until condition holds</span>
+    <span style="color: #51afef;">try</span> {
+      <span style="color: #5B6268;">// </span><span style="color: #5B6268;">... method body</span>
+    } <span style="color: #51afef;">finally</span> {
       lock.unlock()
     }
   }
@@ -107,27 +83,27 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd964eec" class="outline-2">
-<h2 id="orgd964eec">ReentrantLock 定义</h2>
-<div class="outline-text-2" id="text-orgd964eec">
+<div id="outline-container-orge6ca592" class="outline-2">
+<h2 id="orge6ca592">ReentrantLock 定义</h2>
+<div class="outline-text-2" id="text-orge6ca592">
 <p>
 顾名思义, ReentrantLock 为重入锁, 意味着一个线程可以多次获得锁而不会阻塞, 类的基本定义如下.<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">ReentrantLock</span> <span style="color: #859900; font-weight: bold;">implements</span> <span style="color: #b58900;">Lock</span>, <span style="color: #268bd2; font-weight: bold;">java</span>.<span style="color: #268bd2; font-weight: bold;">io</span>.<span style="color: #b58900;">Serializable</span> {
-    <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Sync</span> <span style="color: #268bd2;">sync</span>;
-    <span style="color: #859900; font-weight: bold;">abstract</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">Sync</span> <span style="color: #859900; font-weight: bold;">extends</span> <span style="color: #b58900;">AbstractQueuedSynchronizer</span> {...}
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#38750;&#20844;&#24179;&#23454;&#29616; */</span>
-    <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">NonfairSync</span> <span style="color: #859900; font-weight: bold;">extends</span> <span style="color: #b58900;">Sync</span> {...}
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20844;&#24179;&#23454;&#29616; */</span>
-    <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">FairSync</span> <span style="color: #859900; font-weight: bold;">extends</span> <span style="color: #b58900;">Sync</span> {...}
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">ReentrantLock</span> <span style="color: #51afef;">implements</span> <span style="color: #ECBE7B;">Lock</span>, <span style="color: #a9a1e1;">java</span>.<span style="color: #a9a1e1;">io</span>.<span style="color: #ECBE7B;">Serializable</span> {
+    <span style="color: #51afef;">private</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Sync</span> <span style="color: #dcaeea;">sync</span>;
+    <span style="color: #51afef;">abstract</span> <span style="color: #51afef;">static</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Sync</span> <span style="color: #51afef;">extends</span> <span style="color: #ECBE7B;">AbstractQueuedSynchronizer</span> {...}
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#38750;&#20844;&#24179;&#23454;&#29616;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">static</span> <span style="color: #51afef;">final</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">NonfairSync</span> <span style="color: #51afef;">extends</span> <span style="color: #ECBE7B;">Sync</span> {...}
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#20844;&#24179;&#23454;&#29616;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">static</span> <span style="color: #51afef;">final</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">FairSync</span> <span style="color: #51afef;">extends</span> <span style="color: #ECBE7B;">Sync</span> {...}
 
-    <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #268bd2;">ReentrantLock</span>() {
-        sync = <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">NonfairSync</span>(); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#40664;&#35748;&#26159;&#38750;&#20844;&#24179;&#30340; */</span>
+    <span style="color: #51afef;">public</span> <span style="color: #c678dd;">ReentrantLock</span>() {
+        sync = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">NonfairSync</span>(); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#40664;&#35748;&#26159;&#38750;&#20844;&#24179;&#30340;</span><span style="color: #5B6268;"> */</span>
     }
-    <span style="color: #859900; font-weight: bold;">public</span> <span style="color: #268bd2;">ReentrantLock</span>(<span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">fair</span>) {
-        sync = fair ? <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">FairSync</span>() : <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">NonfairSync</span>();
+    <span style="color: #51afef;">public</span> <span style="color: #c678dd;">ReentrantLock</span>(<span style="color: #ECBE7B;">boolean</span> <span style="color: #dcaeea;">fair</span>) {
+        sync = fair ? <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">FairSync</span>() : <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">NonfairSync</span>();
     }
 }
 </pre>
@@ -135,35 +111,35 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgc40a5a7" class="outline-2">
-<h2 id="orgc40a5a7">NonfairSync</h2>
-<div class="outline-text-2" id="text-orgc40a5a7">
+<div id="outline-container-org138af88" class="outline-2">
+<h2 id="org138af88">NonfairSync</h2>
+<div class="outline-text-2" id="text-org138af88">
 </div>
-<div id="outline-container-orge1e7823" class="outline-3">
-<h3 id="orge1e7823">lock() 方法</h3>
-<div class="outline-text-3" id="text-orge1e7823">
+<div id="outline-container-org3e3c639" class="outline-3">
+<h3 id="org3e3c639">lock() 方法</h3>
+<div class="outline-text-3" id="text-org3e3c639">
 <p>
 注意 Sync 继承于 AbstractQueuedSynchronizer, AQS 是许多并发类的核心.<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">lock</span>() {
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">lock</span>() {
     sync.lock();
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java NonfairSync</span>
-<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">lock</span>() {
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#22312;&#27492;&#27169;&#24335;&#19979; state=0 &#34920;&#31034;&#24403;&#21069;&#27809;&#26377;&#32447;&#31243;&#21344;&#29992;&#38145;, state&gt;0 &#34920;&#31034;&#24403;&#21069;&#32447;&#31243;&#33719;&#21462;&#20102;&#20960;&#27425;&#38145; */</span>
-    <span style="color: #859900; font-weight: bold;">if</span> (compareAndSetState(0, 1))
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java NonfairSync</span>
+<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">lock</span>() {
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#22312;&#27492;&#27169;&#24335;&#19979; state=0 &#34920;&#31034;&#24403;&#21069;&#27809;&#26377;&#32447;&#31243;&#21344;&#29992;&#38145;, state&gt;0 &#34920;&#31034;&#24403;&#21069;&#32447;&#31243;&#33719;&#21462;&#20102;&#20960;&#27425;&#38145;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">if</span> (compareAndSetState(<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>))
         setExclusiveOwnerThread(Thread.currentThread());
-    <span style="color: #859900; font-weight: bold;">else</span>
-        acquire(1);
+    <span style="color: #51afef;">else</span>
+        acquire(<span style="color: #da8548; font-weight: bold;">1</span>);
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">acquire</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">arg</span>) {
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#22312;&#29420;&#21344;&#27169;&#24335;&#20013;, &#33719;&#21462;&#38145;, &#22914;&#26524;&#22833;&#36133;, &#21017;&#25226;&#24403;&#21069;&#32447;&#31243;&#21152;&#20837;&#38431;&#21015;, &#38459;&#22622;&#21040;&#25104;&#21151;&#20026;&#27490; */</span>
-    <span style="color: #859900; font-weight: bold;">if</span> (<span style="color: #b58900; font-weight: bold;">!</span>tryAcquire(arg) &amp;&amp; acquireQueued(addWaiter(<span style="color: #268bd2; font-weight: bold;">Node</span>.EXCLUSIVE), arg))
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">acquire</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">arg</span>) {
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#22312;&#29420;&#21344;&#27169;&#24335;&#20013;, &#33719;&#21462;&#38145;, &#22914;&#26524;&#22833;&#36133;, &#21017;&#25226;&#24403;&#21069;&#32447;&#31243;&#21152;&#20837;&#38431;&#21015;, &#38459;&#22622;&#21040;&#25104;&#21151;&#20026;&#27490;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">if</span> (<span style="color: #51afef; font-weight: bold;">!</span>tryAcquire(arg) &amp;&amp; acquireQueued(addWaiter(<span style="color: #a9a1e1;">Node</span>.EXCLUSIVE), arg))
         selfInterrupt();
 }
 
@@ -174,36 +150,36 @@ for the JavaScript code in this tag.
 tryAcquire(arg), 尝试获取一次锁<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">tryAcquire</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">arg</span>) {
-    <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">UnsupportedOperationException</span>();
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">protected</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">tryAcquire</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">arg</span>) {
+    <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">UnsupportedOperationException</span>();
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java NonfairSync</span>
-<span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">tryAcquire</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">acquires</span>) {
-    <span style="color: #859900; font-weight: bold;">return</span> nonfairTryAcquire(acquires);
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java NonfairSync</span>
+<span style="color: #51afef;">protected</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">tryAcquire</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">acquires</span>) {
+    <span style="color: #51afef;">return</span> nonfairTryAcquire(acquires);
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java Sync</span>
-<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">nonfairTryAcquire</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">acquires</span>) {
-    <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Thread</span> <span style="color: #268bd2;">current</span> = Thread.currentThread();
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20877;&#27425;&#25343;&#21040; state, &#21028;&#26029;&#26159;&#21542;&#20026;0, &#21487;&#33021;&#22312;&#25191;&#34892;&#20195;&#30721;&#30340;&#36807;&#31243;&#20013;&#21407;&#26469;&#21344;&#29992;&#38145;&#30340;&#32447;&#31243;&#37322;&#25918;&#20102;&#38145; */</span>
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">c</span> = getState();
-    <span style="color: #859900; font-weight: bold;">if</span> (c == 0) {
-        <span style="color: #859900; font-weight: bold;">if</span> (compareAndSetState(0, acquires)) {
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java Sync</span>
+<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">nonfairTryAcquire</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">acquires</span>) {
+    <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Thread</span> <span style="color: #dcaeea;">current</span> = Thread.currentThread();
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#20877;&#27425;&#25343;&#21040; state, &#21028;&#26029;&#26159;&#21542;&#20026;0, &#21487;&#33021;&#22312;&#25191;&#34892;&#20195;&#30721;&#30340;&#36807;&#31243;&#20013;&#21407;&#26469;&#21344;&#29992;&#38145;&#30340;&#32447;&#31243;&#37322;&#25918;&#20102;&#38145;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">c</span> = getState();
+    <span style="color: #51afef;">if</span> (c == <span style="color: #da8548; font-weight: bold;">0</span>) {
+        <span style="color: #51afef;">if</span> (compareAndSetState(<span style="color: #da8548; font-weight: bold;">0</span>, acquires)) {
             setExclusiveOwnerThread(current);
-            <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
+            <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
         }
     }
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#22914;&#26524;&#24403;&#21069;&#32447;&#31243;&#26159;&#25345;&#26377;&#38145;&#30340;&#32447;&#31243; state+1 */</span>
-    <span style="color: #859900; font-weight: bold;">else</span> <span style="color: #859900; font-weight: bold;">if</span> (current == getExclusiveOwnerThread()) {
-        <span style="color: #b58900;">int</span> <span style="color: #268bd2;">nextc</span> = c + acquires;
-        <span style="color: #859900; font-weight: bold;">if</span> (nextc &lt; 0) <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">overflow</span>
-            <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Error</span>(<span style="color: #2aa198;">"Maximum lock count exceeded"</span>);
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#22914;&#26524;&#24403;&#21069;&#32447;&#31243;&#26159;&#25345;&#26377;&#38145;&#30340;&#32447;&#31243; state+1</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">else</span> <span style="color: #51afef;">if</span> (current == getExclusiveOwnerThread()) {
+        <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">nextc</span> = c + acquires;
+        <span style="color: #51afef;">if</span> (nextc &lt; <span style="color: #da8548; font-weight: bold;">0</span>) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">overflow</span>
+            <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Error</span>(<span style="color: #98be65;">"Maximum lock count exceeded"</span>);
         setState(nextc);
-        <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
+        <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
     }
-    <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">false</span>;
+    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>;
 }
 </pre>
 </div>
@@ -211,7 +187,7 @@ tryAcquire(arg), 尝试获取一次锁<br />
 <p>
 在继续往下之前, 先看一下源码文档中的队列图示<br />
 </p>
-<pre class="example">
+<pre class="example" id="orgf1bd6be">
      +------+  prev +-----+       +-----+
 head |      | &lt;---- |     | &lt;---- |     |  tail
      +------+       +-----+       +-----+
@@ -228,35 +204,35 @@ addWaiter(Node.EXCLUSIVE)<br />
 <li>Node.SHARED    共享模式<br /></li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">addWaiter</span>(<span style="color: #b58900;">Node</span> <span style="color: #268bd2;">mode</span>) {
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span> = <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Node</span>(Thread.currentThread(), mode);
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#29702;&#35770;&#19978;&#21435;&#25481;&#19979;&#38754;&#30340;&#36825;&#27573;&#20195;&#30721;, &#23545;&#32467;&#26524;&#30340;&#27491;&#30830;&#24615;&#19981;&#20250;&#20135;&#29983;&#24433;&#21709; */</span>
-    <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Try the fast path of enq; backup to full enq on failure</span>
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">pred</span> = tail;
-    <span style="color: #859900; font-weight: bold;">if</span> (pred != <span style="color: #268bd2; font-weight: bold;">null</span>) { <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#27492;&#26102;&#38431;&#21015;&#24050;&#32463;&#26377;&#20854;&#20182;&#32447;&#31243;&#22312;&#25490;&#38431;, &#30452;&#25509;&#25554;&#20837;&#38431;&#23614; */</span>
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">private</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #c678dd;">addWaiter</span>(<span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">mode</span>) {
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span>(Thread.currentThread(), mode);
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#29702;&#35770;&#19978;&#21435;&#25481;&#19979;&#38754;&#30340;&#36825;&#27573;&#20195;&#30721;, &#23545;&#32467;&#26524;&#30340;&#27491;&#30830;&#24615;&#19981;&#20250;&#20135;&#29983;&#24433;&#21709;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Try the fast path of enq; backup to full enq on failure</span>
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">pred</span> = tail;
+    <span style="color: #51afef;">if</span> (pred != <span style="color: #a9a1e1;">null</span>) { <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#27492;&#26102;&#38431;&#21015;&#24050;&#32463;&#26377;&#20854;&#20182;&#32447;&#31243;&#22312;&#25490;&#38431;, &#30452;&#25509;&#25554;&#20837;&#38431;&#23614;</span><span style="color: #5B6268;"> */</span>
         node.prev = pred;
-        <span style="color: #859900; font-weight: bold;">if</span> (compareAndSetTail(pred, node)) { <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21407;&#23376;&#25805;&#20316; */</span>
+        <span style="color: #51afef;">if</span> (compareAndSetTail(pred, node)) { <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#21407;&#23376;&#25805;&#20316;</span><span style="color: #5B6268;"> */</span>
             pred.next = node;
-            <span style="color: #859900; font-weight: bold;">return</span> node;
+            <span style="color: #51afef;">return</span> node;
         }
     }
     enq(node);
-    <span style="color: #859900; font-weight: bold;">return</span> node;
+    <span style="color: #51afef;">return</span> node;
 }
 
-<span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23558; node &#25918;&#20837;&#38431;&#21015; */</span>
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">enq</span>(<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span>) {
-    <span style="color: #859900; font-weight: bold;">for</span> (;;) { <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#19981;&#26029;&#23581;&#35797;, &#30452;&#21040;&#25104;&#21151;&#20026;&#27490; */</span>
-        <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">t</span> = tail;
-        <span style="color: #859900; font-weight: bold;">if</span> (t == <span style="color: #268bd2; font-weight: bold;">null</span>) { <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Must initialize</span>
-            <span style="color: #859900; font-weight: bold;">if</span> (compareAndSetHead(<span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Node</span>())) <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21021;&#22987;&#21270; head, &#19968;&#20010;'&#38646;&#20540;'&#30340; node */</span>
+<span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23558; node &#25918;&#20837;&#38431;&#21015;</span><span style="color: #5B6268;"> */</span>
+<span style="color: #51afef;">private</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #c678dd;">enq</span>(<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">node</span>) {
+    <span style="color: #51afef;">for</span> (;;) { <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#19981;&#26029;&#23581;&#35797;, &#30452;&#21040;&#25104;&#21151;&#20026;&#27490;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">t</span> = tail;
+        <span style="color: #51afef;">if</span> (t == <span style="color: #a9a1e1;">null</span>) { <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Must initialize</span>
+            <span style="color: #51afef;">if</span> (compareAndSetHead(<span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span>())) <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#21021;&#22987;&#21270; head, &#19968;&#20010;'&#38646;&#20540;'&#30340; node</span><span style="color: #5B6268;"> */</span>
                 tail = head;
-        } <span style="color: #859900; font-weight: bold;">else</span> {
+        } <span style="color: #51afef;">else</span> {
             node.prev = t;
-            <span style="color: #859900; font-weight: bold;">if</span> (compareAndSetTail(t, node)) {
+            <span style="color: #51afef;">if</span> (compareAndSetTail(t, node)) {
                 t.next = node;
-                <span style="color: #859900; font-weight: bold;">return</span> t; <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#25104;&#21151;&#25918;&#20837;&#38431;&#23614;, &#32467;&#26463;&#24490;&#29615; */</span>
+                <span style="color: #51afef;">return</span> t; <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#25104;&#21151;&#25918;&#20837;&#38431;&#23614;, &#32467;&#26463;&#24490;&#29615;</span><span style="color: #5B6268;"> */</span>
             }
         }
     }
@@ -270,115 +246,115 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
 </p>
 
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">acquireQueued</span>(<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span>, <span style="color: #b58900;">int</span> <span style="color: #268bd2;">arg</span>) {
-    <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">failed</span> = <span style="color: #268bd2; font-weight: bold;">true</span>;
-    <span style="color: #859900; font-weight: bold;">try</span> {
-        <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">interrupted</span> = <span style="color: #268bd2; font-weight: bold;">false</span>;
-        <span style="color: #859900; font-weight: bold;">for</span> (;;) {
-            <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">p</span> = node.predecessor();
-            <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20165;&#24403;&#19978;&#20010;&#33410;&#28857;&#26159;&#22836;&#33410;&#28857;&#24182;&#19988;&#25343;&#21040;&#20102;&#38145;, &#21017;&#36820;&#22238; */</span>
-            <span style="color: #859900; font-weight: bold;">if</span> (p == head &amp;&amp; tryAcquire(arg)) {
-                setHead(node); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#25226;&#24403;&#21069;node&#35774;&#32622;&#25104;&#22836;&#33410;&#28857;, &#24182;&#28165;&#31354;&#25968;&#25454;, &#20351;&#20043;&#25104;&#20026;'&#38646;&#20540;' */</span>
-                p.next = <span style="color: #268bd2; font-weight: bold;">null</span>; <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">help GC</span>
-                failed = <span style="color: #268bd2; font-weight: bold;">false</span>;
-                <span style="color: #859900; font-weight: bold;">return</span> interrupted;
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">acquireQueued</span>(<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">node</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">arg</span>) {
+    <span style="color: #ECBE7B;">boolean</span> <span style="color: #dcaeea;">failed</span> = <span style="color: #a9a1e1;">true</span>;
+    <span style="color: #51afef;">try</span> {
+        <span style="color: #ECBE7B;">boolean</span> <span style="color: #dcaeea;">interrupted</span> = <span style="color: #a9a1e1;">false</span>;
+        <span style="color: #51afef;">for</span> (;;) {
+            <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">p</span> = node.predecessor();
+            <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#20165;&#24403;&#19978;&#20010;&#33410;&#28857;&#26159;&#22836;&#33410;&#28857;&#24182;&#19988;&#25343;&#21040;&#20102;&#38145;, &#21017;&#36820;&#22238;</span><span style="color: #5B6268;"> */</span>
+            <span style="color: #51afef;">if</span> (p == head &amp;&amp; tryAcquire(arg)) {
+                setHead(node); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#25226;&#24403;&#21069;node&#35774;&#32622;&#25104;&#22836;&#33410;&#28857;, &#24182;&#28165;&#31354;&#25968;&#25454;, &#20351;&#20043;&#25104;&#20026;'&#38646;&#20540;'</span><span style="color: #5B6268;"> */</span>
+                p.next = <span style="color: #a9a1e1;">null</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">help GC</span>
+                failed = <span style="color: #a9a1e1;">false</span>;
+                <span style="color: #51afef;">return</span> interrupted;
             }
-            <span style="color: #859900; font-weight: bold;">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
-                parkAndCheckInterrupt()) <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#30001;&#35813;&#26041;&#27861;&#38459;&#22622;&#32447;&#31243; */</span>
-                interrupted = <span style="color: #268bd2; font-weight: bold;">true</span>;
+            <span style="color: #51afef;">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp;
+                parkAndCheckInterrupt()) <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#30001;&#35813;&#26041;&#27861;&#38459;&#22622;&#32447;&#31243;</span><span style="color: #5B6268;"> */</span>
+                interrupted = <span style="color: #a9a1e1;">true</span>;
         }
-    } <span style="color: #859900; font-weight: bold;">finally</span> {
-        <span style="color: #859900; font-weight: bold;">if</span> (failed)
+    } <span style="color: #51afef;">finally</span> {
+        <span style="color: #51afef;">if</span> (failed)
             cancelAcquire(node);
     }
 }
 
-<span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21482;&#26377;&#21069;&#39537;&#33410;&#28857;&#30340;&#29366;&#24577;&#26159; SIGNAL &#26102;, &#25165;&#36820;&#22238; true, &#34920;&#31034;&#21487;&#20197; park. &#21542;&#21017;&#36820;&#22238; false */</span>
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">shouldParkAfterFailedAcquire</span>(<span style="color: #b58900;">Node</span> <span style="color: #268bd2;">pred</span>, <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span>) {
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">ws</span> = pred.waitStatus;
-    <span style="color: #859900; font-weight: bold;">if</span> (ws == <span style="color: #268bd2; font-weight: bold;">Node</span>.SIGNAL)
-        <span style="color: #93a1a1;">/*</span>
-<span style="color: #93a1a1;">         * This node has already set status asking a release</span>
-<span style="color: #93a1a1;">         * to signal it, so it can safely park.</span>
-<span style="color: #93a1a1;">         */</span>
-        <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
-    <span style="color: #859900; font-weight: bold;">if</span> (ws &gt; 0) {
-        <span style="color: #93a1a1;">/*</span>
-<span style="color: #93a1a1;">         * Predecessor was cancelled. Skip over predecessors and</span>
-<span style="color: #93a1a1;">         * indicate retry.</span>
-<span style="color: #93a1a1;">         */</span>
-        <span style="color: #859900; font-weight: bold;">do</span> {
+<span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#21482;&#26377;&#21069;&#39537;&#33410;&#28857;&#30340;&#29366;&#24577;&#26159; SIGNAL &#26102;, &#25165;&#36820;&#22238; true, &#34920;&#31034;&#21487;&#20197; park. &#21542;&#21017;&#36820;&#22238; false</span><span style="color: #5B6268;"> */</span>
+<span style="color: #51afef;">private</span> <span style="color: #51afef;">static</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">shouldParkAfterFailedAcquire</span>(<span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">pred</span>, <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">node</span>) {
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">ws</span> = pred.waitStatus;
+    <span style="color: #51afef;">if</span> (ws == <span style="color: #a9a1e1;">Node</span>.SIGNAL)
+        <span style="color: #5B6268;">/*</span>
+<span style="color: #5B6268;">         * This node has already set status asking a release</span>
+<span style="color: #5B6268;">         * to signal it, so it can safely park.</span>
+<span style="color: #5B6268;">         */</span>
+        <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
+    <span style="color: #51afef;">if</span> (ws &gt; <span style="color: #da8548; font-weight: bold;">0</span>) {
+        <span style="color: #5B6268;">/*</span>
+<span style="color: #5B6268;">         * Predecessor was cancelled. Skip over predecessors and</span>
+<span style="color: #5B6268;">         * indicate retry.</span>
+<span style="color: #5B6268;">         */</span>
+        <span style="color: #51afef;">do</span> {
             node.prev = pred = pred.prev;
-        } <span style="color: #859900; font-weight: bold;">while</span> (pred.waitStatus &gt; 0);
+        } <span style="color: #51afef;">while</span> (pred.waitStatus &gt; <span style="color: #da8548; font-weight: bold;">0</span>);
         pred.next = node;
-    } <span style="color: #859900; font-weight: bold;">else</span> {
-        <span style="color: #93a1a1;">/*</span>
-<span style="color: #93a1a1;">         * waitStatus must be 0 or PROPAGATE.  Indicate that we</span>
-<span style="color: #93a1a1;">         * need a signal, but don't park yet.  Caller will need to</span>
-<span style="color: #93a1a1;">         * retry to make sure it cannot acquire before parking.</span>
-<span style="color: #93a1a1;">         */</span>
-        compareAndSetWaitStatus(pred, ws, <span style="color: #268bd2; font-weight: bold;">Node</span>.SIGNAL);
+    } <span style="color: #51afef;">else</span> {
+        <span style="color: #5B6268;">/*</span>
+<span style="color: #5B6268;">         * waitStatus must be 0 or PROPAGATE.  Indicate that we</span>
+<span style="color: #5B6268;">         * need a signal, but don't park yet.  Caller will need to</span>
+<span style="color: #5B6268;">         * retry to make sure it cannot acquire before parking.</span>
+<span style="color: #5B6268;">         */</span>
+        compareAndSetWaitStatus(pred, ws, <span style="color: #a9a1e1;">Node</span>.SIGNAL);
     }
-    <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">false</span>;
+    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>;
 }
 
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">parkAndCheckInterrupt</span>() {
-    LockSupport.park(<span style="color: #859900; font-weight: bold;">this</span>);
-    <span style="color: #859900; font-weight: bold;">return</span> Thread.interrupted();
+<span style="color: #51afef;">private</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">parkAndCheckInterrupt</span>() {
+    LockSupport.park(<span style="color: #51afef;">this</span>);
+    <span style="color: #51afef;">return</span> Thread.interrupted();
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">LockSupport.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">park</span>(<span style="color: #b58900;">Object</span> <span style="color: #268bd2;">blocker</span>) {
-    <span style="color: #b58900;">Thread</span> <span style="color: #268bd2;">t</span> = Thread.currentThread();
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">LockSupport.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">static</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">park</span>(<span style="color: #ECBE7B;">Object</span> <span style="color: #dcaeea;">blocker</span>) {
+    <span style="color: #ECBE7B;">Thread</span> <span style="color: #dcaeea;">t</span> = Thread.currentThread();
     setBlocker(t, blocker);
-    UNSAFE.park(<span style="color: #268bd2; font-weight: bold;">false</span>, 0L); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#32447;&#31243;&#38459;&#22622;&#30452;&#21040;&#33719;&#21462;&#35768;&#21487; */</span>
-    setBlocker(t, <span style="color: #268bd2; font-weight: bold;">null</span>);
+    UNSAFE.park(<span style="color: #a9a1e1;">false</span>, 0L); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#32447;&#31243;&#38459;&#22622;&#30452;&#21040;&#33719;&#21462;&#35768;&#21487;</span><span style="color: #5B6268;"> */</span>
+    setBlocker(t, <span style="color: #a9a1e1;">null</span>);
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Unsafe.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">native</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">park</span>(<span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">isAbsolute</span>, <span style="color: #b58900;">long</span> <span style="color: #268bd2;">time</span>);
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">Unsafe.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">native</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">park</span>(<span style="color: #ECBE7B;">boolean</span> <span style="color: #dcaeea;">isAbsolute</span>, <span style="color: #ECBE7B;">long</span> <span style="color: #dcaeea;">time</span>);
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org8832a00" class="outline-3">
-<h3 id="org8832a00">unlock() 方法</h3>
-<div class="outline-text-3" id="text-org8832a00">
+<div id="outline-container-orgbd3552d" class="outline-3">
+<h3 id="orgbd3552d">unlock() 方法</h3>
+<div class="outline-text-3" id="text-orgbd3552d">
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">unlock</span>() {
-    sync.release(1);
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">unlock</span>() {
+    sync.release(<span style="color: #da8548; font-weight: bold;">1</span>);
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">release</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">arg</span>) {
-    <span style="color: #859900; font-weight: bold;">if</span> (tryRelease(arg)) { <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23581;&#35797;&#37322;&#25918;&#38145; */</span>
-        <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">h</span> = head;
-        <span style="color: #859900; font-weight: bold;">if</span> (h != <span style="color: #268bd2; font-weight: bold;">null</span> &amp;&amp; h.waitStatus != 0)
-            unparkSuccessor(h); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23581;&#35797;&#21796;&#37266;&#19979;&#19968;&#20010;&#33410;&#28857; */</span>
-        <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">release</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">arg</span>) {
+    <span style="color: #51afef;">if</span> (tryRelease(arg)) { <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23581;&#35797;&#37322;&#25918;&#38145;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">h</span> = head;
+        <span style="color: #51afef;">if</span> (h != <span style="color: #a9a1e1;">null</span> &amp;&amp; h.waitStatus != <span style="color: #da8548; font-weight: bold;">0</span>)
+            unparkSuccessor(h); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23581;&#35797;&#21796;&#37266;&#19979;&#19968;&#20010;&#33410;&#28857;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
     }
-    <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">false</span>;
+    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>;
 }
 
-<span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">tryRelease</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">arg</span>) {
-    <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">UnsupportedOperationException</span>();
+<span style="color: #51afef;">protected</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">tryRelease</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">arg</span>) {
+    <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">UnsupportedOperationException</span>();
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java Sync</span>
-<span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">tryRelease</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">releases</span>) {
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">c</span> = getState() - releases;
-    <span style="color: #859900; font-weight: bold;">if</span> (Thread.currentThread() != getExclusiveOwnerThread())
-        <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">IllegalMonitorStateException</span>();
-    <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">free</span> = <span style="color: #268bd2; font-weight: bold;">false</span>;
-    <span style="color: #859900; font-weight: bold;">if</span> (c == 0) { <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#22240;&#20026;&#21487;&#37325;&#20837;&#38145;, &#25152;&#20197;c&#21487;&#33021;&#22823;&#20110;0, &#24403;&#31561;&#20110;0&#26102;, &#34920;&#31034;&#24403;&#21069;&#32447;&#31243;&#24050;&#32463;&#27491;&#22312;&#37322;&#25918;&#38145; */</span>
-        free = <span style="color: #268bd2; font-weight: bold;">true</span>;
-        setExclusiveOwnerThread(<span style="color: #268bd2; font-weight: bold;">null</span>); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#35774;&#32622;&#25317;&#26377;&#38145;&#30340;&#32447;&#31243;&#20026; null */</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java Sync</span>
+<span style="color: #51afef;">protected</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">tryRelease</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">releases</span>) {
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">c</span> = getState() - releases;
+    <span style="color: #51afef;">if</span> (Thread.currentThread() != getExclusiveOwnerThread())
+        <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">IllegalMonitorStateException</span>();
+    <span style="color: #ECBE7B;">boolean</span> <span style="color: #dcaeea;">free</span> = <span style="color: #a9a1e1;">false</span>;
+    <span style="color: #51afef;">if</span> (c == <span style="color: #da8548; font-weight: bold;">0</span>) { <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#22240;&#20026;&#21487;&#37325;&#20837;&#38145;, &#25152;&#20197;c&#21487;&#33021;&#22823;&#20110;0, &#24403;&#31561;&#20110;0&#26102;, &#34920;&#31034;&#24403;&#21069;&#32447;&#31243;&#24050;&#32463;&#27491;&#22312;&#37322;&#25918;&#38145;</span><span style="color: #5B6268;"> */</span>
+        free = <span style="color: #a9a1e1;">true</span>;
+        setExclusiveOwnerThread(<span style="color: #a9a1e1;">null</span>); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#35774;&#32622;&#25317;&#26377;&#38145;&#30340;&#32447;&#31243;&#20026; null</span><span style="color: #5B6268;"> */</span>
     }
     setState(c);
-    <span style="color: #859900; font-weight: bold;">return</span> free;
+    <span style="color: #51afef;">return</span> free;
 }
 </pre>
 </div>
@@ -387,87 +363,87 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
 unparkSuccessor(h) 唤醒下一个节点<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AbstractQueuedSynchronizer.java</span>
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">unparkSuccessor</span>(<span style="color: #b58900;">Node</span> <span style="color: #268bd2;">node</span>) {
-    <span style="color: #93a1a1;">/*</span>
-<span style="color: #93a1a1;">     * If status is negative (i.e., possibly needing signal) try</span>
-<span style="color: #93a1a1;">     * to clear in anticipation of signalling.  It is OK if this</span>
-<span style="color: #93a1a1;">     * fails or if status is changed by waiting thread.</span>
-<span style="color: #93a1a1;">     */</span>
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">ws</span> = node.waitStatus;
-    <span style="color: #859900; font-weight: bold;">if</span> (ws &lt; 0)
-        compareAndSetWaitStatus(node, ws, 0);
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AbstractQueuedSynchronizer.java</span>
+<span style="color: #51afef;">private</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">unparkSuccessor</span>(<span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">node</span>) {
+    <span style="color: #5B6268;">/*</span>
+<span style="color: #5B6268;">     * If status is negative (i.e., possibly needing signal) try</span>
+<span style="color: #5B6268;">     * to clear in anticipation of signalling.  It is OK if this</span>
+<span style="color: #5B6268;">     * fails or if status is changed by waiting thread.</span>
+<span style="color: #5B6268;">     */</span>
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">ws</span> = node.waitStatus;
+    <span style="color: #51afef;">if</span> (ws &lt; <span style="color: #da8548; font-weight: bold;">0</span>)
+        compareAndSetWaitStatus(node, ws, <span style="color: #da8548; font-weight: bold;">0</span>);
 
-    <span style="color: #93a1a1;">/*</span>
-<span style="color: #93a1a1;">     * Thread to unpark is held in successor, which is normally</span>
-<span style="color: #93a1a1;">     * just the next node.  But if cancelled or apparently null,</span>
-<span style="color: #93a1a1;">     * traverse backwards from tail to find the actual</span>
-<span style="color: #93a1a1;">     * non-cancelled successor.</span>
-<span style="color: #93a1a1;">     */</span>
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23613;&#21487;&#33021;&#20174;&#22836;&#24320;&#22987;&#25214;&#21040;&#19968;&#20010;&#21512;&#36866;&#30340; node */</span>
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">s</span> = node.next;
-    <span style="color: #859900; font-weight: bold;">if</span> (s == <span style="color: #268bd2; font-weight: bold;">null</span> || s.waitStatus &gt; 0) {
-        s = <span style="color: #268bd2; font-weight: bold;">null</span>;
-        <span style="color: #859900; font-weight: bold;">for</span> (<span style="color: #b58900;">Node</span> <span style="color: #268bd2;">t</span> = tail; t != <span style="color: #268bd2; font-weight: bold;">null</span> &amp;&amp; t != node; t = t.prev)
-            <span style="color: #859900; font-weight: bold;">if</span> (t.waitStatus &lt;= 0)
+    <span style="color: #5B6268;">/*</span>
+<span style="color: #5B6268;">     * Thread to unpark is held in successor, which is normally</span>
+<span style="color: #5B6268;">     * just the next node.  But if cancelled or apparently null,</span>
+<span style="color: #5B6268;">     * traverse backwards from tail to find the actual</span>
+<span style="color: #5B6268;">     * non-cancelled successor.</span>
+<span style="color: #5B6268;">     */</span>
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23613;&#21487;&#33021;&#20174;&#22836;&#24320;&#22987;&#25214;&#21040;&#19968;&#20010;&#21512;&#36866;&#30340; node</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">s</span> = node.next;
+    <span style="color: #51afef;">if</span> (s == <span style="color: #a9a1e1;">null</span> || s.waitStatus &gt; <span style="color: #da8548; font-weight: bold;">0</span>) {
+        s = <span style="color: #a9a1e1;">null</span>;
+        <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">t</span> = tail; t != <span style="color: #a9a1e1;">null</span> &amp;&amp; t != node; t = t.prev)
+            <span style="color: #51afef;">if</span> (t.waitStatus &lt;= <span style="color: #da8548; font-weight: bold;">0</span>)
                 s = t;
     }
-    <span style="color: #859900; font-weight: bold;">if</span> (s != <span style="color: #268bd2; font-weight: bold;">null</span>)
-        LockSupport.unpark(s.thread); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21796;&#37266; node &#30340;&#32447;&#31243; */</span>
+    <span style="color: #51afef;">if</span> (s != <span style="color: #a9a1e1;">null</span>)
+        LockSupport.unpark(s.thread); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#21796;&#37266; node &#30340;&#32447;&#31243;</span><span style="color: #5B6268;"> */</span>
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">LockSupport.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">unpark</span>(<span style="color: #b58900;">Thread</span> <span style="color: #268bd2;">thread</span>) {
-    <span style="color: #859900; font-weight: bold;">if</span> (thread != <span style="color: #268bd2; font-weight: bold;">null</span>)
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">LockSupport.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">static</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">unpark</span>(<span style="color: #ECBE7B;">Thread</span> <span style="color: #dcaeea;">thread</span>) {
+    <span style="color: #51afef;">if</span> (thread != <span style="color: #a9a1e1;">null</span>)
         UNSAFE.unpark(thread);
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Unsafe.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">native</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">unpark</span>(<span style="color: #b58900;">Object</span> <span style="color: #268bd2;">thread</span>);
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">Unsafe.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">native</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">unpark</span>(<span style="color: #ECBE7B;">Object</span> <span style="color: #dcaeea;">thread</span>);
 </pre>
 </div>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org76e2d71" class="outline-2">
-<h2 id="org76e2d71">FairSync</h2>
-<div class="outline-text-2" id="text-org76e2d71">
+<div id="outline-container-org5b58703" class="outline-2">
+<h2 id="org5b58703">FairSync</h2>
+<div class="outline-text-2" id="text-org5b58703">
 <p>
 详细代码在 NonfairSync 小节内已经贴过了, 本小节只贴变动的代码<br />
 </p>
 </div>
-<div id="outline-container-orgfefa273" class="outline-3">
-<h3 id="orgfefa273">lock() 方法</h3>
-<div class="outline-text-3" id="text-orgfefa273">
+<div id="outline-container-org3a36067" class="outline-3">
+<h3 id="org3a36067">lock() 方法</h3>
+<div class="outline-text-3" id="text-org3a36067">
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">ReentrantLock.java FairSync</span>
-<span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">void</span> <span style="color: #268bd2;">lock</span>() {
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23545;&#27604; NonfairSync &#29256;&#26412;, &#36825;&#37324;&#30452;&#25509;&#35843;&#29992; acquire(), &#36991;&#20813;&#20102;&#32447;&#31243;&#25554;&#38431;&#30340;&#38382;&#39064; */</span>
-    acquire(1);
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java FairSync</span>
+<span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">lock</span>() {
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23545;&#27604; NonfairSync &#29256;&#26412;, &#36825;&#37324;&#30452;&#25509;&#35843;&#29992; acquire(), &#36991;&#20813;&#20102;&#32447;&#31243;&#25554;&#38431;&#30340;&#38382;&#39064;</span><span style="color: #5B6268;"> */</span>
+    acquire(<span style="color: #da8548; font-weight: bold;">1</span>);
 }
 
-<span style="color: #859900; font-weight: bold;">protected</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">tryAcquire</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">acquires</span>) {
-    <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Thread</span> <span style="color: #268bd2;">current</span> = Thread.currentThread();
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">c</span> = getState();
-    <span style="color: #859900; font-weight: bold;">if</span> (c == 0) {
-        <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#23545;&#27604; NonfairSync &#29256;&#26412;, &#21482;&#26377;&#36825;&#37324;&#22810;&#20102;&#19968;&#20010;&#21028;&#26029; */</span>
-        <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20165;&#26377;&#38431;&#21015;&#20026;&#31354; &#25110;&#32773; &#38431;&#21015;&#30340;&#31532;&#19968;&#20010;&#26159;&#26412;&#32447;&#31243;&#26102;, &#25165;&#23581;&#35797;&#33719;&#21462;&#38145; */</span>
-        <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#21542;&#21017;, &#23558;&#35813;&#32447;&#31243;&#25172;&#21040;&#38431;&#21015;&#23614;&#37096; */</span>
-        <span style="color: #859900; font-weight: bold;">if</span> (<span style="color: #b58900; font-weight: bold;">!</span>hasQueuedPredecessors() &amp;&amp;
-            compareAndSetState(0, acquires)) {
+<span style="color: #51afef;">protected</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">tryAcquire</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">acquires</span>) {
+    <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Thread</span> <span style="color: #dcaeea;">current</span> = Thread.currentThread();
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">c</span> = getState();
+    <span style="color: #51afef;">if</span> (c == <span style="color: #da8548; font-weight: bold;">0</span>) {
+        <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#23545;&#27604; NonfairSync &#29256;&#26412;, &#21482;&#26377;&#36825;&#37324;&#22810;&#20102;&#19968;&#20010;&#21028;&#26029;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#20165;&#26377;&#38431;&#21015;&#20026;&#31354; &#25110;&#32773; &#38431;&#21015;&#30340;&#31532;&#19968;&#20010;&#26159;&#26412;&#32447;&#31243;&#26102;, &#25165;&#23581;&#35797;&#33719;&#21462;&#38145;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#21542;&#21017;, &#23558;&#35813;&#32447;&#31243;&#25172;&#21040;&#38431;&#21015;&#23614;&#37096;</span><span style="color: #5B6268;"> */</span>
+        <span style="color: #51afef;">if</span> (<span style="color: #51afef; font-weight: bold;">!</span>hasQueuedPredecessors() &amp;&amp;
+            compareAndSetState(<span style="color: #da8548; font-weight: bold;">0</span>, acquires)) {
             setExclusiveOwnerThread(current);
-            <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
+            <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
         }
     }
-    <span style="color: #859900; font-weight: bold;">else</span> <span style="color: #859900; font-weight: bold;">if</span> (current == getExclusiveOwnerThread()) {
-        <span style="color: #b58900;">int</span> <span style="color: #268bd2;">nextc</span> = c + acquires;
-        <span style="color: #859900; font-weight: bold;">if</span> (nextc &lt; 0)
-            <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Error</span>(<span style="color: #2aa198;">"Maximum lock count exceeded"</span>);
+    <span style="color: #51afef;">else</span> <span style="color: #51afef;">if</span> (current == getExclusiveOwnerThread()) {
+        <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">nextc</span> = c + acquires;
+        <span style="color: #51afef;">if</span> (nextc &lt; <span style="color: #da8548; font-weight: bold;">0</span>)
+            <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Error</span>(<span style="color: #98be65;">"Maximum lock count exceeded"</span>);
         setState(nextc);
-        <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">true</span>;
+        <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>;
     }
-    <span style="color: #859900; font-weight: bold;">return</span> <span style="color: #268bd2; font-weight: bold;">false</span>;
+    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>;
 }
 </pre>
 </div>
@@ -476,23 +452,23 @@ unparkSuccessor(h) 唤醒下一个节点<br />
 hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">hasQueuedPredecessors</span>() {
-    <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">The correctness of this depends on head being initialized</span>
-    <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">before tail and on head.next being accurate if the current</span>
-    <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">thread is first in queue.</span>
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">t</span> = tail; <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Read fields in reverse initialization order</span>
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">h</span> = head;
-    <span style="color: #b58900;">Node</span> <span style="color: #268bd2;">s</span>;
-    <span style="color: #859900; font-weight: bold;">return</span> h != t &amp;&amp; ((s = h.next) == <span style="color: #268bd2; font-weight: bold;">null</span> || s.thread != Thread.currentThread());
+<pre class="src src-java"><span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">hasQueuedPredecessors</span>() {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">The correctness of this depends on head being initialized</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">before tail and on head.next being accurate if the current</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">thread is first in queue.</span>
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">t</span> = tail; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Read fields in reverse initialization order</span>
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">h</span> = head;
+    <span style="color: #ECBE7B;">Node</span> <span style="color: #dcaeea;">s</span>;
+    <span style="color: #51afef;">return</span> h != t &amp;&amp; ((s = h.next) == <span style="color: #a9a1e1;">null</span> || s.thread != Thread.currentThread());
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge7dddd4" class="outline-3">
-<h3 id="orge7dddd4">unlock() 方法</h3>
-<div class="outline-text-3" id="text-orge7dddd4">
+<div id="outline-container-org1616aec" class="outline-3">
+<h3 id="org1616aec">unlock() 方法</h3>
+<div class="outline-text-3" id="text-org1616aec">
 <p>
 跟 Nonfair 的版本一样<br />
 </p>
@@ -500,9 +476,9 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 </div>
 
-<div id="outline-container-orgeae4291" class="outline-2">
-<h2 id="orgeae4291">小结</h2>
-<div class="outline-text-2" id="text-orgeae4291">
+<div id="outline-container-org4dcd13a" class="outline-2">
+<h2 id="org4dcd13a">小结</h2>
+<div class="outline-text-2" id="text-org4dcd13a">
 <ul class="org-ul">
 <li>　公平锁: 加锁时检查是否有等待的线程. 如果有则排队. 保证线程的获得锁是先到先得.<br /></li>
 <li>非公平锁: 加锁时直接尝试获取锁, 抢不到, 则排队.<br /></li>
@@ -515,7 +491,7 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

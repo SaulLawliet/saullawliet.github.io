@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-03 Wed 18:06 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part1: 基础部分</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,61 +40,61 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga61fb96">第1章 简介</a>
+<li><a href="#orga78f8ab">第1章 简介</a>
 <ul>
-<li><a href="#org51b7dc1">线程的优势</a></li>
-<li><a href="#orgec91ead">线程带来的风险</a></li>
-<li><a href="#org6415e61">线程无处不在</a></li>
+<li><a href="#org10a00b8">线程的优势</a></li>
+<li><a href="#orgefe3d96">线程带来的风险</a></li>
+<li><a href="#orge105307">线程无处不在</a></li>
 </ul>
 </li>
-<li><a href="#org54feb09">第2章 线程安全性</a>
+<li><a href="#org1b5280a">第2章 线程安全性</a>
 <ul>
-<li><a href="#org0569c38">什么是线程安全性</a></li>
-<li><a href="#org850930d">原子性</a></li>
-<li><a href="#org0f1d1d7">加锁机制</a></li>
-<li><a href="#org7efd177">用锁保护状态</a></li>
-<li><a href="#orgd9938f8">活跃性和性能</a></li>
+<li><a href="#orgb8ac44b">什么是线程安全性</a></li>
+<li><a href="#org2d9b501">原子性</a></li>
+<li><a href="#org8227df1">加锁机制</a></li>
+<li><a href="#org74500e5">用锁保护状态</a></li>
+<li><a href="#orgca82f6e">活跃性和性能</a></li>
 </ul>
 </li>
-<li><a href="#orgff77ba3">第3章 对象的共享</a>
+<li><a href="#org60f0704">第3章 对象的共享</a>
 <ul>
-<li><a href="#org1fb8626">可见性</a></li>
-<li><a href="#org3fd2e2f">发布与逸出</a></li>
-<li><a href="#orgcfe1a10">线程封闭</a></li>
-<li><a href="#org3dff844">不变性</a></li>
-<li><a href="#orgdf1ea87">安全发布</a></li>
+<li><a href="#org6d14efa">可见性</a></li>
+<li><a href="#orgb9b3093">发布与逸出</a></li>
+<li><a href="#orga0ef022">线程封闭</a></li>
+<li><a href="#org46d0eef">不变性</a></li>
+<li><a href="#orgb120115">安全发布</a></li>
 </ul>
 </li>
-<li><a href="#org3155369">第4章 对象的组合</a>
+<li><a href="#org97a6a80">第4章 对象的组合</a>
 <ul>
-<li><a href="#orgfd51b11">设计线程安全的类</a></li>
-<li><a href="#orge00b52b">实例封闭</a></li>
-<li><a href="#orgf0deb67">线程安全性的委托</a></li>
-<li><a href="#orgd80764f">在现有的线程安全类中添加功能</a></li>
-<li><a href="#org0a9ce04">将同步策略文档化</a></li>
+<li><a href="#org0022ead">设计线程安全的类</a></li>
+<li><a href="#orgd6d3193">实例封闭</a></li>
+<li><a href="#org6afd553">线程安全性的委托</a></li>
+<li><a href="#org77aa1dc">在现有的线程安全类中添加功能</a></li>
+<li><a href="#org776a8d9">将同步策略文档化</a></li>
 </ul>
 </li>
-<li><a href="#org1b47098">第5章 基础构建模块</a>
+<li><a href="#org9852b1b">第5章 基础构建模块</a>
 <ul>
-<li><a href="#org754c79f">同步容器类</a></li>
-<li><a href="#org4dcc3db">并发容器</a></li>
-<li><a href="#orgd297e45">阻塞队列和生产者 - 消费者模式</a></li>
-<li><a href="#orga85cf1d">阻塞方法与中断方法</a></li>
-<li><a href="#orge1be953">同步工具类</a></li>
+<li><a href="#orgedb15ae">同步容器类</a></li>
+<li><a href="#org3f92913">并发容器</a></li>
+<li><a href="#org600e11a">阻塞队列和生产者 - 消费者模式</a></li>
+<li><a href="#orgb4823e8">阻塞方法与中断方法</a></li>
+<li><a href="#org46062e6">同步工具类</a></li>
 </ul>
 </li>
-<li><a href="#org47972dc">本部分小结</a></li>
+<li><a href="#org643827f">本部分小结</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orga61fb96" class="outline-2">
-<h2 id="orga61fb96">第1章 简介</h2>
-<div class="outline-text-2" id="text-orga61fb96">
+<div id="outline-container-orga78f8ab" class="outline-2">
+<h2 id="orga78f8ab">第1章 简介</h2>
+<div class="outline-text-2" id="text-orga78f8ab">
 </div>
-<div id="outline-container-org51b7dc1" class="outline-3">
-<h3 id="org51b7dc1">线程的优势</h3>
-<div class="outline-text-3" id="text-org51b7dc1">
+<div id="outline-container-org10a00b8" class="outline-3">
+<h3 id="org10a00b8">线程的优势</h3>
+<div class="outline-text-3" id="text-org10a00b8">
 <ul class="org-ul">
 <li>发挥多处理器的强大能力<br /></li>
 <li>建模的简单性<br /></li>
@@ -128,9 +104,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgec91ead" class="outline-3">
-<h3 id="orgec91ead">线程带来的风险</h3>
-<div class="outline-text-3" id="text-orgec91ead">
+<div id="outline-container-orgefe3d96" class="outline-3">
+<h3 id="orgefe3d96">线程带来的风险</h3>
+<div class="outline-text-3" id="text-orgefe3d96">
 <ul class="org-ul">
 <li>安全性问题: 在没有充足同步的情况下, 多个线程中的操作执行顺序是不可预测的.<br /></li>
 <li>活跃性问题: 线程A在等待线程B释放其持有的资源, 而线程B永远都不释放该资源, 那么A就会永久的等待下去.<br /></li>
@@ -139,65 +115,65 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org6415e61" class="outline-3">
-<h3 id="org6415e61">线程无处不在</h3>
-<div class="outline-text-3" id="text-org6415e61">
-<pre class="example">
+<div id="outline-container-orge105307" class="outline-3">
+<h3 id="orge105307">线程无处不在</h3>
+<div class="outline-text-3" id="text-orge105307">
+<pre class="example" id="orgd35e348">
 框架通过在框架线程中调用应用程序代码将并发性引入到程序中. 在代码中将不可避免地访问应用程序状态, 因此所有访问这些状态的代码路径都必须是线程安全的.
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org54feb09" class="outline-2">
-<h2 id="org54feb09">第2章 线程安全性</h2>
-<div class="outline-text-2" id="text-org54feb09">
-<pre class="example">
+<div id="outline-container-org1b5280a" class="outline-2">
+<h2 id="org1b5280a">第2章 线程安全性</h2>
+<div class="outline-text-2" id="text-org1b5280a">
+<pre class="example" id="org1f765cd">
 如果当多个线程访问同一个可变的状态变量时没有使用合适的同步, 那么程序就会出现错误. 有三种方式可以修复这个问题:
   - 不在线程之间共享该状态变量
   - 将状态变量修改为不可变的变量
   - 在访问状态变量时使用同步
 </pre>
 
-<pre class="example">
+<pre class="example" id="org1a18ed3">
 当设计线程安全的类时, 良好的面向对象技术, 不可修改性, 以及明晰的不变性规范都能起到一定的帮助作用.
 </pre>
 </div>
 
-<div id="outline-container-org0569c38" class="outline-3">
-<h3 id="org0569c38">什么是线程安全性</h3>
-<div class="outline-text-3" id="text-org0569c38">
-<pre class="example">
+<div id="outline-container-orgb8ac44b" class="outline-3">
+<h3 id="orgb8ac44b">什么是线程安全性</h3>
+<div class="outline-text-3" id="text-orgb8ac44b">
+<pre class="example" id="orgd56385f">
 当多个线程访问某个类时, 不管运行时环境采用何种调度方式或者这些线程将如果交替执行, 并且在主调代码中不需要任何额外的同步或协同, 这个类都能表现出正确的行为, 那么就称这个类是线程安全的.
 </pre>
 
-<pre class="example">
+<pre class="example" id="orgf9a3985">
 在线程安全类中封装了必要的同步机制, 因此客户端无需进一步采取同步措施.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org68f231b">
 无状态对象一定是线程安全的.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org850930d" class="outline-3">
-<h3 id="org850930d">原子性</h3>
-<div class="outline-text-3" id="text-org850930d">
-<pre class="example">
+<div id="outline-container-org2d9b501" class="outline-3">
+<h3 id="org2d9b501">原子性</h3>
+<div class="outline-text-3" id="text-org2d9b501">
+<pre class="example" id="org78880e6">
 假定有两个操作A和B, 如果从执行A的线程来看, 另一个线程执行B时, 要么将B全部执行完, 要么完全不执行B, 那么A和B对彼此来说是原子的.
 原子操作是指, 对于访问同一个状态的所有操作(包括该操作本身)来说, 这个操作是一个以原子方式执行的操作.
 </pre>
-<pre class="example">
+<pre class="example" id="orgbe3cef6">
 在实际情况中, 应尽可能地使用现有的线程安全对象(例如AtomicLong)来管理类的状态. 与非线程安全的对象相比, 判断线程安全对象的可能状态及其状态转换情况要更为容易, 从而也更容易维护和验证线程安全性.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org0f1d1d7" class="outline-3">
-<h3 id="org0f1d1d7">加锁机制</h3>
-<div class="outline-text-3" id="text-org0f1d1d7">
-<pre class="example">
+<div id="outline-container-org8227df1" class="outline-3">
+<h3 id="org8227df1">加锁机制</h3>
+<div class="outline-text-3" id="text-org8227df1">
+<pre class="example" id="orgc0dcc9f">
 要保持状态的一致性, 就需要在单个原子操作中更新所有相关的状态变量
 </pre>
 <p>
@@ -209,45 +185,45 @@ Java 内置锁的机制实际跟 ReentrantLock 的非公平模式一样.<br />
 </div>
 </div>
 
-<div id="outline-container-org7efd177" class="outline-3">
-<h3 id="org7efd177">用锁保护状态</h3>
-<div class="outline-text-3" id="text-org7efd177">
-<pre class="example">
+<div id="outline-container-org74500e5" class="outline-3">
+<h3 id="org74500e5">用锁保护状态</h3>
+<div class="outline-text-3" id="text-org74500e5">
+<pre class="example" id="org93833c0">
 对于可能被多个线程同时访问的可变状态变量, 在访问它时都需要持有同一个锁, 在这种情况下, 我们称状态变量是由这个锁保护的.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org1e5e4fe">
 每个共享的和可变的变量都应该只由一个锁来保护, 从而使维护人员知道是哪一个锁.
 </pre>
 
-<pre class="example">
+<pre class="example" id="orgffc754b">
 对于每个包含多个变量的不变性条件, 其中涉及的所有变量都需要由同一个锁来保护.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgd9938f8" class="outline-3">
-<h3 id="orgd9938f8">活跃性和性能</h3>
-<div class="outline-text-3" id="text-orgd9938f8">
-<pre class="example">
+<div id="outline-container-orgca82f6e" class="outline-3">
+<h3 id="orgca82f6e">活跃性和性能</h3>
+<div class="outline-text-3" id="text-orgca82f6e">
+<pre class="example" id="orgcdcea39">
 通常, 在简单性和性能之间存在着相互制约因素. 当实现某个同步策略时, 一定不要盲目地为了性能而牺牲简单性(这可能会破坏安全性).
 </pre>
 
-<pre class="example">
+<pre class="example" id="org15c9298">
 当执行时间较长的计算或者可能无法快速完成的操作时(例如, 网络I/O或控制台I/O), 一定不要持有锁.
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgff77ba3" class="outline-2">
-<h2 id="orgff77ba3">第3章 对象的共享</h2>
-<div class="outline-text-2" id="text-orgff77ba3">
+<div id="outline-container-org60f0704" class="outline-2">
+<h2 id="org60f0704">第3章 对象的共享</h2>
+<div class="outline-text-2" id="text-org60f0704">
 </div>
-<div id="outline-container-org1fb8626" class="outline-3">
-<h3 id="org1fb8626">可见性</h3>
-<div class="outline-text-3" id="text-org1fb8626">
-<pre class="example">
+<div id="outline-container-org6d14efa" class="outline-3">
+<h3 id="org6d14efa">可见性</h3>
+<div class="outline-text-3" id="text-org6d14efa">
+<pre class="example" id="orgde3c42a">
 在没有同步的情况下, 编译器, 处理器以及运行时等都可能对操作的执行顺序进行一些意想不到的调整. 在缺乏足够同步的多线程程序中, 要想对内存操作的执行顺序进行判断, 几乎无法得到正确的结论.
 </pre>
 
@@ -258,7 +234,7 @@ Java 内存模型要求, 变量的读取操作和写入操作都必须是原子�
 如果对该类型的变量的读操作和写操作在不同的线程中执行, 那么很可能会督导某个值的高32位和另一个值的低32位.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org7629766">
 加锁的含义不仅仅局限于互斥行为, 还包括内存可见性. 为了确保所有线程都能看到共享变量的最新值, 所有执行读操作或者写操作的线程都必须在同一个锁上同步.
 </pre>
 
@@ -267,12 +243,12 @@ Java语言提供一种稍弱的同步机制, 即 volatile 变量, 用来确保�
 在访问 volatile 变量时不会执行加锁操作, 因此也就不会使线程阻塞, 因此 volatile 变量是一种比 sychronized 关键字 <b>更轻量级</b> 的同步机制.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org4fd2809">
 仅当 volatile 变量能简化代码的实现以及对同步策略的验证时, 才应该使用它们. 如果在验证正确性时需要对可见性进行复杂的判断, 那么就不要使用 volatile 变量.
 volatile 变量的正确使用方式包括: 确保它们自身状态的可见性, 确保它们锁引用对象的状态的可见性, 以及标识一些重要的程序生命周期事件的发生(例如, 初始化或关闭).
 </pre>
 
-<pre class="example">
+<pre class="example" id="org6fac76f">
 加锁机制即可以确保可见性又可确保原子性, 而 volatile 变量只能确保可见性
 </pre>
 
@@ -287,23 +263,23 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </div>
 </div>
 
-<div id="outline-container-org3fd2e2f" class="outline-3">
-<h3 id="org3fd2e2f">发布与逸出</h3>
-<div class="outline-text-3" id="text-org3fd2e2f">
+<div id="outline-container-orgb9b3093" class="outline-3">
+<h3 id="orgb9b3093">发布与逸出</h3>
+<div class="outline-text-3" id="text-orgb9b3093">
 <p>
-"发布"一个对象的意思是指, 使对象能够在当前作用域之外的代码中使用.<br />
-当某个不应该发布的对象被发布时, 这种情况就被称为"逸出".<br />
+&ldquo;发布&rdquo;一个对象的意思是指, 使对象能够在当前作用域之外的代码中使用.<br />
+当某个不应该发布的对象被发布时, 这种情况就被称为&ldquo;逸出&rdquo;.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org662f0e6">
 不要在构造过程中使 this 引用逸出.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgcfe1a10" class="outline-3">
-<h3 id="orgcfe1a10">线程封闭</h3>
-<div class="outline-text-3" id="text-orgcfe1a10">
+<div id="outline-container-orga0ef022" class="outline-3">
+<h3 id="orga0ef022">线程封闭</h3>
+<div class="outline-text-3" id="text-orga0ef022">
 <p>
 如果仅在单线程内访问数据, 就不需要同步. 这种技术被称为 <b>线程封闭</b>, 它是实现线程安全性的最简单方式之一.<br />
 </p>
@@ -315,14 +291,14 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </div>
 </div>
 
-<div id="outline-container-org3dff844" class="outline-3">
-<h3 id="org3dff844">不变性</h3>
-<div class="outline-text-3" id="text-org3dff844">
-<pre class="example">
+<div id="outline-container-org46d0eef" class="outline-3">
+<h3 id="org46d0eef">不变性</h3>
+<div class="outline-text-3" id="text-org46d0eef">
+<pre class="example" id="org03fdc43">
 不可变对象一定是线程安全的.
 </pre>
 
-<pre class="example">
+<pre class="example" id="orgf5f1fd5">
 当满足以下条件时, 对象才是不可变的:
 - 对象创建以后其状态就不能修改.
 - 对象的所有域都是 final 类型.
@@ -334,21 +310,21 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 然而在 Java 内存模型中, final 域还有着特殊的语义: final 域能确保初始化过程中的安全性, 从而可以不受限制地访问不可变对象, 并在共享这些对象时无需同步.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="orge43c3a0">
 正如"除非需要更高的可见性, 否则应将所有的域都声明为私有域"是一个良好的编程习惯,
 "除非需要某个域是可变的, 否则应该将其声明为 final 域"也是一个良好的编程习惯.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgdf1ea87" class="outline-3">
-<h3 id="orgdf1ea87">安全发布</h3>
-<div class="outline-text-3" id="text-orgdf1ea87">
-<pre class="example">
+<div id="outline-container-orgb120115" class="outline-3">
+<h3 id="orgb120115">安全发布</h3>
+<div class="outline-text-3" id="text-orgb120115">
+<pre class="example" id="org14ec43f">
 任何线程都可以在不需要额外同步的情况下安全地访问不可变对象, 即使在发布这些对象时没有使用同步.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org7e74c7e">
 要安全地发布一个对象, 对象的引用以及对象的状态必须同时对其他线程可见. 一个正确构造的对象可以通过以下方式来安全地发布:
 - 在静态初始化函数中初始化一个对象引用.
 - 将对象的引用保存到 volatile 类型的域 或者 AtomicReferance 对象中.
@@ -364,18 +340,18 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 <p>
 事实不可变对象: 对象从技术上来看是可变的, 但其状态在发布后不会再改变.<br />
 </p>
-<pre class="example">
+<pre class="example" id="org9f1ea5d">
 在没有额外的同步的情况下, 任何线程都可以安全地使用被安全发布事实不可变对象.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org9416191">
 对象的发布需求取决于它的可变性:
 - 不可变对象可以通过任意机制来发布.
 - 事实不可变对象必须通过安全方式来发布.
 - 可变对象必须通过安全方式来发布, 并且必须是线程安全的或者由某个锁保护起来.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org6ad62bf">
 在并发程序中使用和共享对象时, 可以使用一些使用的策略, 包括:
 　　线程封闭: 线程封闭的对象只能由一个线程拥有, 对象被封闭在该线程中, 并且只能由这个线程修改.
 　　只读共享: 在没有额外同步的情况下, 共享的只读对象可以由多个线程并发访问, 但任何线程都不能修改它. 共享的只读对象包括不可变对象和事实不可变对象.
@@ -386,61 +362,61 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </div>
 </div>
 
-<div id="outline-container-org3155369" class="outline-2">
-<h2 id="org3155369">第4章 对象的组合</h2>
-<div class="outline-text-2" id="text-org3155369">
+<div id="outline-container-org97a6a80" class="outline-2">
+<h2 id="org97a6a80">第4章 对象的组合</h2>
+<div class="outline-text-2" id="text-org97a6a80">
 </div>
-<div id="outline-container-orgfd51b11" class="outline-3">
-<h3 id="orgfd51b11">设计线程安全的类</h3>
-<div class="outline-text-3" id="text-orgfd51b11">
-<pre class="example">
+<div id="outline-container-org0022ead" class="outline-3">
+<h3 id="org0022ead">设计线程安全的类</h3>
+<div class="outline-text-3" id="text-org0022ead">
+<pre class="example" id="org09bf647">
 在设计线程安全类的过程中, 需要包含以下三个基本要素:
 - 找出构成对象状态的所有变量.
 - 找出约束状态变量的不变性条件.
 - 建立对象状态的并发访问管理策略
 </pre>
 
-<pre class="example">
+<pre class="example" id="org2e7c13c">
 如果不了解对象的不变性条件与后验条件, 那么就不能保证线程安全性.
 要满足在状态变量的有效值或状态切换上的各种约束条件, 就需要借助于原子性与封装性.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orge00b52b" class="outline-3">
-<h3 id="orge00b52b">实例封闭</h3>
-<div class="outline-text-3" id="text-orge00b52b">
+<div id="outline-container-orgd6d3193" class="outline-3">
+<h3 id="orgd6d3193">实例封闭</h3>
+<div class="outline-text-3" id="text-orgd6d3193">
 <p>
 如果某对象不是线程安全的, 那么可以通过多种技术使其在多线程程序中安全地使用.<br />
 你可以确保该对象只能由单个线程访问(线程封闭), 或者通过一个锁来保护对该对象的所有访问.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org9d00ebc">
 将数据封装在对象内部, 可以将数据的访问限制在对象的方法上, 从而更容易确保线程在访问数据时总能持有正确的锁.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org86dddcf">
 封闭机制更易于构造线程安全的类, 因为当封闭类的状态时(L: 这一小句没有看懂), 在分析类的线程安全性时, 就无需检查整个程序.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf0deb67" class="outline-3">
-<h3 id="orgf0deb67">线程安全性的委托</h3>
-<div class="outline-text-3" id="text-orgf0deb67">
-<pre class="example">
+<div id="outline-container-org6afd553" class="outline-3">
+<h3 id="org6afd553">线程安全性的委托</h3>
+<div class="outline-text-3" id="text-org6afd553">
+<pre class="example" id="org821d1b0">
 如果一个类是由多个独立且线程安全的状态变量组成, 并且在所有的操作中都不包含无效状态转换, 那么可以将线程安全性委托给底层的状态变量.
 </pre>
 
-<pre class="example">
+<pre class="example" id="org4a194e6">
 如果一个状态变量是线程安全的, 并且没有任何不变性条件来约数它的值, 在变量的操作上也不存在任何不允许的状态转换, 那么就可以安全地发布这个变量.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgd80764f" class="outline-3">
-<h3 id="orgd80764f">在现有的线程安全类中添加功能</h3>
-<div class="outline-text-3" id="text-orgd80764f">
+<div id="outline-container-org77aa1dc" class="outline-3">
+<h3 id="org77aa1dc">在现有的线程安全类中添加功能</h3>
+<div class="outline-text-3" id="text-org77aa1dc">
 <p>
 为现有的类添加一个原子操作, 更好的方法是 <b>组合</b>.<br />
 使用 Java 监视器模式来封装现有的类, 并且只要在类中拥有指向底层类的唯一外部引用, 就能确保线程安全性.<br />
@@ -448,10 +424,10 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </div>
 </div>
 
-<div id="outline-container-org0a9ce04" class="outline-3">
-<h3 id="org0a9ce04">将同步策略文档化</h3>
-<div class="outline-text-3" id="text-org0a9ce04">
-<pre class="example">
+<div id="outline-container-org776a8d9" class="outline-3">
+<h3 id="org776a8d9">将同步策略文档化</h3>
+<div class="outline-text-3" id="text-org776a8d9">
+<pre class="example" id="orgb48bd0d">
 在文档中说明客户端代码需要了解的线程安全性保证, 以及代码维护人员需要了解的同步策略
 </pre>
 
@@ -466,27 +442,27 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </div>
 </div>
 
-<div id="outline-container-org1b47098" class="outline-2">
-<h2 id="org1b47098">第5章 基础构建模块</h2>
-<div class="outline-text-2" id="text-org1b47098">
+<div id="outline-container-org9852b1b" class="outline-2">
+<h2 id="org9852b1b">第5章 基础构建模块</h2>
+<div class="outline-text-2" id="text-org9852b1b">
 </div>
-<div id="outline-container-org754c79f" class="outline-3">
-<h3 id="org754c79f">同步容器类</h3>
-<div class="outline-text-3" id="text-org754c79f">
+<div id="outline-container-orgedb15ae" class="outline-3">
+<h3 id="orgedb15ae">同步容器类</h3>
+<div class="outline-text-3" id="text-orgedb15ae">
 <p>
-在设计容器类的迭代器时并没有考虑到并发修改的问题, 并且它们表现出的行为是"及时失败"的.<br />
+在设计容器类的迭代器时并没有考虑到并发修改的问题, 并且它们表现出的行为是&ldquo;及时失败&rdquo;的.<br />
 这意味着, 当它们发现容器在迭代过程中被修改时, 就会抛出一个 ConcurrentModificationException 异常.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org6a8e943">
 正如封装对象的状态有助于维持不变性条件一样, 封装对象的同步机制同样有助于确保实施同步策略.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org4dcc3db" class="outline-3">
-<h3 id="org4dcc3db">并发容器</h3>
-<div class="outline-text-3" id="text-org4dcc3db">
+<div id="outline-container-org3f92913" class="outline-3">
+<h3 id="org3f92913">并发容器</h3>
+<div class="outline-text-3" id="text-org3f92913">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -534,7 +510,7 @@ volatile 变量的正确使用方式包括: 确保它们自身状态的可见性
 </tbody>
 </table>
 
-<pre class="example">
+<pre class="example" id="orgc31368e">
 通过并发容器来代替同步容器, 可以极大地提高伸缩性并降低风险.
 </pre>
 
@@ -543,14 +519,14 @@ ConcurrentHashMap 使用了一种完全不同的加锁策略来提供更高的�
 ConcurrentHashMap 并不是将每个方法都在同一个锁上同步并使得每次只能有一个线程访问容器, 而是使用一种粒度更细的加锁机制来实现更大程度的共享, 这种机制称为 <b>分段锁</b>.<br />
 在这种机制下, 任意数量的读取线程可以并发地访问 Map, 执行读取操作的线程和执行写入操作的线程可以并发地访问Map, 并且一定数量的写入线程可以并发地修改 Map.<br />
 ConcurrentHashMap 带来的结果是, 在并发访问环境下将实现更高的吞吐量, 而在单线程环境中只损失非常小的性能.<br />
-ConcurrentHashMap 返回的迭代器具有 <b>弱一致性</b>, 而并非"及时失败". 弱一致性的迭代器可以容忍并发的修改, 当创建迭代器时会遍历已有的元素, 并可以(但是不保证)在迭代器被构造后将操作修改操作反映给容器.<br />
+ConcurrentHashMap 返回的迭代器具有 <b>弱一致性</b>, 而并非&ldquo;及时失败&rdquo;. 弱一致性的迭代器可以容忍并发的修改, 当创建迭代器时会遍历已有的元素, 并可以(但是不保证)在迭代器被构造后将操作修改操作反映给容器.<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgd297e45" class="outline-3">
-<h3 id="orgd297e45">阻塞队列和生产者 - 消费者模式</h3>
-<div class="outline-text-3" id="text-orgd297e45">
+<div id="outline-container-org600e11a" class="outline-3">
+<h3 id="org600e11a">阻塞队列和生产者 - 消费者模式</h3>
+<div class="outline-text-3" id="text-org600e11a">
 <p>
 阻塞队列提供了可阻塞的 put 和 take 方法, 以及支持定时的 offer 和 poll 方法.<br />
 如果队列已经满了, 那么 put 方法将阻塞直到有空间可用; 如果队列为空, 那么 take 方法将会阻塞直到有元素可用.<br />
@@ -562,7 +538,7 @@ BlockingQueue 简化了生产者 - 消费者设计的实现过程, 它支持任�
 一种最常见的生产者 - 消费者设计模式就是线程池与工作队列的组合, 在 Executor 任务执行框架中就体现了这种模式.<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="org73f592a">
 在构建高可靠的应用程序时, 有界队列是一种强大的资源管理工具: 它们能抑制并防止产生过多的工作项, 使应用程序在负荷过载的情况下变得更加健壮.
 </pre>
 
@@ -578,9 +554,9 @@ BlockingQueue 简化了生产者 - 消费者设计的实现过程, 它支持任�
 </div>
 </div>
 
-<div id="outline-container-orga85cf1d" class="outline-3">
-<h3 id="orga85cf1d">阻塞方法与中断方法</h3>
-<div class="outline-text-3" id="text-orga85cf1d">
+<div id="outline-container-orgb4823e8" class="outline-3">
+<h3 id="orgb4823e8">阻塞方法与中断方法</h3>
+<div class="outline-text-3" id="text-orgb4823e8">
 <p>
 线程可能会阻塞或暂停执行, 当线程阻塞时, 它通常被挂起, 并处于某种阻塞状态(BLOCKED, WAITING 或 TIMED_WAITING).<br />
 阻塞操作与执行时间长的普通操作的差别在于, 被阻塞的线程必须等待某个不受它控制的事件发生后才能继续执行.<br />
@@ -592,9 +568,9 @@ BlockingQueue 简化了生产者 - 消费者设计的实现过程, 它支持任�
 </div>
 </div>
 
-<div id="outline-container-orge1be953" class="outline-3">
-<h3 id="orge1be953">同步工具类</h3>
-<div class="outline-text-3" id="text-orge1be953">
+<div id="outline-container-org46062e6" class="outline-3">
+<h3 id="org46062e6">同步工具类</h3>
+<div class="outline-text-3" id="text-org46062e6">
 <ul class="org-ul">
 <li>闭锁: 可以延时线程的进度直到其到达终止状态<br />
 <ul class="org-ul">
@@ -620,9 +596,9 @@ Semaphore 中管理着一组虚拟的许可, 许可的初始数量可通过构�
 </div>
 </div>
 
-<div id="outline-container-org47972dc" class="outline-2">
-<h2 id="org47972dc">本部分小结</h2>
-<div class="outline-text-2" id="text-org47972dc">
+<div id="outline-container-org643827f" class="outline-2">
+<h2 id="org643827f">本部分小结</h2>
+<div class="outline-text-2" id="text-org643827f">
 <ul class="org-ul">
 <li>可变状态是至关重要的<br />
 所有的并发问题都可以归结为如何协调对并发状态的访问. 可变状态越少, 就越容易确保线程安全性.<br /></li>
@@ -645,7 +621,7 @@ Semaphore 中管理着一组虚拟的许可, 许可的初始数量可通过构�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-03 Wed 18:06</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

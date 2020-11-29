@@ -3,59 +3,34 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-03-21 Thu 16:51 -->
+<!-- 2020-11-29 Sun 10:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AWK 笔记</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2018 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -65,39 +40,39 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb698a24">基本</a>
+<li><a href="#org6919eb1">基本</a>
 <ul>
-<li><a href="#org7c55fb3">工作流</a></li>
-<li><a href="#org4302ef7">程序结构</a></li>
-<li><a href="#orgb5e9430">数据结构</a></li>
+<li><a href="#org9a72cc8">工作流</a></li>
+<li><a href="#orgc2a68de">程序结构</a></li>
+<li><a href="#orgc7d5cc6">数据结构</a></li>
 </ul>
 </li>
-<li><a href="#org0c79169">内建变量</a></li>
-<li><a href="#org9b45398">参考</a></li>
+<li><a href="#orgfd1dd10">内建变量</a></li>
+<li><a href="#orgec8296c">参考</a></li>
 </ul>
 </div>
 </div>
 <hr />
 
-<div id="outline-container-orgb698a24" class="outline-2">
-<h2 id="orgb698a24">基本</h2>
-<div class="outline-text-2" id="text-orgb698a24">
+<div id="outline-container-org6919eb1" class="outline-2">
+<h2 id="org6919eb1">基本</h2>
+<div class="outline-text-2" id="text-org6919eb1">
 </div>
-<div id="outline-container-org7c55fb3" class="outline-3">
-<h3 id="org7c55fb3">工作流</h3>
-<div class="outline-text-3" id="text-org7c55fb3">
+<div id="outline-container-org9a72cc8" class="outline-3">
+<h3 id="org9a72cc8">工作流</h3>
+<div class="outline-text-3" id="text-org9a72cc8">
 
-<div class="figure">
+<div id="org8e85f2a" class="figure">
 <p><img src="awk-workflow.png" alt="awk-workflow.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org4302ef7" class="outline-3">
-<h3 id="org4302ef7">程序结构</h3>
-<div class="outline-text-3" id="text-org4302ef7">
-<pre class="example">
+<div id="outline-container-orgc2a68de" class="outline-3">
+<h3 id="orgc2a68de">程序结构</h3>
+<div class="outline-text-3" id="text-orgc2a68de">
+<pre class="example" id="org6ca052d">
 BEGIN {awk-commands}              -- BEGIN block
 /pattern/ {awk-commands}          -- body block
 END {awk-commands}                -- END block
@@ -105,10 +80,10 @@ END {awk-commands}                -- END block
 </div>
 </div>
 
-<div id="outline-container-orgb5e9430" class="outline-3">
-<h3 id="orgb5e9430">数据结构</h3>
-<div class="outline-text-3" id="text-orgb5e9430">
-<pre class="example">
+<div id="outline-container-orgc7d5cc6" class="outline-3">
+<h3 id="orgc7d5cc6">数据结构</h3>
+<div class="outline-text-3" id="text-orgc7d5cc6">
+<pre class="example" id="org3561976">
 record1(field1, field2, field3...)
 record2(field1, field2, field3...)
 ...
@@ -117,9 +92,9 @@ record2(field1, field2, field3...)
 </div>
 </div>
 
-<div id="outline-container-org0c79169" class="outline-2">
-<h2 id="org0c79169">内建变量</h2>
-<div class="outline-text-2" id="text-org0c79169">
+<div id="outline-container-orgfd1dd10" class="outline-2">
+<h2 id="orgfd1dd10">内建变量</h2>
+<div class="outline-text-2" id="text-orgfd1dd10">
 <ul class="org-ul">
 <li><code>$1, $2, $3...</code><br />
 表示 <code>record</code> 中的第几个 <code>field</code>, 其中 <code>$0</code> 表示整个 <code>record</code>, <code>$NF</code> 表示最后一个 <code>field</code></li>
@@ -141,9 +116,9 @@ record2(field1, field2, field3...)
 </div>
 </div>
 
-<div id="outline-container-org9b45398" class="outline-2">
-<h2 id="org9b45398">参考</h2>
-<div class="outline-text-2" id="text-org9b45398">
+<div id="outline-container-orgec8296c" class="outline-2">
+<h2 id="orgec8296c">参考</h2>
+<div class="outline-text-2" id="text-orgec8296c">
 <ol class="org-ol">
 <li><a href="http://www.tutorialspoint.com/awk/index.htm">http://www.tutorialspoint.com/awk/index.htm</a></li>
 <li><a href="https://en.wikipedia.org/wiki/AWK">https://en.wikipedia.org/wiki/AWK</a></li>
@@ -153,8 +128,8 @@ record2(field1, field2, field3...)
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2019-03-21 Thu 16:51</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+<p class="date">Created: 2020-11-29 Sun 10:58</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
 </html>

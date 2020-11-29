@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-03 Wed 18:06 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>org-mode 结构</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,16 +40,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgab7cf6c">org-mode structure</a>
+<li><a href="#orgdd9f08d">org-mode structure</a>
 <ul>
-<li><a href="#orge6d127c">A subheading</a></li>
-<li><a href="#orge584638">navigation</a></li>
-<li><a href="#orgd605d84">lists</a>
+<li><a href="#org514f91a">A subheading</a></li>
+<li><a href="#orga081c5d">navigation</a></li>
+<li><a href="#orgf1dcd3e">lists</a>
 <ul>
-<li><a href="#org1f4e3b7">bullet lists</a></li>
-<li><a href="#orgaa9be94">numbered lists</a></li>
-<li><a href="#org0e96cc3">checklists <code>[0/5]</code></a></li>
-<li><a href="#org56ea04f">definition lists</a></li>
+<li><a href="#orgd5cfca1">bullet lists</a></li>
+<li><a href="#org94a291e">numbered lists</a></li>
+<li><a href="#orgf27e39f">checklists <code>[0/5]</code></a></li>
+<li><a href="#org45f098d">definition lists</a></li>
 </ul>
 </li>
 </ul>
@@ -82,27 +58,27 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgab7cf6c" class="outline-2">
-<h2 id="orgab7cf6c">org-mode structure</h2>
-<div class="outline-text-2" id="text-orgab7cf6c">
+<div id="outline-container-orgdd9f08d" class="outline-2">
+<h2 id="orgdd9f08d">org-mode structure</h2>
+<div class="outline-text-2" id="text-orgdd9f08d">
 <p>
 Text in org is structured by headings, denoted by lines starting with
 one or more * so we are currently in a section!
 </p>
 </div>
 
-<div id="outline-container-orge6d127c" class="outline-3">
-<h3 id="orge6d127c">A subheading</h3>
-<div class="outline-text-3" id="text-orge6d127c">
+<div id="outline-container-org514f91a" class="outline-3">
+<h3 id="org514f91a">A subheading</h3>
+<div class="outline-text-3" id="text-org514f91a">
 <p>
 Starts with an extra * and so on
 </p>
 </div>
 </div>
 
-<div id="outline-container-orge584638" class="outline-3">
-<h3 id="orge584638">navigation</h3>
-<div class="outline-text-3" id="text-orge584638">
+<div id="outline-container-orga081c5d" class="outline-3">
+<h3 id="orga081c5d">navigation</h3>
+<div class="outline-text-3" id="text-orga081c5d">
 <p>
 Headings can be expanded or collapsed by moving to the (sub)heading
 and pressing TAB. S-TAB cycles all headings. You can jump to next and
@@ -118,13 +94,13 @@ of and subheadings).
 </div>
 </div>
 
-<div id="outline-container-orgd605d84" class="outline-3">
-<h3 id="orgd605d84">lists</h3>
-<div class="outline-text-3" id="text-orgd605d84">
+<div id="outline-container-orgf1dcd3e" class="outline-3">
+<h3 id="orgf1dcd3e">lists</h3>
+<div class="outline-text-3" id="text-orgf1dcd3e">
 </div>
-<div id="outline-container-org1f4e3b7" class="outline-4">
-<h4 id="org1f4e3b7">bullet lists</h4>
-<div class="outline-text-4" id="text-org1f4e3b7">
+<div id="outline-container-orgd5cfca1" class="outline-4">
+<h4 id="orgd5cfca1">bullet lists</h4>
+<div class="outline-text-4" id="text-orgd5cfca1">
 <ul class="org-ul">
 <li>bullet lists can be created like this (start a line with one or
 more space and a -</li>
@@ -143,9 +119,9 @@ M-up or M-down just like with section headings</li>
 </div>
 </div>
 
-<div id="outline-container-orgaa9be94" class="outline-4">
-<h4 id="orgaa9be94">numbered lists</h4>
-<div class="outline-text-4" id="text-orgaa9be94">
+<div id="outline-container-org94a291e" class="outline-4">
+<h4 id="org94a291e">numbered lists</h4>
+<div class="outline-text-4" id="text-org94a291e">
 <ol class="org-ol">
 <li>numbered lists are also possible</li>
 <li>M-RET gives me a new number</li>
@@ -153,9 +129,9 @@ M-up or M-down just like with section headings</li>
 </div>
 </div>
 
-<div id="outline-container-org0e96cc3" class="outline-4">
-<h4 id="org0e96cc3">checklists <code>[0/5]</code></h4>
-<div class="outline-text-4" id="text-org0e96cc3">
+<div id="outline-container-orgf27e39f" class="outline-4">
+<h4 id="orgf27e39f">checklists <code>[0/5]</code></h4>
+<div class="outline-text-4" id="text-orgf27e39f">
 <ul class="org-ul">
 <li class="off"><code>[&#xa0;]</code> we can even have check lists</li>
 <li class="off"><code>[&#xa0;]</code> M-S-RET gives a new item with a check box</li>
@@ -171,9 +147,9 @@ of a line above a checklist - this updates when you check items off</li>
 </div>
 </div>
 
-<div id="outline-container-org56ea04f" class="outline-4">
-<h4 id="org56ea04f">definition lists</h4>
-<div class="outline-text-4" id="text-org56ea04f">
+<div id="outline-container-org45f098d" class="outline-4">
+<h4 id="org45f098d">definition lists</h4>
+<div class="outline-text-4" id="text-org45f098d">
 <dl class="org-dl">
 <dt>definition lists</dt><dd>these are useful sometimes</dd>
 <dt>item 2</dt><dd>M-RET again gives another item, and long lines wrap in a
@@ -186,7 +162,7 @@ tidy way underneath the definition</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-03 Wed 18:06</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

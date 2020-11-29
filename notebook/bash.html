@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-05 Fri 16:26 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bash 笔记</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,19 +40,19 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org4686773">基本</a></li>
-<li><a href="#org7d8e766">小提示</a></li>
-<li><a href="#org0ab7ca2">MacOS</a></li>
-<li><a href="#org71552f3">字符串操作</a></li>
-<li><a href="#orgdf65cea">代码片段</a>
+<li><a href="#org6007e29">基本</a></li>
+<li><a href="#org5cfb50d">小提示</a></li>
+<li><a href="#orga71a33a">MacOS</a></li>
+<li><a href="#org3f3dcac">字符串操作</a></li>
+<li><a href="#orgc76db1a">代码片段</a>
 <ul>
-<li><a href="#org446833d">最小代码模板</a></li>
-<li><a href="#orge320097">获取脚本的目录信息</a></li>
-<li><a href="#org2b860f7">从命令声明数组</a></li>
-<li><a href="#org213d953">遍历文件的行</a></li>
-<li><a href="#org68c2895">遍历文件和目录</a></li>
-<li><a href="#org26b5f92">输出带颜色的文字</a></li>
-<li><a href="#orge3bd61d">切换用户执行</a></li>
+<li><a href="#org54daeba">最小代码模板</a></li>
+<li><a href="#org294f604">获取脚本的目录信息</a></li>
+<li><a href="#orgf3579d4">从命令声明数组</a></li>
+<li><a href="#org2af5fd0">遍历文件的行</a></li>
+<li><a href="#org02bba85">遍历文件和目录</a></li>
+<li><a href="#orgf494e9f">输出带颜色的文字</a></li>
+<li><a href="#orga9d3a1c">切换用户执行</a></li>
 </ul>
 </li>
 </ul>
@@ -84,9 +60,9 @@ for the JavaScript code in this tag.
 </div>
 <hr />
 
-<div id="outline-container-org4686773" class="outline-2">
-<h2 id="org4686773">基本</h2>
-<div class="outline-text-2" id="text-org4686773">
+<div id="outline-container-org6007e29" class="outline-2">
+<h2 id="org6007e29">基本</h2>
+<div class="outline-text-2" id="text-org6007e29">
 <ul class="org-ul">
 <li>基本语法介绍: <a href="https://devhints.io/bash">Bash scripting cheatsheet</a>, 推荐 <b>熟读</b> 或 <b>随手查阅</b>.<br /></li>
 <li>进阶书籍: <a href="https://github.com/dylanaraps/pure-bash-bible">Pure Bash Bible</a>, 真·大佬出品.<br /></li>
@@ -96,9 +72,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org7d8e766" class="outline-2">
-<h2 id="org7d8e766">小提示</h2>
-<div class="outline-text-2" id="text-org7d8e766">
+<div id="outline-container-org5cfb50d" class="outline-2">
+<h2 id="org5cfb50d">小提示</h2>
+<div class="outline-text-2" id="text-org5cfb50d">
 <ul class="org-ul">
 <li>使用变量时, 一定要用引号. 如: <code>echo "$var"</code><br /></li>
 <li>声明函数时, 无需使用关键字 <code>function</code><br /></li>
@@ -107,30 +83,30 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0ab7ca2" class="outline-2">
-<h2 id="org0ab7ca2">MacOS</h2>
-<div class="outline-text-2" id="text-org0ab7ca2">
+<div id="outline-container-orga71a33a" class="outline-2">
+<h2 id="orga71a33a">MacOS</h2>
+<div class="outline-text-2" id="text-orga71a33a">
 <p>
 MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前加上以下代码.<br />
 需要依赖: coreutils (<code>brew install coreutils</code>)<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-sh">[[ $(uname) == <span style="color: #2aa198;">"Darwin"</span> ]] &amp;&amp; <span style="color: #268bd2;">PATH</span>=<span style="color: #2aa198;">"/usr/local/opt/coreutils/libexec/gnubin:$PATH"</span>
+<pre class="src src-sh">   <span style="color: #51afef;">[</span><span style="color: #c678dd;">[</span> $<span style="color: #98be65;">(</span>uname<span style="color: #98be65;">)</span> == <span style="color: #98be65;">"Darwin"</span> <span style="color: #c678dd;">]</span><span style="color: #51afef;">]</span> &amp;&amp; <span style="color: #dcaeea;">PATH</span>=<span style="color: #98be65;">"/usr/local/opt/coreutils/libexec/gnubin:</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">PATH</span><span style="color: #98be65;">"</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org71552f3" class="outline-2">
-<h2 id="org71552f3">字符串操作</h2>
-<div class="outline-text-2" id="text-org71552f3">
+<div id="outline-container-org3f3dcac" class="outline-2">
+<h2 id="org3f3dcac">字符串操作</h2>
+<div class="outline-text-2" id="text-org3f3dcac">
 <p>
 常用操作<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #268bd2;">str</span>=<span style="color: #2aa198;">"foo.bar"</span>
-<span style="color: #657b83; font-weight: bold;">echo</span> ${<span style="color: #268bd2;">str</span>%%.*} <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">=&gt; foo (&#25991;&#20214;&#21517;)</span>
-<span style="color: #657b83; font-weight: bold;">echo</span> ${<span style="color: #268bd2;">str</span>//*.} <span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">=&gt; bar (&#25991;&#20214;&#25193;&#23637;&#21517;)</span>
+<pre class="src src-sh"><span style="color: #dcaeea;">str</span>=<span style="color: #98be65;">"foo.bar"</span>
+<span style="color: #ECBE7B;">echo</span> $<span style="color: #51afef;">{</span><span style="color: #dcaeea;">str</span>%%.*<span style="color: #51afef;">}</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">=&gt; foo (&#25991;&#20214;&#21517;)</span>
+<span style="color: #ECBE7B;">echo</span> $<span style="color: #51afef;">{</span><span style="color: #dcaeea;">str</span>//*.<span style="color: #51afef;">}</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">=&gt; bar (&#25991;&#20214;&#25193;&#23637;&#21517;)</span>
 </pre>
 </div>
 
@@ -279,124 +255,124 @@ MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前�
 </div>
 
 
-<div id="outline-container-orgdf65cea" class="outline-2">
-<h2 id="orgdf65cea">代码片段</h2>
-<div class="outline-text-2" id="text-orgdf65cea">
+<div id="outline-container-orgc76db1a" class="outline-2">
+<h2 id="orgc76db1a">代码片段</h2>
+<div class="outline-text-2" id="text-orgc76db1a">
 <p>
 下面保存一些常用的代码, 提高开发效率;)<br />
 </p>
 </div>
 
-<div id="outline-container-org446833d" class="outline-3">
-<h3 id="org446833d">最小代码模板</h3>
-<div class="outline-text-3" id="text-org446833d">
+<div id="outline-container-org54daeba" class="outline-3">
+<h3 id="org54daeba">最小代码模板</h3>
+<div class="outline-text-3" id="text-org54daeba">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #93a1a1;">#</span><span style="color: #93a1a1;">!/usr/bin/</span><span style="color: #859900; font-weight: bold;">env</span><span style="color: #93a1a1;"> bash</span>
+<pre class="src src-sh"><span style="color: #5B6268;">#</span><span style="color: #5B6268;">!/usr/bin/</span><span style="color: #51afef;">env</span><span style="color: #5B6268;"> bash</span>
 
-<span style="color: #268bd2;">main</span>() {
+<span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   ...
-}
+<span style="color: #51afef;">}</span>
 
-main <span style="color: #2aa198;">"$@"</span>
+main <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">@</span><span style="color: #98be65;">"</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge320097" class="outline-3">
-<h3 id="orge320097">获取脚本的目录信息</h3>
-<div class="outline-text-3" id="text-orge320097">
+<div id="outline-container-org294f604" class="outline-3">
+<h3 id="org294f604">获取脚本的目录信息</h3>
+<div class="outline-text-3" id="text-org294f604">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#33050;&#26412;&#30495;&#23454;&#38142;&#25509;</span>
-<span style="color: #268bd2;">script_link</span>=<span style="color: #2aa198;">"$(readlink -f "$0")"</span>
-printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$script_link"</span>
+<pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#33050;&#26412;&#30495;&#23454;&#38142;&#25509;</span>
+<span style="color: #dcaeea;">script_link</span>=<span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(readlink -f "</span><span style="color: #51afef; font-weight: bold;">$</span><span style="color: #51afef; font-weight: bold;">0</span><span style="color: #51afef; font-weight: bold;">")</span><span style="color: #98be65;">"</span>
+printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">script_link</span><span style="color: #98be65;">"</span>
 
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#33050;&#26412;&#25152;&#22312;&#30446;&#24405;</span>
-<span style="color: #268bd2;">script_dir</span>=<span style="color: #2aa198;">"$(dirname "$(readlink -f "$0")")"</span>
-printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$script_dir"</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#33050;&#26412;&#25152;&#22312;&#30446;&#24405;</span>
+<span style="color: #dcaeea;">script_dir</span>=<span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(dirname "$(readlink -f "</span><span style="color: #51afef; font-weight: bold;">$</span><span style="color: #51afef; font-weight: bold;">0</span><span style="color: #51afef; font-weight: bold;">")</span><span style="color: #98be65;">")"</span>
+printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">script_dir</span><span style="color: #98be65;">"</span>
 
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#33050;&#26412;&#25991;&#20214;&#21517;</span>
-<span style="color: #268bd2;">script_file</span>=<span style="color: #2aa198;">"$(basename "$(readlink -f "$0")")"</span>
-printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$script_file"</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#33050;&#26412;&#25991;&#20214;&#21517;</span>
+<span style="color: #dcaeea;">script_file</span>=<span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(basename "$(readlink -f "</span><span style="color: #51afef; font-weight: bold;">$</span><span style="color: #51afef; font-weight: bold;">0</span><span style="color: #51afef; font-weight: bold;">")</span><span style="color: #98be65;">")"</span>
+printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">script_file</span><span style="color: #98be65;">"</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org2b860f7" class="outline-3">
-<h3 id="org2b860f7">从命令声明数组</h3>
-<div class="outline-text-3" id="text-org2b860f7">
+<div id="outline-container-orgf3579d4" class="outline-3">
+<h3 id="orgf3579d4">从命令声明数组</h3>
+<div class="outline-text-3" id="text-orgf3579d4">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #657b83; font-weight: bold;">read</span> -d <span style="color: #2aa198;">""</span> -ra a1 &lt;&lt;&lt; <span style="color: #2aa198;">"$(seq 1 5)"</span>
-<span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"${a1[@]}"</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">output:</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">1 2 3 4 5</span>
+<pre class="src src-sh"><span style="color: #c678dd;">read</span> -d <span style="color: #98be65;">""</span> -ra a1 &lt;&lt;&lt; <span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(seq 1 5)</span><span style="color: #98be65;">"</span>
+<span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">{a1[@]}</span><span style="color: #98be65;">"</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">output:</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">1 2 3 4 5</span>
 
-<span style="color: #268bd2;">a2</span>=(<span style="color: #2aa198;">"$(seq 1 5)"</span>)
-<span style="color: #657b83; font-weight: bold;">echo</span> <span style="color: #2aa198;">"${a2[@]}"</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">output:</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">1</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">2</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">3</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">4</span>
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">5</span>
+<span style="color: #dcaeea;">a2</span>=<span style="color: #51afef;">(</span><span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(seq 1 5)</span><span style="color: #98be65;">"</span><span style="color: #51afef;">)</span>
+<span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">{a2[@]}</span><span style="color: #98be65;">"</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">output:</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">1</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">2</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">3</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">4</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">5</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org213d953" class="outline-3">
-<h3 id="org213d953">遍历文件的行</h3>
-<div class="outline-text-3" id="text-org213d953">
+<div id="outline-container-org2af5fd0" class="outline-3">
+<h3 id="org2af5fd0">遍历文件的行</h3>
+<div class="outline-text-3" id="text-org2af5fd0">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">read</span> -r line; <span style="color: #859900; font-weight: bold;">do</span>
-  printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$line"</span>
-<span style="color: #859900; font-weight: bold;">done</span> &lt; <span style="color: #2aa198;">"file"</span>
+<pre class="src src-sh"><span style="color: #51afef;">while </span><span style="color: #c678dd;">read</span> -r line; <span style="color: #51afef;">do</span>
+  printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">line</span><span style="color: #98be65;">"</span>
+<span style="color: #51afef;">done</span> &lt; <span style="color: #98be65;">"file"</span>
 
-cat <span style="color: #2aa198;">"file"</span> | <span style="color: #859900; font-weight: bold;">while </span><span style="color: #657b83; font-weight: bold;">read</span> -r line; <span style="color: #859900; font-weight: bold;">do</span>
-  printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$line"</span>
-<span style="color: #859900; font-weight: bold;">done</span>
+<span style="color: #ECBE7B;">cat</span> <span style="color: #98be65;">"file"</span> | <span style="color: #51afef;">while </span><span style="color: #c678dd;">read</span> -r line; <span style="color: #51afef;">do</span>
+  printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">line</span><span style="color: #98be65;">"</span>
+<span style="color: #51afef;">done</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org68c2895" class="outline-3">
-<h3 id="org68c2895">遍历文件和目录</h3>
-<div class="outline-text-3" id="text-org68c2895">
+<div id="outline-container-org02bba85" class="outline-3">
+<h3 id="org02bba85">遍历文件和目录</h3>
+<div class="outline-text-3" id="text-org02bba85">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #859900; font-weight: bold;">for</span> file<span style="color: #859900; font-weight: bold;"> in</span> *; <span style="color: #859900; font-weight: bold;">do</span>
-  printf <span style="color: #2aa198;">'%s\n'</span> <span style="color: #2aa198;">"$file"</span>
-<span style="color: #859900; font-weight: bold;">done</span>
+<pre class="src src-sh"><span style="color: #51afef;">for</span> file<span style="color: #51afef;"> in</span> *; <span style="color: #51afef;">do</span>
+  printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">file</span><span style="color: #98be65;">"</span>
+<span style="color: #51afef;">done</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org26b5f92" class="outline-3">
-<h3 id="org26b5f92">输出带颜色的文字</h3>
-<div class="outline-text-3" id="text-org26b5f92">
+<div id="outline-container-orgf494e9f" class="outline-3">
+<h3 id="orgf494e9f">输出带颜色的文字</h3>
+<div class="outline-text-3" id="text-orgf494e9f">
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#36755;&#20986;&#25152;&#26377;&#39068;&#33394;(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)</span>
-<span style="color: #859900; font-weight: bold;">for</span> code<span style="color: #859900; font-weight: bold;"> in</span> {0..255}; <span style="color: #859900; font-weight: bold;">do</span>
-  <span style="color: #657b83; font-weight: bold;">echo</span> -e <span style="color: #2aa198;">"\e[38;5;${code}m"'\\e[38;5;'"$code"</span>m<span style="color: #2aa198;">"\e[0m"</span>
-<span style="color: #859900; font-weight: bold;">done</span>
+<pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#36755;&#20986;&#25152;&#26377;&#39068;&#33394;(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)</span>
+<span style="color: #51afef;">for</span> code<span style="color: #51afef;"> in</span> <span style="color: #51afef;">{</span>0..255<span style="color: #51afef;">}</span>; <span style="color: #51afef;">do</span>
+  <span style="color: #ECBE7B;">echo</span> -e <span style="color: #98be65;">"\e[38;5;</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">{code}</span><span style="color: #98be65;">m"'\\e[38;5;'"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">code</span><span style="color: #98be65;">"</span>m<span style="color: #98be65;">"\e[0m"</span>
+<span style="color: #51afef;">done</span>
 
-<span style="color: #93a1a1;"># </span><span style="color: #93a1a1;">&#38543;&#26426;&#19968;&#20010;&#39068;&#33394;</span>
-<span style="color: #657b83; font-weight: bold;">echo</span> -e <span style="color: #2aa198;">"\e[38;5;$((RANDOM%256))m#######\e[0m"</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#38543;&#26426;&#19968;&#20010;&#39068;&#33394;</span>
+<span style="color: #ECBE7B;">echo</span> -e <span style="color: #98be65;">"\e[38;5;</span><span style="color: #51afef; font-weight: bold;">$((RANDOM%256)</span><span style="color: #98be65;">)m#######\e[0m"</span>
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orge3bd61d" class="outline-3">
-<h3 id="orge3bd61d">切换用户执行</h3>
-<div class="outline-text-3" id="text-orge3bd61d">
+<div id="outline-container-orga9d3a1c" class="outline-3">
+<h3 id="orga9d3a1c">切换用户执行</h3>
+<div class="outline-text-3" id="text-orga9d3a1c">
 <div class="org-src-container">
 <pre class="src src-sh">su &lt;other_user&gt; &lt;&lt; !
   ...
-  <span style="color: #859900; font-weight: bold;">exit</span>
-<span style="color: #b58900; font-weight: bold;">!</span>
+  <span style="color: #51afef;">exit</span>
+<span style="color: #51afef; font-weight: bold;">!</span>
 </pre>
 </div>
 </div>
@@ -405,7 +381,7 @@ cat <span style="color: #2aa198;">"file"</span> | <span style="color: #859900; f
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-05 Fri 16:26</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

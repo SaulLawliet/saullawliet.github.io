@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-05 Fri 16:26 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Java 笔记</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,35 +40,35 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org35c9873">资料</a></li>
-<li><a href="#orgc6815a9">Java Memory Model</a></li>
-<li><a href="#orgac19360">并发特性</a></li>
-<li><a href="#orgd7bc9b6">Happens-Before</a></li>
-<li><a href="#orgad75b09">同步工具类</a></li>
-<li><a href="#org9b87e09">引用类型</a></li>
-<li><a href="#orgf84a0fc">Java 主流锁</a>
+<li><a href="#org524bcb9">资料</a></li>
+<li><a href="#orgd44d482">Java Memory Model</a></li>
+<li><a href="#org1b3a0b1">并发特性</a></li>
+<li><a href="#org6873457">Happens-Before</a></li>
+<li><a href="#org424f9d8">同步工具类</a></li>
+<li><a href="#orgd8dc573">引用类型</a></li>
+<li><a href="#org006792a">Java 主流锁</a>
 <ul>
-<li><a href="#org4299da0">悲观锁 vs 乐观锁</a></li>
-<li><a href="#orgfa57bc6">自旋锁 vs 适应性自旋锁</a></li>
-<li><a href="#org4cac5dd">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</a></li>
-<li><a href="#orgd0e636d">公平锁 vs 非公平锁</a></li>
+<li><a href="#org873d19d">悲观锁 vs 乐观锁</a></li>
+<li><a href="#org9c6f5a0">自旋锁 vs 适应性自旋锁</a></li>
+<li><a href="#org87239ee">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</a></li>
+<li><a href="#org3220f3d">公平锁 vs 非公平锁</a></li>
 </ul>
 </li>
-<li><a href="#org52c16ea">垃圾回收</a>
+<li><a href="#org191876d">垃圾回收</a>
 <ul>
-<li><a href="#org4f76f29">垃圾回收算法</a></li>
-<li><a href="#orgbccdb3a">垃圾回收器</a></li>
-<li><a href="#org6079d9d">参数基本策略</a></li>
-<li><a href="#org6287c7f">HotSpot JVM 手册</a></li>
+<li><a href="#orgf151e7e">垃圾回收算法</a></li>
+<li><a href="#org68f2ae7">垃圾回收器</a></li>
+<li><a href="#orgd57454c">参数基本策略</a></li>
+<li><a href="#org28c78f1">HotSpot JVM 手册</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org35c9873" class="outline-2">
-<h2 id="org35c9873">资料</h2>
-<div class="outline-text-2" id="text-org35c9873">
+<div id="outline-container-org524bcb9" class="outline-2">
+<h2 id="org524bcb9">资料</h2>
+<div class="outline-text-2" id="text-org524bcb9">
 <ul class="org-ul">
 <li>Java Design Patterns <a href="https://java-design-patterns.com/">https://java-design-patterns.com/</a><br /></li>
 <li>美团技术团队 <a href="https://tech.meituan.com/tags/java.html">https://tech.meituan.com/tags/java.html</a><br /></li>
@@ -100,9 +76,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgc6815a9" class="outline-2">
-<h2 id="orgc6815a9">Java Memory Model</h2>
-<div class="outline-text-2" id="text-orgc6815a9">
+<div id="outline-container-orgd44d482" class="outline-2">
+<h2 id="orgd44d482">Java Memory Model</h2>
+<div class="outline-text-2" id="text-orgd44d482">
 <p>
 分为 <b>主内存</b> 和 <b>工作内存(线程)</b><br />
 不同线程拥有自己的工作内存, 同一个变量在主内存只有一份, 当线程用到时, 会从主内存中拷贝一个副本, 线程执行完的时候, 再将变量同步到主内存.<br />
@@ -154,9 +130,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgac19360" class="outline-2">
-<h2 id="orgac19360">并发特性</h2>
-<div class="outline-text-2" id="text-orgac19360">
+<div id="outline-container-org1b3a0b1" class="outline-2">
+<h2 id="org1b3a0b1">并发特性</h2>
+<div class="outline-text-2" id="text-org1b3a0b1">
 <p>
 <b>原子性</b><br />
 一个操作或者多个操作, 要么全部执行并且执行的过程不回被任何因素打断, 要么就都不执行.<br />
@@ -168,9 +144,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd7bc9b6" class="outline-2">
-<h2 id="orgd7bc9b6">Happens-Before</h2>
-<div class="outline-text-2" id="text-orgd7bc9b6">
+<div id="outline-container-org6873457" class="outline-2">
+<h2 id="org6873457">Happens-Before</h2>
+<div class="outline-text-2" id="text-org6873457">
 <ul class="org-ul">
 <li>程序顺序规则<br /></li>
 <li>监视器锁规则<br /></li>
@@ -184,9 +160,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgad75b09" class="outline-2">
-<h2 id="orgad75b09">同步工具类</h2>
-<div class="outline-text-2" id="text-orgad75b09">
+<div id="outline-container-org424f9d8" class="outline-2">
+<h2 id="org424f9d8">同步工具类</h2>
+<div class="outline-text-2" id="text-org424f9d8">
 <p>
 <b>CountDownLatch</b> - 闭锁 (底层: AQS)<br />
 初始化一个值, countdown(), countdown() &#x2026; await()<br />
@@ -200,9 +176,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9b87e09" class="outline-2">
-<h2 id="org9b87e09">引用类型</h2>
-<div class="outline-text-2" id="text-org9b87e09">
+<div id="outline-container-orgd8dc573" class="outline-2">
+<h2 id="orgd8dc573">引用类型</h2>
+<div class="outline-text-2" id="text-orgd8dc573">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -236,9 +212,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf84a0fc" class="outline-2">
-<h2 id="orgf84a0fc">Java 主流锁</h2>
-<div class="outline-text-2" id="text-orgf84a0fc">
+<div id="outline-container-org006792a" class="outline-2">
+<h2 id="org006792a">Java 主流锁</h2>
+<div class="outline-text-2" id="text-org006792a">
 <ul class="org-ul">
 <li>线程要不要锁住同步资源?<br />
 <ul class="org-ul">
@@ -275,9 +251,9 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 
-<div id="outline-container-org4299da0" class="outline-3">
-<h3 id="org4299da0">悲观锁 vs 乐观锁</h3>
-<div class="outline-text-3" id="text-org4299da0">
+<div id="outline-container-org873d19d" class="outline-3">
+<h3 id="org873d19d">悲观锁 vs 乐观锁</h3>
+<div class="outline-text-3" id="text-org873d19d">
 <ul class="org-ul">
 <li>悲观锁: 使用前加锁, 使用后释放锁. 例如: synchronized 与 Lock<br /></li>
 <li>乐观锁: 在更新数据前判断有没有别的线程更新了这个值. 例如: Atomic 相关类, 底层使用 volatile 和 CAS 算法.<br /></li>
@@ -285,9 +261,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgfa57bc6" class="outline-3">
-<h3 id="orgfa57bc6">自旋锁 vs 适应性自旋锁</h3>
-<div class="outline-text-3" id="text-orgfa57bc6">
+<div id="outline-container-org9c6f5a0" class="outline-3">
+<h3 id="org9c6f5a0">自旋锁 vs 适应性自旋锁</h3>
+<div class="outline-text-3" id="text-org9c6f5a0">
 <ul class="org-ul">
 <li>自旋锁: 不放弃 CPU 时间片, 通过 for(;;) {&#x2026;} 等待锁释放.<br /></li>
 <li>适应性自旋锁: 在自旋锁的基础上, 如果超出失败次数上限(失败次数上限不固定, 由 JVM 调整), 线程将会阻塞.<br /></li>
@@ -295,9 +271,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4cac5dd" class="outline-3">
-<h3 id="org4cac5dd">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</h3>
-<div class="outline-text-3" id="text-org4cac5dd">
+<div id="outline-container-org87239ee" class="outline-3">
+<h3 id="org87239ee">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</h3>
+<div class="outline-text-3" id="text-org87239ee">
 <p>
 <b>Header Word</b> (Mark Word)<br />
 默认存储对象的 HashCode, 分代年龄和锁标志位信息.<br />
@@ -363,7 +339,7 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </p>
 
 
-<div class="figure">
+<div id="org02ad946" class="figure">
 <p><img src="https://i.loli.net/2020/04/03/1AXmgTt5hp3QdJO.gif" alt="1AXmgTt5hp3QdJO.gif" /><br />
 </p>
 </div>
@@ -380,9 +356,9 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </div>
 </div>
 
-<div id="outline-container-orgd0e636d" class="outline-3">
-<h3 id="orgd0e636d">公平锁 vs 非公平锁</h3>
-<div class="outline-text-3" id="text-orgd0e636d">
+<div id="outline-container-org3220f3d" class="outline-3">
+<h3 id="org3220f3d">公平锁 vs 非公平锁</h3>
+<div class="outline-text-3" id="text-org3220f3d">
 <ul class="org-ul">
 <li>公平锁: 线程会严格按照获取锁的顺序排队.<br /></li>
 <li>非公平锁: 线程优先插队, 插队失败才会排队. (RenentrantLock等同步类的默认选择, 性能更优)<br /></li>
@@ -391,13 +367,13 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </div>
 </div>
 
-<div id="outline-container-org52c16ea" class="outline-2">
-<h2 id="org52c16ea">垃圾回收</h2>
-<div class="outline-text-2" id="text-org52c16ea">
+<div id="outline-container-org191876d" class="outline-2">
+<h2 id="org191876d">垃圾回收</h2>
+<div class="outline-text-2" id="text-org191876d">
 </div>
-<div id="outline-container-org4f76f29" class="outline-3">
-<h3 id="org4f76f29">垃圾回收算法</h3>
-<div class="outline-text-3" id="text-org4f76f29">
+<div id="outline-container-orgf151e7e" class="outline-3">
+<h3 id="orgf151e7e">垃圾回收算法</h3>
+<div class="outline-text-3" id="text-orgf151e7e">
 <ul class="org-ul">
 <li>复制算法 (<b>用于新生代</b>)<br />
 将内存分成两半, 一半用完后, 将存活的数据移动到另一半<br /></li>
@@ -416,11 +392,11 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-orgbccdb3a" class="outline-3">
-<h3 id="orgbccdb3a">垃圾回收器</h3>
-<div class="outline-text-3" id="text-orgbccdb3a">
+<div id="outline-container-org68f2ae7" class="outline-3">
+<h3 id="org68f2ae7">垃圾回收器</h3>
+<div class="outline-text-3" id="text-org68f2ae7">
 
-<div class="figure">
+<div id="orgb720c28" class="figure">
 <p><img src="https://i.loli.net/2020/04/08/JAixmhlzv1Mqe36.jpg" alt="JAixmhlzv1Mqe36.jpg" /><br />
 </p>
 </div>
@@ -434,9 +410,9 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-org6079d9d" class="outline-3">
-<h3 id="org6079d9d">参数基本策略</h3>
-<div class="outline-text-3" id="text-org6079d9d">
+<div id="outline-container-orgd57454c" class="outline-3">
+<h3 id="orgd57454c">参数基本策略</h3>
+<div class="outline-text-3" id="text-orgd57454c">
 <p>
 活跃数据: 应用程序稳定运行时长期存活对象在堆中占用的空间大小, 也就是Full GC后堆中老年代占用空间的大小.<br />
 </p>
@@ -478,11 +454,11 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-org6287c7f" class="outline-3">
-<h3 id="org6287c7f">HotSpot JVM 手册</h3>
-<div class="outline-text-3" id="text-org6287c7f">
+<div id="outline-container-org28c78f1" class="outline-3">
+<h3 id="org28c78f1">HotSpot JVM 手册</h3>
+<div class="outline-text-3" id="text-org28c78f1">
 
-<div class="figure">
+<div id="org460d8cb" class="figure">
 <p><img src="https://saullawliet.github.io/images/Java%208%20-%20GC%20cheatsheet.png" alt="Java%208%20-%20GC%20cheatsheet.png" /><br />
 </p>
 </div>
@@ -492,7 +468,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-05 Fri 16:26</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-06-03 Wed 18:06 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part4: 高级主题 (TODO)</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2020 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,28 +40,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org896406e">第13章 显式锁</a>
+<li><a href="#org2d3cc7f">第13章 显式锁</a>
 <ul>
-<li><a href="#orgb437ac4">Lock 与 RenentrantLock</a></li>
-<li><a href="#orga632ded">性能考虑因素</a></li>
-<li><a href="#orgf81eae2">公平性</a></li>
-<li><a href="#orge9cbc1a">在 synchronized 和 ReentrantLock 之间进行选择</a></li>
-<li><a href="#orgf4f145b">读 - 写锁</a></li>
+<li><a href="#org725dfcc">Lock 与 RenentrantLock</a></li>
+<li><a href="#org9594db8">性能考虑因素</a></li>
+<li><a href="#orge692418">公平性</a></li>
+<li><a href="#orgb984665">在 synchronized 和 ReentrantLock 之间进行选择</a></li>
+<li><a href="#orgf87aaa9">读 - 写锁</a></li>
 </ul>
 </li>
-<li><a href="#org1e4c45e">第14章 构建自定义的同步工具</a></li>
-<li><a href="#orgc98595c">第15章 原子变量与非阻塞同步机制</a></li>
+<li><a href="#org61aefdb">第14章 构建自定义的同步工具</a></li>
+<li><a href="#org2b7e5c2">第15章 原子变量与非阻塞同步机制</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org896406e" class="outline-2">
-<h2 id="org896406e">第13章 显式锁</h2>
-<div class="outline-text-2" id="text-org896406e">
+<div id="outline-container-org2d3cc7f" class="outline-2">
+<h2 id="org2d3cc7f">第13章 显式锁</h2>
+<div class="outline-text-2" id="text-org2d3cc7f">
 </div>
-<div id="outline-container-orgb437ac4" class="outline-3">
-<h3 id="orgb437ac4">Lock 与 RenentrantLock</h3>
-<div class="outline-text-3" id="text-orgb437ac4">
+<div id="outline-container-org725dfcc" class="outline-3">
+<h3 id="org725dfcc">Lock 与 RenentrantLock</h3>
+<div class="outline-text-3" id="text-org725dfcc">
 <p>
 ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互斥性和内存可见性.<br />
 在获取 ReentrantLock 时, 有着与进入同步代码块相同的内存语义, 在释放 ReentrantLock 时, 同样有着与退出同步代码块相同的内存语义.<br />
@@ -94,22 +70,22 @@ ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互�
 </div>
 </div>
 
-<div id="outline-container-orga632ded" class="outline-3">
-<h3 id="orga632ded">性能考虑因素</h3>
-<div class="outline-text-3" id="text-orga632ded">
+<div id="outline-container-org9594db8" class="outline-3">
+<h3 id="org9594db8">性能考虑因素</h3>
+<div class="outline-text-3" id="text-org9594db8">
 <p>
 在 Java6 之后内置锁与 ReentrantLock 的性能基本差不多<br />
 </p>
 
-<pre class="example">
+<pre class="example" id="orge617b8d">
 性能是一个不断变化的指标, 如果在昨天的测试基准中发现 X 比 Y 更快, 那么在今天就可能已经过时了.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf81eae2" class="outline-3">
-<h3 id="orgf81eae2">公平性</h3>
-<div class="outline-text-3" id="text-orgf81eae2">
+<div id="outline-container-orge692418" class="outline-3">
+<h3 id="orge692418">公平性</h3>
+<div class="outline-text-3" id="text-orge692418">
 <p>
 在 ReentrantLock 的构造函数中提供了两种公平性选择: 创建一个非公平的锁(默认)或者一个公平的锁.<br />
 </p>
@@ -124,21 +100,21 @@ ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互�
 </div>
 </div>
 
-<div id="outline-container-orge9cbc1a" class="outline-3">
-<h3 id="orge9cbc1a">在 synchronized 和 ReentrantLock 之间进行选择</h3>
-<div class="outline-text-3" id="text-orge9cbc1a">
-<pre class="example">
+<div id="outline-container-orgb984665" class="outline-3">
+<h3 id="orgb984665">在 synchronized 和 ReentrantLock 之间进行选择</h3>
+<div class="outline-text-3" id="text-orgb984665">
+<pre class="example" id="org20c2015">
 在一些内置锁无法满足需求的情况下, RenentrantLock 可以作为一种高级工具. 当需要一些高级功能时才应该使用 ReentrantLock,
 这些功能包括: 可定时的, 可轮询的与可中断的锁获取操作, 公平对列, 以及非块结构的锁. 否则应该优先使用 synchronized.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf4f145b" class="outline-3">
-<h3 id="orgf4f145b">读 - 写锁</h3>
-<div class="outline-text-3" id="text-orgf4f145b">
+<div id="outline-container-orgf87aaa9" class="outline-3">
+<h3 id="orgf87aaa9">读 - 写锁</h3>
+<div class="outline-text-3" id="text-orgf87aaa9">
 <p>
-互斥是一种传统的加锁策略, 虽然可以避免"写/写"冲突和"写/读"冲突, 但同样也避免了"读/读"冲突.<br />
+互斥是一种传统的加锁策略, 虽然可以避免&ldquo;写/写&rdquo;冲突和&ldquo;写/读&rdquo;冲突, 但同样也避免了&ldquo;读/读&rdquo;冲突.<br />
 如果大部分访问操作都是读操作, 可以使用读/写锁, 一个资源可以被多个读操作访问, 或者被一个写操作访问, 但两者不能同时进行.<br />
 </p>
 
@@ -162,18 +138,18 @@ ReentrantReadWriteLock 为这两种锁都提供了可重入的加锁语义.<br /
 </div>
 </div>
 
-<div id="outline-container-org1e4c45e" class="outline-2">
-<h2 id="org1e4c45e">第14章 构建自定义的同步工具</h2>
-<div class="outline-text-2" id="text-org1e4c45e">
+<div id="outline-container-org61aefdb" class="outline-2">
+<h2 id="org61aefdb">第14章 构建自定义的同步工具</h2>
+<div class="outline-text-2" id="text-org61aefdb">
 <p>
 TODO<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgc98595c" class="outline-2">
-<h2 id="orgc98595c">第15章 原子变量与非阻塞同步机制</h2>
-<div class="outline-text-2" id="text-orgc98595c">
+<div id="outline-container-org2b7e5c2" class="outline-2">
+<h2 id="org2b7e5c2">第15章 原子变量与非阻塞同步机制</h2>
+<div class="outline-text-2" id="text-org2b7e5c2">
 <p>
 TODO<br />
 </p>
@@ -182,7 +158,7 @@ TODO<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-06-03 Wed 18:06</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>

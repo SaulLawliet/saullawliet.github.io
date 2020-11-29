@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-04-01 Wed 20:30 -->
+<!-- 2020-11-29 Sun 10:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AtomicInteger 源码分析</title>
@@ -11,50 +11,26 @@
 <meta name="author" content="Saul Lawliet" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
 <script type="text/javascript">
-/*
-@licstart  The following is the entire license notice for the
-JavaScript code in this tag.
-
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
-
-The JavaScript code in this tag is free software: you can
-redistribute it and/or modify it under the terms of the GNU
-General Public License (GNU GPL) as published by the Free Software
-Foundation, either version 3 of the License, or (at your option)
-any later version.  The code is distributed WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
-
-As additional permission under GNU GPL version 3 section 7, you
-may distribute non-source (e.g., minimized or compacted) forms of
-that code without the copy of the GNU GPL normally required by
-section 4, provided you include this license notice and a URL
-through which recipients can access the Corresponding Source.
-
-
-@licend  The above is the entire license notice
-for the JavaScript code in this tag.
-*/
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
 <!--/*--><![CDATA[/*><!--*/
- function CodeHighlightOn(elem, id)
- {
-   var target = document.getElementById(id);
-   if(null != target) {
-     elem.cacheClassElem = elem.className;
-     elem.cacheClassTarget = target.className;
-     target.className = "code-highlighted";
-     elem.className   = "code-highlighted";
-   }
- }
- function CodeHighlightOff(elem, id)
- {
-   var target = document.getElementById(id);
-   if(elem.cacheClassElem)
-     elem.className = elem.cacheClassElem;
-   if(elem.cacheClassTarget)
-     target.className = elem.cacheClassTarget;
- }
-/*]]>*///-->
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
 </script>
 </head>
 <body>
@@ -64,14 +40,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org18ae42b">sun.misc.Unsafe</a></li>
-<li><a href="#org2337830">java.util.concurrent.atomic.AtomicInteger</a>
+<li><a href="#orgc5cf25e">sun.misc.Unsafe</a></li>
+<li><a href="#orgb14624b">java.util.concurrent.atomic.AtomicInteger</a>
 <ul>
-<li><a href="#org26b6a2f">类定义</a></li>
-<li><a href="#org1428296">主要方法</a></li>
+<li><a href="#orgb123684">类定义</a></li>
+<li><a href="#orge2c24dd">主要方法</a></li>
 </ul>
 </li>
-<li><a href="#orgd8be8b4">小结</a></li>
+<li><a href="#org9e48ea1">小结</a></li>
 </ul>
 </div>
 </div>
@@ -79,81 +55,81 @@ for the JavaScript code in this tag.
 环境: <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d">jdk8</a><br />
 </p>
 
-<div id="outline-container-org18ae42b" class="outline-2">
-<h2 id="org18ae42b">sun.misc.Unsafe</h2>
-<div class="outline-text-2" id="text-org18ae42b">
+<div id="outline-container-orgc5cf25e" class="outline-2">
+<h2 id="orgc5cf25e">sun.misc.Unsafe</h2>
+<div class="outline-text-2" id="text-orgc5cf25e">
 <p>
 <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d/src/share/classes/sun/misc/Unsafe.java">Unsafe类</a>是单例模式, 主要提供了一些操作内存的方法, 为了安全起见, 只有jdk源码才能使用该类<br />
 </p>
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Unsafe.java</span>
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #268bd2;">Unsafe</span>() {}
-<span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Unsafe</span> <span style="color: #268bd2;">theUnsafe</span> = <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Unsafe</span>();
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #b58900;">Unsafe</span> <span style="color: #268bd2;">getUnsafe</span>() {
-    <span style="color: #b58900;">Class</span>&lt;?&gt; <span style="color: #268bd2;">caller</span> = Reflection.getCallerClass();
-    <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#24403;&#35843;&#29992;&#32773;&#31867;&#30340;&#21551;&#21160;&#22120;&#20026;null&#34920;&#31034;&#28304;&#30721;, &#21542;&#21017;&#25243;&#20986;&#24322;&#24120; */</span>
-    <span style="color: #859900; font-weight: bold;">if</span> (<span style="color: #b58900; font-weight: bold;">!</span>VM.isSystemDomainLoader(caller.getClassLoader()))
-        <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">SecurityException</span>(<span style="color: #2aa198;">"Unsafe"</span>);
-    <span style="color: #859900; font-weight: bold;">return</span> theUnsafe;
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">Unsafe.java</span>
+<span style="color: #51afef;">private</span> <span style="color: #c678dd;">Unsafe</span>() {}
+<span style="color: #51afef;">private</span> <span style="color: #51afef;">static</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Unsafe</span> <span style="color: #dcaeea;">theUnsafe</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Unsafe</span>();
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">static</span> <span style="color: #ECBE7B;">Unsafe</span> <span style="color: #c678dd;">getUnsafe</span>() {
+    <span style="color: #ECBE7B;">Class</span>&lt;?&gt; <span style="color: #dcaeea;">caller</span> = Reflection.getCallerClass();
+    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#24403;&#35843;&#29992;&#32773;&#31867;&#30340;&#21551;&#21160;&#22120;&#20026;null&#34920;&#31034;&#28304;&#30721;, &#21542;&#21017;&#25243;&#20986;&#24322;&#24120;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">if</span> (<span style="color: #51afef; font-weight: bold;">!</span>VM.isSystemDomainLoader(caller.getClassLoader()))
+        <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">SecurityException</span>(<span style="color: #98be65;">"Unsafe"</span>);
+    <span style="color: #51afef;">return</span> theUnsafe;
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org2337830" class="outline-2">
-<h2 id="org2337830">java.util.concurrent.atomic.AtomicInteger</h2>
-<div class="outline-text-2" id="text-org2337830">
+<div id="outline-container-orgb14624b" class="outline-2">
+<h2 id="orgb14624b">java.util.concurrent.atomic.AtomicInteger</h2>
+<div class="outline-text-2" id="text-orgb14624b">
 </div>
-<div id="outline-container-org26b6a2f" class="outline-3">
-<h3 id="org26b6a2f">类定义</h3>
-<div class="outline-text-3" id="text-org26b6a2f">
+<div id="outline-container-orgb123684" class="outline-3">
+<h3 id="orgb123684">类定义</h3>
+<div class="outline-text-3" id="text-orgb123684">
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AtomicInteger.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">class</span> <span style="color: #b58900;">AtomicInteger</span> <span style="color: #859900; font-weight: bold;">extends</span> <span style="color: #b58900;">Number</span> <span style="color: #859900; font-weight: bold;">implements</span> <span style="color: #268bd2; font-weight: bold;">java</span>.<span style="color: #268bd2; font-weight: bold;">io</span>.<span style="color: #b58900;">Serializable</span> {
-    <span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">setup to use Unsafe.compareAndSwapInt for updates</span>
-    <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">Unsafe</span> <span style="color: #268bd2;">unsafe</span> = Unsafe.getUnsafe();
-    <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">static</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">long</span> <span style="color: #268bd2;">valueOffset</span>; <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#32531;&#23384;&#21464;&#37327; value &#22312;&#20869;&#23384;&#30340;&#20301;&#32622; */</span>
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AtomicInteger.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">AtomicInteger</span> <span style="color: #51afef;">extends</span> <span style="color: #ECBE7B;">Number</span> <span style="color: #51afef;">implements</span> <span style="color: #a9a1e1;">java</span>.<span style="color: #a9a1e1;">io</span>.<span style="color: #ECBE7B;">Serializable</span> {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setup to use Unsafe.compareAndSwapInt for updates</span>
+    <span style="color: #51afef;">private</span> <span style="color: #51afef;">static</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">Unsafe</span> <span style="color: #dcaeea;">unsafe</span> = Unsafe.getUnsafe();
+    <span style="color: #51afef;">private</span> <span style="color: #51afef;">static</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">long</span> <span style="color: #dcaeea;">valueOffset</span>; <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#32531;&#23384;&#21464;&#37327; value &#22312;&#20869;&#23384;&#30340;&#20301;&#32622;</span><span style="color: #5B6268;"> */</span>
 
-    <span style="color: #859900; font-weight: bold;">static</span> {
-        <span style="color: #859900; font-weight: bold;">try</span> {
+    <span style="color: #51afef;">static</span> {
+        <span style="color: #51afef;">try</span> {
             valueOffset = unsafe.objectFieldOffset
-                (AtomicInteger.<span style="color: #859900; font-weight: bold;">class</span>.getDeclaredField(<span style="color: #2aa198;">"value"</span>));
-        } <span style="color: #859900; font-weight: bold;">catch</span> (<span style="color: #b58900;">Exception</span> <span style="color: #268bd2;">ex</span>) { <span style="color: #859900; font-weight: bold;">throw</span> <span style="color: #859900; font-weight: bold;">new</span> <span style="color: #b58900;">Error</span>(ex); }
+                (AtomicInteger.<span style="color: #51afef;">class</span>.getDeclaredField(<span style="color: #98be65;">"value"</span>));
+        } <span style="color: #51afef;">catch</span> (<span style="color: #ECBE7B;">Exception</span> <span style="color: #dcaeea;">ex</span>) { <span style="color: #51afef;">throw</span> <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Error</span>(ex); }
     }
 
-    <span style="color: #859900; font-weight: bold;">private</span> <span style="color: #859900; font-weight: bold;">volatile</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">value</span>; <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#20445;&#35777;&#22312;&#19981;&#21516;&#32447;&#31243;&#30340;&#21487;&#35265;&#24615; */</span>
+    <span style="color: #51afef;">private</span> <span style="color: #51afef;">volatile</span> <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">value</span>; <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#20445;&#35777;&#22312;&#19981;&#21516;&#32447;&#31243;&#30340;&#21487;&#35265;&#24615;</span><span style="color: #5B6268;"> */</span>
 }
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org1428296" class="outline-3">
-<h3 id="org1428296">主要方法</h3>
-<div class="outline-text-3" id="text-org1428296">
+<div id="outline-container-orge2c24dd" class="outline-3">
+<h3 id="orge2c24dd">主要方法</h3>
+<div class="outline-text-3" id="text-orge2c24dd">
 <div class="org-src-container">
-<pre class="src src-java"><span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">AtomicInger.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">addAndGet</span>(<span style="color: #b58900;">int</span> <span style="color: #268bd2;">delta</span>) {
-    <span style="color: #859900; font-weight: bold;">return</span> unsafe.getAndAddInt(<span style="color: #859900; font-weight: bold;">this</span>, valueOffset, delta) + delta;
+<pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">AtomicInger.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">addAndGet</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">delta</span>) {
+    <span style="color: #51afef;">return</span> unsafe.getAndAddInt(<span style="color: #51afef;">this</span>, valueOffset, delta) + delta;
 }
 
-<span style="color: #93a1a1;">// </span><span style="color: #93a1a1;">Unsafe.java</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">getAndAddInt</span>(<span style="color: #b58900;">Object</span> <span style="color: #268bd2;">o</span>, <span style="color: #b58900;">long</span> <span style="color: #268bd2;">offset</span>, <span style="color: #b58900;">int</span> <span style="color: #268bd2;">delta</span>) {
-    <span style="color: #b58900;">int</span> <span style="color: #268bd2;">v</span>;
-    <span style="color: #859900; font-weight: bold;">do</span> {
-        v = getIntVolatile(o, offset); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#25343;&#21040;&#24403;&#21069;&#21464;&#37327;&#30340;&#20540; */</span>
-    } <span style="color: #859900; font-weight: bold;">while</span> (<span style="color: #b58900; font-weight: bold;">!</span>compareAndSwapInt(o, offset, v, v + delta)); <span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">&#19981;&#26029;&#37325;&#35797;, &#30452;&#21040;&#25104;&#21151;&#20026;&#27490; */</span>
-    <span style="color: #859900; font-weight: bold;">return</span> v;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">Unsafe.java</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">getAndAddInt</span>(<span style="color: #ECBE7B;">Object</span> <span style="color: #dcaeea;">o</span>, <span style="color: #ECBE7B;">long</span> <span style="color: #dcaeea;">offset</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">delta</span>) {
+    <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">v</span>;
+    <span style="color: #51afef;">do</span> {
+        v = getIntVolatile(o, offset); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#25343;&#21040;&#24403;&#21069;&#21464;&#37327;&#30340;&#20540;</span><span style="color: #5B6268;"> */</span>
+    } <span style="color: #51afef;">while</span> (<span style="color: #51afef; font-weight: bold;">!</span>compareAndSwapInt(o, offset, v, v + delta)); <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&#19981;&#26029;&#37325;&#35797;, &#30452;&#21040;&#25104;&#21151;&#20026;&#27490;</span><span style="color: #5B6268;"> */</span>
+    <span style="color: #51afef;">return</span> v;
 }
 
-<span style="color: #93a1a1;">/* </span><span style="color: #93a1a1;">native &#26041;&#27861;, &#21407;&#23376;&#25805;&#20316;, &#20165;&#24403;&#20540;&#31561;&#20110; expected &#26102;, &#35774;&#32622;&#20540;&#20026; x, &#25104;&#21151;&#36820;&#22238; true */</span>
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #859900; font-weight: bold;">native</span> <span style="color: #b58900;">boolean</span> <span style="color: #268bd2;">compareAndSwapInt</span>(<span style="color: #b58900;">Object</span> <span style="color: #268bd2;">o</span>, <span style="color: #b58900;">long</span> <span style="color: #268bd2;">offset</span>,
-                                              <span style="color: #b58900;">int</span> <span style="color: #268bd2;">expected</span>,
-                                              <span style="color: #b58900;">int</span> <span style="color: #268bd2;">x</span>);
+<span style="color: #5B6268;">/* </span><span style="color: #5B6268;">native &#26041;&#27861;, &#21407;&#23376;&#25805;&#20316;, &#20165;&#24403;&#20540;&#31561;&#20110; expected &#26102;, &#35774;&#32622;&#20540;&#20026; x, &#25104;&#21151;&#36820;&#22238; true</span><span style="color: #5B6268;"> */</span>
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #51afef;">native</span> <span style="color: #ECBE7B;">boolean</span> <span style="color: #c678dd;">compareAndSwapInt</span>(<span style="color: #ECBE7B;">Object</span> <span style="color: #dcaeea;">o</span>, <span style="color: #ECBE7B;">long</span> <span style="color: #dcaeea;">offset</span>,
+                                              <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">expected</span>,
+                                              <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>);
 
-<span style="color: #859900; font-weight: bold;">public</span> <span style="color: #859900; font-weight: bold;">final</span> <span style="color: #b58900;">int</span> <span style="color: #268bd2;">get</span>() {
-    <span style="color: #859900; font-weight: bold;">return</span> value;
+<span style="color: #51afef;">public</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">get</span>() {
+    <span style="color: #51afef;">return</span> value;
 }
 </pre>
 </div>
@@ -162,9 +138,9 @@ for the JavaScript code in this tag.
 </div>
 
 
-<div id="outline-container-orgd8be8b4" class="outline-2">
-<h2 id="orgd8be8b4">小结</h2>
-<div class="outline-text-2" id="text-orgd8be8b4">
+<div id="outline-container-org9e48ea1" class="outline-2">
+<h2 id="org9e48ea1">小结</h2>
+<div class="outline-text-2" id="text-org9e48ea1">
 <p>
 这个类很简单, 仅仅用了关键字 volatile 和 Unsafe 类, 就实现了一个线程安全的 int 类型.<br />
 </p>
@@ -177,7 +153,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-04-01 Wed 20:30</p>
+<p class="date">Created: 2020-11-29 Sun 10:55</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
 </div>
 </body>
