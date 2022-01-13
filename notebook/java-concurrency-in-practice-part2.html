@@ -3,78 +3,56 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 10:55 -->
+<!-- 2022-01-13 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part2: 结构化并发应用程序</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">&lt;Java Concurrency in Practice&gt; 读书笔记 - Part2: 结构化并发应用程序</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc0b5e3c">第6章 任务执行</a>
+<li><a href="#org8afa830">第6章 任务执行</a>
 <ul>
-<li><a href="#orgbbe5e10">在线程中执行任务</a></li>
-<li><a href="#orgbaf3cbe">Executor 框架</a></li>
-<li><a href="#org02cb3e4">找出可利用的并发性</a></li>
+<li><a href="#org788fa0a">在线程中执行任务</a></li>
+<li><a href="#org3b496c3">Executor 框架</a></li>
+<li><a href="#orga5bb53d">找出可利用的并发性</a></li>
 </ul>
 </li>
-<li><a href="#orga0a9aa8">第7章 取消与关闭</a>
+<li><a href="#orgb04724b">第7章 取消与关闭</a>
 <ul>
-<li><a href="#org740a6e2">任务取消</a></li>
-<li><a href="#org9e3e5b9">停止基于线程的服务</a></li>
-<li><a href="#org83ec4eb">处理非正常的线程终止</a></li>
-<li><a href="#orgf1de6c5">JVM 关闭</a></li>
+<li><a href="#org6640fce">任务取消</a></li>
+<li><a href="#org53f45e8">停止基于线程的服务</a></li>
+<li><a href="#org1b68129">处理非正常的线程终止</a></li>
+<li><a href="#org1382b41">JVM 关闭</a></li>
 </ul>
 </li>
-<li><a href="#org6f990b1">第8章 线程池的使用</a>
+<li><a href="#org7b01e64">第8章 线程池的使用</a>
 <ul>
-<li><a href="#org4f26bde">在任务与执行策略之间的隐形耦合</a></li>
-<li><a href="#org2338d86">设置线程池的大小</a></li>
-<li><a href="#org4ff0162">配置 ThreadPoolExecutor</a></li>
-<li><a href="#org3fdeb29">扩展 ThreadPoolExecutor</a></li>
+<li><a href="#orgb2862bd">在任务与执行策略之间的隐形耦合</a></li>
+<li><a href="#org281501f">设置线程池的大小</a></li>
+<li><a href="#org7b36aaa">配置 ThreadPoolExecutor</a></li>
+<li><a href="#org669a61d">扩展 ThreadPoolExecutor</a></li>
 </ul>
 </li>
-<li><a href="#org4483593">第9章 图形用户界面应用程序</a></li>
+<li><a href="#orgdb110ea">第9章 图形用户界面应用程序</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc0b5e3c" class="outline-2">
-<h2 id="orgc0b5e3c">第6章 任务执行</h2>
-<div class="outline-text-2" id="text-orgc0b5e3c">
+<div id="outline-container-org8afa830" class="outline-2">
+<h2 id="org8afa830">第6章 任务执行</h2>
+<div class="outline-text-2" id="text-org8afa830">
 </div>
-<div id="outline-container-orgbbe5e10" class="outline-3">
-<h3 id="orgbbe5e10">在线程中执行任务</h3>
-<div class="outline-text-3" id="text-orgbbe5e10">
+<div id="outline-container-org788fa0a" class="outline-3">
+<h3 id="org788fa0a">在线程中执行任务</h3>
+<div class="outline-text-3" id="text-org788fa0a">
 <p>
 无限制创建线程的不足<br />
 </p>
@@ -86,9 +64,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgbaf3cbe" class="outline-3">
-<h3 id="orgbaf3cbe">Executor 框架</h3>
-<div class="outline-text-3" id="text-orgbaf3cbe">
+<div id="outline-container-org3b496c3" class="outline-3">
+<h3 id="org3b496c3">Executor 框架</h3>
+<div class="outline-text-3" id="text-org3b496c3">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #51afef;">public</span> <span style="color: #51afef;">interface</span> <span style="color: #ECBE7B;">Executor</span> {
     <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">execute</span>(<span style="color: #ECBE7B;">Runnable</span> <span style="color: #dcaeea;">command</span>);
@@ -111,7 +89,7 @@ Executor 基于生产者 - 消费者模式, 提交任务的操作相当于生产
 <li>在执行一个任务之前或之后, 应该进行哪些动作?<br /></li>
 </ul>
 
-<pre class="example" id="org63c8892">
+<pre class="example" id="orgc389ee8">
 每当看到这种形式的代码时: new Thread(runnable).start()
 并且你希望获得一种更灵活的执行策略时, 请考虑使用 Executor 来代替 Thread.
 </pre>
@@ -139,9 +117,9 @@ shutdownNow 方法将执行粗暴的关闭过程: 它将尝试取消所有运行
 </div>
 </div>
 
-<div id="outline-container-org02cb3e4" class="outline-3">
-<h3 id="org02cb3e4">找出可利用的并发性</h3>
-<div class="outline-text-3" id="text-org02cb3e4">
+<div id="outline-container-orga5bb53d" class="outline-3">
+<h3 id="orga5bb53d">找出可利用的并发性</h3>
+<div class="outline-text-3" id="text-orga5bb53d">
 <p>
 如果向 Executor 提交了一组计算任务, 并且希望在计算完成后获得结构, 可以使用: CompletionService<br />
 CompletionService 将 Executor 和 BlockingQueue 的功能融合在一起. 可以将 Callable 任务提交给它来执行, 然后使用类似于队列操作的 take 和 poll 等方法来获得已完成的结果, 而这些结果会在完成时将被封装为 Future.<br />
@@ -155,18 +133,18 @@ ExecutorCompletionService 的实现非常简单. 在构造函数中创建一个 
 </div>
 </div>
 
-<div id="outline-container-orga0a9aa8" class="outline-2">
-<h2 id="orga0a9aa8">第7章 取消与关闭</h2>
-<div class="outline-text-2" id="text-orga0a9aa8">
+<div id="outline-container-orgb04724b" class="outline-2">
+<h2 id="orgb04724b">第7章 取消与关闭</h2>
+<div class="outline-text-2" id="text-orgb04724b">
 </div>
-<div id="outline-container-org740a6e2" class="outline-3">
-<h3 id="org740a6e2">任务取消</h3>
-<div class="outline-text-3" id="text-org740a6e2">
-<pre class="example" id="org09c57db">
+<div id="outline-container-org6640fce" class="outline-3">
+<h3 id="org6640fce">任务取消</h3>
+<div class="outline-text-3" id="text-org6640fce">
+<pre class="example" id="orga5fb970">
 在 Java 的 API 或语言规范中, 并没有将中断与任务取消语义关联起来, 但实际上, 如果在取消之外的其他操作中使用中断, 那么都是不合适的, 并且很难支撑起更大的应用.
 </pre>
 
-<pre class="example" id="orgcc44243">
+<pre class="example" id="org2dbc343">
 调用 interrupt 并不意味着立即停止目标线程正在进行的工作, 而只是传递了请求中断的消息.
 </pre>
 
@@ -175,45 +153,45 @@ ExecutorCompletionService 的实现非常简单. 在构造函数中创建一个 
 使用静态的 Thread.interupted() 时应该小心, 因为它会清除当前线程的中断状态.<br />
 </p>
 
-<pre class="example" id="org8245105">
+<pre class="example" id="orgb9245b6">
 通常, 中断是实现取消的最合理方式.
 </pre>
 
-<pre class="example" id="org26cec3b">
+<pre class="example" id="org38dab3f">
 由于每个线程拥有各自的中断策略, 因此除非你知道中断对该线程的含义, 否则就不应该中断这个线程.
 </pre>
 
-<pre class="example" id="org5d03aa0">
+<pre class="example" id="org75b6a2a">
 只有实现了线程中断策略的代码才可以屏蔽中断请求. 在常规的任务和库代码中都不应该屏蔽中断请求.
 </pre>
 
-<pre class="example" id="orgc55e9bc">
+<pre class="example" id="org7188a5d">
 当 Future 的 get 方法抛出 InterruptedException 或 TimeoutException 时, 如果你知道不再需要结果, 那么就可以调用 Future 的 cancel 方法来取消任务.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org9e3e5b9" class="outline-3">
-<h3 id="org9e3e5b9">停止基于线程的服务</h3>
-<div class="outline-text-3" id="text-org9e3e5b9">
-<pre class="example" id="org02c0e1f">
+<div id="outline-container-org53f45e8" class="outline-3">
+<h3 id="org53f45e8">停止基于线程的服务</h3>
+<div class="outline-text-3" id="text-org53f45e8">
+<pre class="example" id="orgff37e36">
 对于持有线程的服务, 只要服务的存在时间大于创建线程的方法的存在时间, 那么就应该提供生命周期的方法.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org83ec4eb" class="outline-3">
-<h3 id="org83ec4eb">处理非正常的线程终止</h3>
-<div class="outline-text-3" id="text-org83ec4eb">
-<pre class="example" id="org148f85f">
+<div id="outline-container-org1b68129" class="outline-3">
+<h3 id="org1b68129">处理非正常的线程终止</h3>
+<div class="outline-text-3" id="text-org1b68129">
+<pre class="example" id="orgacd3709">
 在运行时间较长的应用程序中, 通常会为所有线程的未捕获异常指定同一个异常处理器, 并且该处理器至少会将异常信息记录到日志中.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgf1de6c5" class="outline-3">
-<h3 id="orgf1de6c5">JVM 关闭</h3>
-<div class="outline-text-3" id="text-orgf1de6c5">
+<div id="outline-container-org1382b41" class="outline-3">
+<h3 id="org1382b41">JVM 关闭</h3>
+<div class="outline-text-3" id="text-org1382b41">
 <p>
 关闭钩子应该是线程安全的: 它们在访问共享数据时必须使用同步机制, 并且小心地避免发生死锁, 这与其他并发代码的要求相同.<br />
 </p>
@@ -225,38 +203,38 @@ ExecutorCompletionService 的实现非常简单. 在构造函数中创建一个 
 当 JVM 正常停止时, 所有仍然存在的守护线程都将被抛弃, 它们既不会执行 finally 代码块, 也不会执行回卷栈, 而 JVM 只是直接退出.<br />
 </p>
 
-<pre class="example" id="org66f898d">
+<pre class="example" id="org8b220e8">
 此外, 守护线程通常不能用来替代应用程序管理程序中各个服务的生存周期.
 </pre>
 
-<pre class="example" id="org1c0725f">
+<pre class="example" id="orgf8770b0">
 避免使用终结器. (L: Object 的 finalize 方法)
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org6f990b1" class="outline-2">
-<h2 id="org6f990b1">第8章 线程池的使用</h2>
-<div class="outline-text-2" id="text-org6f990b1">
+<div id="outline-container-org7b01e64" class="outline-2">
+<h2 id="org7b01e64">第8章 线程池的使用</h2>
+<div class="outline-text-2" id="text-org7b01e64">
 </div>
-<div id="outline-container-org4f26bde" class="outline-3">
-<h3 id="org4f26bde">在任务与执行策略之间的隐形耦合</h3>
-<div class="outline-text-3" id="text-org4f26bde">
-<pre class="example" id="orgdfa6a74">
+<div id="outline-container-orgb2862bd" class="outline-3">
+<h3 id="orgb2862bd">在任务与执行策略之间的隐形耦合</h3>
+<div class="outline-text-3" id="text-orgb2862bd">
+<pre class="example" id="org7312f34">
 在一些任务中, 需要拥有或排除某种特定的执行策略. 如果某些任务依赖于其他的任务, 那么会要求线程池足够大, 从而确保它们依赖任务不会被放入等待队列中或被拒绝, 而采用线程封闭机制的任务需要串行执行.
 通过将这些需求写入文档, 将来的代码维护人员就不会由于使用了某种不合适的执行策略而破坏安全性或活跃性.
 </pre>
 
-<pre class="example" id="org02ff522">
+<pre class="example" id="org9cffcb0">
 每当提交一个有依赖性的 Executor 任务时, 要清楚地知道可能会出现线程"饥饿"死锁, 因此需要在代码或配置 Executor 的配置文件中记录线程池的大小限制或配置限制.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org2338d86" class="outline-3">
-<h3 id="org2338d86">设置线程池的大小</h3>
-<div class="outline-text-3" id="text-org2338d86">
+<div id="outline-container-org281501f" class="outline-3">
+<h3 id="org281501f">设置线程池的大小</h3>
+<div class="outline-text-3" id="text-org281501f">
 <p>
 要设置线程池的大小, 只需要避免&ldquo;过大&rdquo;和&ldquo;过小&rdquo;这两种极端情况.<br />
 如果线程池过大, 那么大量的线程将在相对很少的 CPU 和内存资源上发生竞争, 这不仅会导致更高的内存使用量, 而且还可能耗尽资源.<br />
@@ -267,9 +245,9 @@ ExecutorCompletionService 的实现非常简单. 在构造函数中创建一个 
 </div>
 </div>
 
-<div id="outline-container-org4ff0162" class="outline-3">
-<h3 id="org4ff0162">配置 ThreadPoolExecutor</h3>
-<div class="outline-text-3" id="text-org4ff0162">
+<div id="outline-container-org7b36aaa" class="outline-3">
+<h3 id="org7b36aaa">配置 ThreadPoolExecutor</h3>
+<div class="outline-text-3" id="text-org7b36aaa">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #51afef;">public</span> <span style="color: #c678dd;">ThreadPoolExecutor</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">corePoolSize</span>,
                           <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">maximumPoolSize</span>,
@@ -302,7 +280,7 @@ ThreadPoolExecutor 允许提供一个 BlockingQueue 来保存等待执行的任�
 如果没有线程正在等待, 并且线程池的当前大小小于最大值, 那么 ThreadPoolExecutor 将创建一个新的线程, 否则根据饱和策略来处理.<br />
 使用直接移交将更搞笑, 因为任务会直接移交给执行它的线程, 而不是被首先放在队列中, 然后由工作者线程从队列中提取该任务.<br /></li>
 </ul>
-<pre class="example" id="org1435134">
+<pre class="example" id="orgfa5a33b">
 对于 Executor, newCachedThreadPool 工厂方法是一种很好的默认选择, 它能提供比固定大小的线程池更好的排队性能.
 当需要限制当前任务的数量以满足资源管理需求时, 那么可以选择固定大小的线程池, 就像在接受网络客户请求的服务器应用程序中, 如果不进行限制, 那么很容易发生过载问题.
 </pre>
@@ -326,9 +304,9 @@ ThreadPoolExecutor 允许提供一个 BlockingQueue 来保存等待执行的任�
 </div>
 </div>
 
-<div id="outline-container-org3fdeb29" class="outline-3">
-<h3 id="org3fdeb29">扩展 ThreadPoolExecutor</h3>
-<div class="outline-text-3" id="text-org3fdeb29">
+<div id="outline-container-org669a61d" class="outline-3">
+<h3 id="org669a61d">扩展 ThreadPoolExecutor</h3>
+<div class="outline-text-3" id="text-org669a61d">
 <p>
 它提供了几个可以在子类化中改写的方法: beforeExecute, afterExecute, terminated.<br />
 在执行任务的线程中将调用 beforeExecute 和 afterrExecute 等方法, 这些方法中还可以添加日志, 计时, 检视或统计信息收集的功能.<br />
@@ -338,9 +316,9 @@ ThreadPoolExecutor 允许提供一个 BlockingQueue 来保存等待执行的任�
 </div>
 </div>
 
-<div id="outline-container-org4483593" class="outline-2">
-<h2 id="org4483593">第9章 图形用户界面应用程序</h2>
-<div class="outline-text-2" id="text-org4483593">
+<div id="outline-container-orgdb110ea" class="outline-2">
+<h2 id="orgdb110ea">第9章 图形用户界面应用程序</h2>
+<div class="outline-text-2" id="text-orgdb110ea">
 <p>
 暂不关心.<br />
 </p>
@@ -349,8 +327,7 @@ ThreadPoolExecutor 允许提供一个 BlockingQueue 来保存等待执行的任�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 10:55</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
 </div>
 </body>
 </html>

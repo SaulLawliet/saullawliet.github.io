@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-01-13 Thu 22:47 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Python 笔记</title>
+<meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Python 笔记</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge7bc4a3">常用代码</a>
+<ul>
+<li><a href="#org34241cc">判断文件是否存在</a></li>
+<li><a href="#orga81cbda">读取缓存文件并保存</a></li>
+</ul>
+</li>
+<li><a href="#org3767198">https://book.pythontips.com/en/latest/index.html</a>
+<ul>
+<li><a href="#org686c7e6">4. Map, Filter and Reduce</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orge7bc4a3" class="outline-2">
+<h2 id="orge7bc4a3">常用代码</h2>
+<div class="outline-text-2" id="text-orge7bc4a3">
+</div>
+<div id="outline-container-org34241cc" class="outline-3">
+<h3 id="org34241cc">判断文件是否存在</h3>
+<div class="outline-text-3" id="text-org34241cc">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #51afef;">import</span> os
+os.path.exists(<span style="color: #98be65;">"test_file.txt"</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga81cbda" class="outline-3">
+<h3 id="orga81cbda">读取缓存文件并保存</h3>
+<div class="outline-text-3" id="text-orga81cbda">
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #51afef;">import</span> json
+<span style="color: #51afef;">import</span> os
+<span style="color: #dcaeea;">cache_file</span> = <span style="color: #98be65;">"cache.json"</span>
+<span style="color: #dcaeea;">cache</span> = {}
+<span style="color: #51afef;">if</span> os.path.isfile(cache_file):
+    <span style="color: #51afef;">with</span> <span style="color: #c678dd;">open</span>(cache_file) <span style="color: #51afef;">as</span> f:
+        <span style="color: #dcaeea;">cache</span> = json.load(f)
+<span style="color: #51afef;">with</span> <span style="color: #c678dd;">open</span>(cache_file, <span style="color: #98be65;">'w'</span>, encoding=<span style="color: #98be65;">'utf-8'</span>) <span style="color: #51afef;">as</span> f:
+    json.dump(cache, f, ensure_ascii=<span style="color: #a9a1e1;">False</span>, indent=<span style="color: #da8548; font-weight: bold;">4</span>)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org3767198" class="outline-2">
+<h2 id="org3767198"><a href="https://book.pythontips.com/en/latest/index.html">https://book.pythontips.com/en/latest/index.html</a></h2>
+<div class="outline-text-2" id="text-org3767198">
+</div>
+<div id="outline-container-org686c7e6" class="outline-3">
+<h3 id="org686c7e6">4. Map, Filter and Reduce</h3>
+<div class="outline-text-3" id="text-org686c7e6">
+<p>
+<a href="https://book.pythontips.com/en/latest/map_filter.html">https://book.pythontips.com/en/latest/map_filter.html</a><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-python"><span style="color: #dcaeea;">items_4_1</span> = [<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>, <span style="color: #da8548; font-weight: bold;">5</span>]
+<span style="color: #dcaeea;">squared_4_1</span> = <span style="color: #c678dd;">list</span>(<span style="color: #c678dd;">map</span>(<span style="color: #51afef;">lambda</span> x: x**<span style="color: #da8548; font-weight: bold;">2</span>, items_4_1))
+<span style="color: #51afef;">print</span>(<span style="color: #98be65;">"\nMap: &#25152;&#26377;&#20803;&#32032;&#27714;&#24179;&#26041;\n  old: "</span>, items_4_1, <span style="color: #98be65;">"\n  new: "</span>, squared_4_1)
+
+<span style="color: #dcaeea;">number_list_4_2</span> = <span style="color: #c678dd;">list</span>(<span style="color: #c678dd;">range</span>(-<span style="color: #da8548; font-weight: bold;">5</span>, <span style="color: #da8548; font-weight: bold;">5</span>))
+<span style="color: #dcaeea;">less_than_zero_4_2</span> = <span style="color: #c678dd;">list</span>(<span style="color: #c678dd;">filter</span>(<span style="color: #51afef;">lambda</span> x: x &lt; <span style="color: #da8548; font-weight: bold;">0</span>, number_list_4_2))
+<span style="color: #51afef;">print</span>(<span style="color: #98be65;">"\nFilter: &#20445;&#30041;&#23567;&#20110;&#38646;\n  old: "</span>, number_list_4_2, <span style="color: #98be65;">"\n  new: "</span>, less_than_zero_4_2)
+
+<span style="color: #51afef;">from</span> functools <span style="color: #51afef;">import</span> <span style="color: #c678dd;">reduce</span>
+<span style="color: #dcaeea;">items_4_3</span> = [<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>]
+<span style="color: #dcaeea;">product_4_3</span> = <span style="color: #c678dd;">reduce</span>((<span style="color: #51afef;">lambda</span> x, y: x * y), items_4_3)
+<span style="color: #51afef;">print</span>(<span style="color: #98be65;">"\nReduct: &#25152;&#26377;&#20803;&#32032;&#32047;&#20056;\n  old: "</span>, items_4_3, <span style="color: #98be65;">"\n  new: "</span> + <span style="color: #c678dd;">str</span>(product_4_3))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
+</div>
+</body>
+</html>

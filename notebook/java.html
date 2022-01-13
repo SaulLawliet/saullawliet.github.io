@@ -3,72 +3,50 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 10:55 -->
+<!-- 2022-01-13 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Java 笔记</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Java 笔记</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org524bcb9">资料</a></li>
-<li><a href="#orgd44d482">Java Memory Model</a></li>
-<li><a href="#org1b3a0b1">并发特性</a></li>
-<li><a href="#org6873457">Happens-Before</a></li>
-<li><a href="#org424f9d8">同步工具类</a></li>
-<li><a href="#orgd8dc573">引用类型</a></li>
-<li><a href="#org006792a">Java 主流锁</a>
+<li><a href="#orga13438b">资料</a></li>
+<li><a href="#org3c585ef">Java Memory Model</a></li>
+<li><a href="#org790a171">并发特性</a></li>
+<li><a href="#orgd7b2995">Happens-Before</a></li>
+<li><a href="#org80610e0">同步工具类</a></li>
+<li><a href="#org9aa3e87">引用类型</a></li>
+<li><a href="#org2c8d054">Java 主流锁</a>
 <ul>
-<li><a href="#org873d19d">悲观锁 vs 乐观锁</a></li>
-<li><a href="#org9c6f5a0">自旋锁 vs 适应性自旋锁</a></li>
-<li><a href="#org87239ee">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</a></li>
-<li><a href="#org3220f3d">公平锁 vs 非公平锁</a></li>
+<li><a href="#orga4c5ec8">悲观锁 vs 乐观锁</a></li>
+<li><a href="#orgeeb462f">自旋锁 vs 适应性自旋锁</a></li>
+<li><a href="#org4dce192">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</a></li>
+<li><a href="#org2d29977">公平锁 vs 非公平锁</a></li>
 </ul>
 </li>
-<li><a href="#org191876d">垃圾回收</a>
+<li><a href="#org65c9636">垃圾回收</a>
 <ul>
-<li><a href="#orgf151e7e">垃圾回收算法</a></li>
-<li><a href="#org68f2ae7">垃圾回收器</a></li>
-<li><a href="#orgd57454c">参数基本策略</a></li>
-<li><a href="#org28c78f1">HotSpot JVM 手册</a></li>
+<li><a href="#org9b631b6">垃圾回收算法</a></li>
+<li><a href="#orge26ebd4">垃圾回收器</a></li>
+<li><a href="#orgb5d4152">参数基本策略</a></li>
+<li><a href="#orgcb634f2">HotSpot JVM 手册</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org524bcb9" class="outline-2">
-<h2 id="org524bcb9">资料</h2>
-<div class="outline-text-2" id="text-org524bcb9">
+<div id="outline-container-orga13438b" class="outline-2">
+<h2 id="orga13438b">资料</h2>
+<div class="outline-text-2" id="text-orga13438b">
 <ul class="org-ul">
 <li>Java Design Patterns <a href="https://java-design-patterns.com/">https://java-design-patterns.com/</a><br /></li>
 <li>美团技术团队 <a href="https://tech.meituan.com/tags/java.html">https://tech.meituan.com/tags/java.html</a><br /></li>
@@ -76,9 +54,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgd44d482" class="outline-2">
-<h2 id="orgd44d482">Java Memory Model</h2>
-<div class="outline-text-2" id="text-orgd44d482">
+<div id="outline-container-org3c585ef" class="outline-2">
+<h2 id="org3c585ef">Java Memory Model</h2>
+<div class="outline-text-2" id="text-org3c585ef">
 <p>
 分为 <b>主内存</b> 和 <b>工作内存(线程)</b><br />
 不同线程拥有自己的工作内存, 同一个变量在主内存只有一份, 当线程用到时, 会从主内存中拷贝一个副本, 线程执行完的时候, 再将变量同步到主内存.<br />
@@ -130,9 +108,9 @@
 </div>
 </div>
 
-<div id="outline-container-org1b3a0b1" class="outline-2">
-<h2 id="org1b3a0b1">并发特性</h2>
-<div class="outline-text-2" id="text-org1b3a0b1">
+<div id="outline-container-org790a171" class="outline-2">
+<h2 id="org790a171">并发特性</h2>
+<div class="outline-text-2" id="text-org790a171">
 <p>
 <b>原子性</b><br />
 一个操作或者多个操作, 要么全部执行并且执行的过程不回被任何因素打断, 要么就都不执行.<br />
@@ -144,9 +122,9 @@
 </div>
 </div>
 
-<div id="outline-container-org6873457" class="outline-2">
-<h2 id="org6873457">Happens-Before</h2>
-<div class="outline-text-2" id="text-org6873457">
+<div id="outline-container-orgd7b2995" class="outline-2">
+<h2 id="orgd7b2995">Happens-Before</h2>
+<div class="outline-text-2" id="text-orgd7b2995">
 <ul class="org-ul">
 <li>程序顺序规则<br /></li>
 <li>监视器锁规则<br /></li>
@@ -160,9 +138,9 @@
 </div>
 </div>
 
-<div id="outline-container-org424f9d8" class="outline-2">
-<h2 id="org424f9d8">同步工具类</h2>
-<div class="outline-text-2" id="text-org424f9d8">
+<div id="outline-container-org80610e0" class="outline-2">
+<h2 id="org80610e0">同步工具类</h2>
+<div class="outline-text-2" id="text-org80610e0">
 <p>
 <b>CountDownLatch</b> - 闭锁 (底层: AQS)<br />
 初始化一个值, countdown(), countdown() &#x2026; await()<br />
@@ -176,9 +154,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgd8dc573" class="outline-2">
-<h2 id="orgd8dc573">引用类型</h2>
-<div class="outline-text-2" id="text-orgd8dc573">
+<div id="outline-container-org9aa3e87" class="outline-2">
+<h2 id="org9aa3e87">引用类型</h2>
+<div class="outline-text-2" id="text-org9aa3e87">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -212,9 +190,9 @@
 </div>
 </div>
 
-<div id="outline-container-org006792a" class="outline-2">
-<h2 id="org006792a">Java 主流锁</h2>
-<div class="outline-text-2" id="text-org006792a">
+<div id="outline-container-org2c8d054" class="outline-2">
+<h2 id="org2c8d054">Java 主流锁</h2>
+<div class="outline-text-2" id="text-org2c8d054">
 <ul class="org-ul">
 <li>线程要不要锁住同步资源?<br />
 <ul class="org-ul">
@@ -251,9 +229,9 @@
 </ul>
 </div>
 
-<div id="outline-container-org873d19d" class="outline-3">
-<h3 id="org873d19d">悲观锁 vs 乐观锁</h3>
-<div class="outline-text-3" id="text-org873d19d">
+<div id="outline-container-orga4c5ec8" class="outline-3">
+<h3 id="orga4c5ec8">悲观锁 vs 乐观锁</h3>
+<div class="outline-text-3" id="text-orga4c5ec8">
 <ul class="org-ul">
 <li>悲观锁: 使用前加锁, 使用后释放锁. 例如: synchronized 与 Lock<br /></li>
 <li>乐观锁: 在更新数据前判断有没有别的线程更新了这个值. 例如: Atomic 相关类, 底层使用 volatile 和 CAS 算法.<br /></li>
@@ -261,9 +239,9 @@
 </div>
 </div>
 
-<div id="outline-container-org9c6f5a0" class="outline-3">
-<h3 id="org9c6f5a0">自旋锁 vs 适应性自旋锁</h3>
-<div class="outline-text-3" id="text-org9c6f5a0">
+<div id="outline-container-orgeeb462f" class="outline-3">
+<h3 id="orgeeb462f">自旋锁 vs 适应性自旋锁</h3>
+<div class="outline-text-3" id="text-orgeeb462f">
 <ul class="org-ul">
 <li>自旋锁: 不放弃 CPU 时间片, 通过 for(;;) {&#x2026;} 等待锁释放.<br /></li>
 <li>适应性自旋锁: 在自旋锁的基础上, 如果超出失败次数上限(失败次数上限不固定, 由 JVM 调整), 线程将会阻塞.<br /></li>
@@ -271,9 +249,9 @@
 </div>
 </div>
 
-<div id="outline-container-org87239ee" class="outline-3">
-<h3 id="org87239ee">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</h3>
-<div class="outline-text-3" id="text-org87239ee">
+<div id="outline-container-org4dce192" class="outline-3">
+<h3 id="org4dce192">无锁 vs 偏向锁 vs 轻量级锁 vs 重量级锁</h3>
+<div class="outline-text-3" id="text-org4dce192">
 <p>
 <b>Header Word</b> (Mark Word)<br />
 默认存储对象的 HashCode, 分代年龄和锁标志位信息.<br />
@@ -339,7 +317,7 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </p>
 
 
-<div id="org02ad946" class="figure">
+<div id="org80cc654" class="figure">
 <p><img src="https://i.loli.net/2020/04/03/1AXmgTt5hp3QdJO.gif" alt="1AXmgTt5hp3QdJO.gif" /><br />
 </p>
 </div>
@@ -356,9 +334,9 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </div>
 </div>
 
-<div id="outline-container-org3220f3d" class="outline-3">
-<h3 id="org3220f3d">公平锁 vs 非公平锁</h3>
-<div class="outline-text-3" id="text-org3220f3d">
+<div id="outline-container-org2d29977" class="outline-3">
+<h3 id="org2d29977">公平锁 vs 非公平锁</h3>
+<div class="outline-text-3" id="text-org2d29977">
 <ul class="org-ul">
 <li>公平锁: 线程会严格按照获取锁的顺序排队.<br /></li>
 <li>非公平锁: 线程优先插队, 插队失败才会排队. (RenentrantLock等同步类的默认选择, 性能更优)<br /></li>
@@ -367,13 +345,13 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </div>
 </div>
 
-<div id="outline-container-org191876d" class="outline-2">
-<h2 id="org191876d">垃圾回收</h2>
-<div class="outline-text-2" id="text-org191876d">
+<div id="outline-container-org65c9636" class="outline-2">
+<h2 id="org65c9636">垃圾回收</h2>
+<div class="outline-text-2" id="text-org65c9636">
 </div>
-<div id="outline-container-orgf151e7e" class="outline-3">
-<h3 id="orgf151e7e">垃圾回收算法</h3>
-<div class="outline-text-3" id="text-orgf151e7e">
+<div id="outline-container-org9b631b6" class="outline-3">
+<h3 id="org9b631b6">垃圾回收算法</h3>
+<div class="outline-text-3" id="text-org9b631b6">
 <ul class="org-ul">
 <li>复制算法 (<b>用于新生代</b>)<br />
 将内存分成两半, 一半用完后, 将存活的数据移动到另一半<br /></li>
@@ -392,11 +370,11 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-org68f2ae7" class="outline-3">
-<h3 id="org68f2ae7">垃圾回收器</h3>
-<div class="outline-text-3" id="text-org68f2ae7">
+<div id="outline-container-orge26ebd4" class="outline-3">
+<h3 id="orge26ebd4">垃圾回收器</h3>
+<div class="outline-text-3" id="text-orge26ebd4">
 
-<div id="orgb720c28" class="figure">
+<div id="orgcf2037b" class="figure">
 <p><img src="https://i.loli.net/2020/04/08/JAixmhlzv1Mqe36.jpg" alt="JAixmhlzv1Mqe36.jpg" /><br />
 </p>
 </div>
@@ -410,9 +388,9 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-orgd57454c" class="outline-3">
-<h3 id="orgd57454c">参数基本策略</h3>
-<div class="outline-text-3" id="text-orgd57454c">
+<div id="outline-container-orgb5d4152" class="outline-3">
+<h3 id="orgb5d4152">参数基本策略</h3>
+<div class="outline-text-3" id="text-orgb5d4152">
 <p>
 活跃数据: 应用程序稳定运行时长期存活对象在堆中占用的空间大小, 也就是Full GC后堆中老年代占用空间的大小.<br />
 </p>
@@ -454,11 +432,11 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 </div>
 
-<div id="outline-container-org28c78f1" class="outline-3">
-<h3 id="org28c78f1">HotSpot JVM 手册</h3>
-<div class="outline-text-3" id="text-org28c78f1">
+<div id="outline-container-orgcb634f2" class="outline-3">
+<h3 id="orgcb634f2">HotSpot JVM 手册</h3>
+<div class="outline-text-3" id="text-orgcb634f2">
 
-<div id="org460d8cb" class="figure">
+<div id="org492cadf" class="figure">
 <p><img src="https://saullawliet.github.io/images/Java%208%20-%20GC%20cheatsheet.png" alt="Java%208%20-%20GC%20cheatsheet.png" /><br />
 </p>
 </div>
@@ -468,8 +446,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 10:55</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
 </div>
 </body>
 </html>

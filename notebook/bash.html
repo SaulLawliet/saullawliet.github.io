@@ -3,57 +3,35 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-12-19 Sat 10:35 -->
+<!-- 2022-01-13 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Bash 笔记</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Bash 笔记</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6007e29">基本</a></li>
-<li><a href="#org5cfb50d">小提示</a></li>
-<li><a href="#orga71a33a">MacOS</a></li>
-<li><a href="#org3f3dcac">字符串操作</a></li>
-<li><a href="#org9a45554">不常用命令备忘</a></li>
-<li><a href="#orgc76db1a">代码片段</a>
+<li><a href="#orgc735f51">基本</a></li>
+<li><a href="#org147d9ba">小提示</a></li>
+<li><a href="#orgc52beb5">MacOS</a></li>
+<li><a href="#org4914aff">字符串操作</a></li>
+<li><a href="#org7493f44">不常用命令备忘</a></li>
+<li><a href="#org3c60e6a">代码片段</a>
 <ul>
-<li><a href="#org54daeba">最小代码模板</a></li>
-<li><a href="#org294f604">获取脚本的目录信息</a></li>
-<li><a href="#orgf3579d4">从命令声明数组</a></li>
-<li><a href="#org2af5fd0">遍历文件的行</a></li>
-<li><a href="#org02bba85">遍历文件和目录</a></li>
-<li><a href="#orgf494e9f">输出带颜色的文字</a></li>
-<li><a href="#orga9d3a1c">切换用户执行</a></li>
+<li><a href="#org0f78ad3">最小代码模板</a></li>
+<li><a href="#org9218858">获取脚本的目录信息</a></li>
+<li><a href="#orgf174db1">从命令声明数组</a></li>
+<li><a href="#org4eb50b7">遍历文件的行</a></li>
+<li><a href="#org0daca22">遍历文件和目录</a></li>
+<li><a href="#org6723b26">输出带颜色的文字</a></li>
+<li><a href="#org784231b">切换用户执行</a></li>
 </ul>
 </li>
 </ul>
@@ -61,9 +39,9 @@
 </div>
 <hr />
 
-<div id="outline-container-org6007e29" class="outline-2">
-<h2 id="org6007e29">基本</h2>
-<div class="outline-text-2" id="text-org6007e29">
+<div id="outline-container-orgc735f51" class="outline-2">
+<h2 id="orgc735f51">基本</h2>
+<div class="outline-text-2" id="text-orgc735f51">
 <ul class="org-ul">
 <li>基本语法介绍: <a href="https://devhints.io/bash">Bash scripting cheatsheet</a>, 推荐 <b>熟读</b> 或 <b>随手查阅</b>.<br /></li>
 <li>进阶书籍: <a href="https://github.com/dylanaraps/pure-bash-bible">Pure Bash Bible</a>, 真·大佬出品.<br /></li>
@@ -73,9 +51,9 @@
 </div>
 </div>
 
-<div id="outline-container-org5cfb50d" class="outline-2">
-<h2 id="org5cfb50d">小提示</h2>
-<div class="outline-text-2" id="text-org5cfb50d">
+<div id="outline-container-org147d9ba" class="outline-2">
+<h2 id="org147d9ba">小提示</h2>
+<div class="outline-text-2" id="text-org147d9ba">
 <ul class="org-ul">
 <li>使用变量时, 一定要用引号. 如: <code>echo "$var"</code><br /></li>
 <li>声明函数时, 无需使用关键字 <code>function</code><br /></li>
@@ -84,9 +62,9 @@
 </div>
 </div>
 
-<div id="outline-container-orga71a33a" class="outline-2">
-<h2 id="orga71a33a">MacOS</h2>
-<div class="outline-text-2" id="text-orga71a33a">
+<div id="outline-container-orgc52beb5" class="outline-2">
+<h2 id="orgc52beb5">MacOS</h2>
+<div class="outline-text-2" id="text-orgc52beb5">
 <p>
 MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前加上以下代码.<br />
 需要依赖: coreutils (<code>brew install coreutils</code>)<br />
@@ -98,9 +76,9 @@ MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前�
 </div>
 </div>
 
-<div id="outline-container-org3f3dcac" class="outline-2">
-<h2 id="org3f3dcac">字符串操作</h2>
-<div class="outline-text-2" id="text-org3f3dcac">
+<div id="outline-container-org4914aff" class="outline-2">
+<h2 id="org4914aff">字符串操作</h2>
+<div class="outline-text-2" id="text-org4914aff">
 <p>
 常用操作<br />
 </p>
@@ -255,9 +233,9 @@ MacOS 与 Linux 在很多命令存在不兼容的问题. 可以在脚本最前�
 </div>
 </div>
 
-<div id="outline-container-org9a45554" class="outline-2">
-<h2 id="org9a45554">不常用命令备忘</h2>
-<div class="outline-text-2" id="text-org9a45554">
+<div id="outline-container-org7493f44" class="outline-2">
+<h2 id="org7493f44">不常用命令备忘</h2>
+<div class="outline-text-2" id="text-org7493f44">
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">Print value of a symbolic link or canonical file name</span>
 readlink --help
@@ -266,17 +244,17 @@ readlink --help
 </div>
 </div>
 
-<div id="outline-container-orgc76db1a" class="outline-2">
-<h2 id="orgc76db1a">代码片段</h2>
-<div class="outline-text-2" id="text-orgc76db1a">
+<div id="outline-container-org3c60e6a" class="outline-2">
+<h2 id="org3c60e6a">代码片段</h2>
+<div class="outline-text-2" id="text-org3c60e6a">
 <p>
 下面保存一些常用的代码, 提高开发效率;)<br />
 </p>
 </div>
 
-<div id="outline-container-org54daeba" class="outline-3">
-<h3 id="org54daeba">最小代码模板</h3>
-<div class="outline-text-3" id="text-org54daeba">
+<div id="outline-container-org0f78ad3" class="outline-3">
+<h3 id="org0f78ad3">最小代码模板</h3>
+<div class="outline-text-3" id="text-org0f78ad3">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #5B6268;">#</span><span style="color: #5B6268;">!/usr/bin/</span><span style="color: #51afef;">env</span><span style="color: #5B6268;"> bash</span>
 
@@ -290,9 +268,9 @@ main <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span
 </div>
 </div>
 
-<div id="outline-container-org294f604" class="outline-3">
-<h3 id="org294f604">获取脚本的目录信息</h3>
-<div class="outline-text-3" id="text-org294f604">
+<div id="outline-container-org9218858" class="outline-3">
+<h3 id="org9218858">获取脚本的目录信息</h3>
+<div class="outline-text-3" id="text-org9218858">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#33050;&#26412;&#30495;&#23454;&#38142;&#25509;</span>
 <span style="color: #dcaeea;">script_link</span>=<span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(readlink -f "</span><span style="color: #51afef; font-weight: bold;">$</span><span style="color: #51afef; font-weight: bold;">0</span><span style="color: #51afef; font-weight: bold;">")</span><span style="color: #98be65;">"</span>
@@ -310,9 +288,9 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 </div>
 
-<div id="outline-container-orgf3579d4" class="outline-3">
-<h3 id="orgf3579d4">从命令声明数组</h3>
-<div class="outline-text-3" id="text-orgf3579d4">
+<div id="outline-container-orgf174db1" class="outline-3">
+<h3 id="orgf174db1">从命令声明数组</h3>
+<div class="outline-text-3" id="text-orgf174db1">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #c678dd;">read</span> -d <span style="color: #98be65;">""</span> -ra a1 &lt;&lt;&lt; <span style="color: #98be65;">"</span><span style="color: #51afef; font-weight: bold;">$(seq 1 5)</span><span style="color: #98be65;">"</span>
 <span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">{a1[@]}</span><span style="color: #98be65;">"</span>
@@ -332,9 +310,9 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 </div>
 
-<div id="outline-container-org2af5fd0" class="outline-3">
-<h3 id="org2af5fd0">遍历文件的行</h3>
-<div class="outline-text-3" id="text-org2af5fd0">
+<div id="outline-container-org4eb50b7" class="outline-3">
+<h3 id="org4eb50b7">遍历文件的行</h3>
+<div class="outline-text-3" id="text-org4eb50b7">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #51afef;">while </span><span style="color: #c678dd;">read</span> -r line; <span style="color: #51afef;">do</span>
   printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">line</span><span style="color: #98be65;">"</span>
@@ -348,9 +326,9 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 </div>
 
-<div id="outline-container-org02bba85" class="outline-3">
-<h3 id="org02bba85">遍历文件和目录</h3>
-<div class="outline-text-3" id="text-org02bba85">
+<div id="outline-container-org0daca22" class="outline-3">
+<h3 id="org0daca22">遍历文件和目录</h3>
+<div class="outline-text-3" id="text-org0daca22">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #51afef;">for</span> file<span style="color: #51afef;"> in</span> *; <span style="color: #51afef;">do</span>
   printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;">"</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">file</span><span style="color: #98be65;">"</span>
@@ -360,9 +338,9 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 </div>
 
-<div id="outline-container-orgf494e9f" class="outline-3">
-<h3 id="orgf494e9f">输出带颜色的文字</h3>
-<div class="outline-text-3" id="text-orgf494e9f">
+<div id="outline-container-org6723b26" class="outline-3">
+<h3 id="org6723b26">输出带颜色的文字</h3>
+<div class="outline-text-3" id="text-org6723b26">
 <div class="org-src-container">
 <pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#36755;&#20986;&#25152;&#26377;&#39068;&#33394;(from: http://jafrog.com/2013/11/23/colors-in-terminal.html)</span>
 <span style="color: #51afef;">for</span> code<span style="color: #51afef;"> in</span> <span style="color: #51afef;">{</span>0..255<span style="color: #51afef;">}</span>; <span style="color: #51afef;">do</span>
@@ -376,9 +354,9 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 </div>
 
-<div id="outline-container-orga9d3a1c" class="outline-3">
-<h3 id="orga9d3a1c">切换用户执行</h3>
-<div class="outline-text-3" id="text-orga9d3a1c">
+<div id="outline-container-org784231b" class="outline-3">
+<h3 id="org784231b">切换用户执行</h3>
+<div class="outline-text-3" id="text-org784231b">
 <div class="org-src-container">
 <pre class="src src-sh">su &lt;other_user&gt; &lt;&lt; !
   ...
@@ -392,8 +370,7 @@ printf <span style="color: #98be65;">'%s\n'</span> <span style="color: #98be65;"
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-12-19 Sat 10:35</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
 </div>
 </body>
 </html>

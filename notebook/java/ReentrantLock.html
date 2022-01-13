@@ -3,58 +3,36 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 10:55 -->
+<!-- 2022-01-13 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ReentrantLock 源码分析</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">ReentrantLock 源码分析</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf857744">使用方式</a></li>
-<li><a href="#orge6ca592">ReentrantLock 定义</a></li>
-<li><a href="#org138af88">NonfairSync</a>
+<li><a href="#orgf85db08">使用方式</a></li>
+<li><a href="#orge45a2b1">ReentrantLock 定义</a></li>
+<li><a href="#org094c4b6">NonfairSync</a>
 <ul>
-<li><a href="#org3e3c639">lock() 方法</a></li>
-<li><a href="#orgbd3552d">unlock() 方法</a></li>
+<li><a href="#orgd6e0346">lock() 方法</a></li>
+<li><a href="#orga6fb05e">unlock() 方法</a></li>
 </ul>
 </li>
-<li><a href="#org5b58703">FairSync</a>
+<li><a href="#orgeaf5610">FairSync</a>
 <ul>
-<li><a href="#org3a36067">lock() 方法</a></li>
-<li><a href="#org1616aec">unlock() 方法</a></li>
+<li><a href="#orgc9e9f9e">lock() 方法</a></li>
+<li><a href="#org1a6600d">unlock() 方法</a></li>
 </ul>
 </li>
-<li><a href="#org4dcd13a">小结</a></li>
+<li><a href="#org8d741b9">小结</a></li>
 </ul>
 </div>
 </div>
@@ -62,9 +40,9 @@
 环境: <a href="http://hg.openjdk.java.net/jdk8/jdk8/jdk/file/687fd7c7986d">jdk8</a><br />
 </p>
 
-<div id="outline-container-orgf857744" class="outline-2">
-<h2 id="orgf857744">使用方式</h2>
-<div class="outline-text-2" id="text-orgf857744">
+<div id="outline-container-orgf85db08" class="outline-2">
+<h2 id="orgf85db08">使用方式</h2>
+<div class="outline-text-2" id="text-orgf85db08">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">X</span> {
   <span style="color: #51afef;">private</span> <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">ReentrantLock</span> <span style="color: #dcaeea;">lock</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">ReentrantLock</span>();
@@ -83,9 +61,9 @@
 </div>
 </div>
 
-<div id="outline-container-orge6ca592" class="outline-2">
-<h2 id="orge6ca592">ReentrantLock 定义</h2>
-<div class="outline-text-2" id="text-orge6ca592">
+<div id="outline-container-orge45a2b1" class="outline-2">
+<h2 id="orge45a2b1">ReentrantLock 定义</h2>
+<div class="outline-text-2" id="text-orge45a2b1">
 <p>
 顾名思义, ReentrantLock 为重入锁, 意味着一个线程可以多次获得锁而不会阻塞, 类的基本定义如下.<br />
 </p>
@@ -111,13 +89,13 @@
 </div>
 </div>
 
-<div id="outline-container-org138af88" class="outline-2">
-<h2 id="org138af88">NonfairSync</h2>
-<div class="outline-text-2" id="text-org138af88">
+<div id="outline-container-org094c4b6" class="outline-2">
+<h2 id="org094c4b6">NonfairSync</h2>
+<div class="outline-text-2" id="text-org094c4b6">
 </div>
-<div id="outline-container-org3e3c639" class="outline-3">
-<h3 id="org3e3c639">lock() 方法</h3>
-<div class="outline-text-3" id="text-org3e3c639">
+<div id="outline-container-orgd6e0346" class="outline-3">
+<h3 id="orgd6e0346">lock() 方法</h3>
+<div class="outline-text-3" id="text-orgd6e0346">
 <p>
 注意 Sync 继承于 AbstractQueuedSynchronizer, AQS 是许多并发类的核心.<br />
 </p>
@@ -187,7 +165,7 @@ tryAcquire(arg), 尝试获取一次锁<br />
 <p>
 在继续往下之前, 先看一下源码文档中的队列图示<br />
 </p>
-<pre class="example" id="orgf1bd6be">
+<pre class="example" id="orgb468852">
      +------+  prev +-----+       +-----+
 head |      | &lt;---- |     | &lt;---- |     |  tail
      +------+       +-----+       +-----+
@@ -319,9 +297,9 @@ acquireQueued(addWaiter(Node.EXCLUSIVE), arg)<br />
 </div>
 </div>
 
-<div id="outline-container-orgbd3552d" class="outline-3">
-<h3 id="orgbd3552d">unlock() 方法</h3>
-<div class="outline-text-3" id="text-orgbd3552d">
+<div id="outline-container-orga6fb05e" class="outline-3">
+<h3 id="orga6fb05e">unlock() 方法</h3>
+<div class="outline-text-3" id="text-orga6fb05e">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java</span>
 <span style="color: #51afef;">public</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">unlock</span>() {
@@ -406,16 +384,16 @@ unparkSuccessor(h) 唤醒下一个节点<br />
 </div>
 </div>
 
-<div id="outline-container-org5b58703" class="outline-2">
-<h2 id="org5b58703">FairSync</h2>
-<div class="outline-text-2" id="text-org5b58703">
+<div id="outline-container-orgeaf5610" class="outline-2">
+<h2 id="orgeaf5610">FairSync</h2>
+<div class="outline-text-2" id="text-orgeaf5610">
 <p>
 详细代码在 NonfairSync 小节内已经贴过了, 本小节只贴变动的代码<br />
 </p>
 </div>
-<div id="outline-container-org3a36067" class="outline-3">
-<h3 id="org3a36067">lock() 方法</h3>
-<div class="outline-text-3" id="text-org3a36067">
+<div id="outline-container-orgc9e9f9e" class="outline-3">
+<h3 id="orgc9e9f9e">lock() 方法</h3>
+<div class="outline-text-3" id="text-orgc9e9f9e">
 <div class="org-src-container">
 <pre class="src src-java"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">ReentrantLock.java FairSync</span>
 <span style="color: #51afef;">final</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">lock</span>() {
@@ -466,9 +444,9 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 </div>
 
-<div id="outline-container-org1616aec" class="outline-3">
-<h3 id="org1616aec">unlock() 方法</h3>
-<div class="outline-text-3" id="text-org1616aec">
+<div id="outline-container-org1a6600d" class="outline-3">
+<h3 id="org1a6600d">unlock() 方法</h3>
+<div class="outline-text-3" id="text-org1a6600d">
 <p>
 跟 Nonfair 的版本一样<br />
 </p>
@@ -476,9 +454,9 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 </div>
 
-<div id="outline-container-org4dcd13a" class="outline-2">
-<h2 id="org4dcd13a">小结</h2>
-<div class="outline-text-2" id="text-org4dcd13a">
+<div id="outline-container-org8d741b9" class="outline-2">
+<h2 id="org8d741b9">小结</h2>
+<div class="outline-text-2" id="text-org8d741b9">
 <ul class="org-ul">
 <li>　公平锁: 加锁时检查是否有等待的线程. 如果有则排队. 保证线程的获得锁是先到先得.<br /></li>
 <li>非公平锁: 加锁时直接尝试获取锁, 抢不到, 则排队.<br /></li>
@@ -491,8 +469,7 @@ hasQueuedPredecessors(): 当前是否有队列在等待<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 10:55</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
 </div>
 </body>
 </html>

@@ -3,81 +3,60 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-11-29 Sun 10:58 -->
+<!-- 2022-01-13 Thu 22:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>sed 笔记</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">sed 笔记</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org70415a0">说明</a>
+<li><a href="#org6f9ace6">说明</a>
 <ul>
-<li><a href="#org525e82c">基本使用方式</a></li>
-<li><a href="#org8062bdd">部分参数说明</a></li>
+<li><a href="#org2212cae">macOS 兼容性</a></li>
+<li><a href="#orgdb87d20">基本使用方式</a></li>
+<li><a href="#orgdfcf851">部分参数说明</a></li>
 </ul>
 </li>
-<li><a href="#org3e771bf">地址</a>
+<li><a href="#org5fdbe59">地址</a>
 <ul>
-<li><a href="#orgc5799b5">addr1</a></li>
-<li><a href="#org8add35a">addr2</a></li>
+<li><a href="#orgf3d25db">addr1</a></li>
+<li><a href="#org01bd071">addr2</a></li>
 </ul>
 </li>
-<li><a href="#orga0499ec">命令</a>
+<li><a href="#orgec9d811">命令</a>
 <ul>
-<li><a href="#org6122677">Substitute</a></li>
-<li><a href="#org4216a06">Insert</a></li>
-<li><a href="#org2928ff9">Append</a></li>
-<li><a href="#org5ef44bb">Delete</a></li>
-<li><a href="#org06248be">Change</a></li>
-<li><a href="#org61636b8">Translate</a></li>
-<li><a href="#org0e3d3df">l</a></li>
-<li><a href="#org76b762e">Write</a></li>
-<li><a href="#org492a10d">Read</a></li>
-<li><a href="#org8793475">Execute</a></li>
-<li><a href="#orgc69fa51">Quit</a></li>
-<li><a href="#orga53e7c8">=</a></li>
-<li><a href="#org2915b0c">&amp;</a></li>
+<li><a href="#org40506e4">Substitute</a></li>
+<li><a href="#org74255fc">Insert</a></li>
+<li><a href="#orged89819">Append</a></li>
+<li><a href="#orgf764ea1">Delete</a></li>
+<li><a href="#orgc4adcbd">Change</a></li>
+<li><a href="#org332ebd6">Translate</a></li>
+<li><a href="#org8f5c0a5">l</a></li>
+<li><a href="#org030aa51">Write</a></li>
+<li><a href="#org3791f0d">Read</a></li>
+<li><a href="#org0d2240d">Execute</a></li>
+<li><a href="#org45fb88a">Quit</a></li>
+<li><a href="#org51c3dd7">=</a></li>
+<li><a href="#org250b7ac">&amp;</a></li>
 </ul>
 </li>
-<li><a href="#orge1fe82a">参考</a></li>
+<li><a href="#orgb369b28">参考</a></li>
 </ul>
 </div>
 </div>
 <hr />
 
-<div id="outline-container-org70415a0" class="outline-2">
-<h2 id="org70415a0">说明</h2>
-<div class="outline-text-2" id="text-org70415a0">
+<div id="outline-container-org6f9ace6" class="outline-2">
+<h2 id="org6f9ace6">说明</h2>
+<div class="outline-text-2" id="text-org6f9ace6">
 <blockquote>
 <p>
 本文使用的版本为 <code>sed (GNU sed) 4.2.2</code>, 其他版本不保证所有的功能和示例测试通过. <br />
@@ -86,14 +65,25 @@
 </blockquote>
 </div>
 
-<div id="outline-container-org525e82c" class="outline-3">
-<h3 id="org525e82c">基本使用方式</h3>
-<div class="outline-text-3" id="text-org525e82c">
+<div id="outline-container-org2212cae" class="outline-3">
+<h3 id="org2212cae">macOS 兼容性</h3>
+<div class="outline-text-3" id="text-org2212cae">
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">brew install gnu-sed</span>
+<span style="color: #51afef;">[</span><span style="color: #c678dd;">[</span> $<span style="color: #98be65;">(</span>uname<span style="color: #98be65;">)</span> == <span style="color: #98be65;">"Darwin"</span> <span style="color: #c678dd;">]</span><span style="color: #51afef;">]</span> &amp;&amp; <span style="color: #dcaeea;">PATH</span>=<span style="color: #98be65;">"/usr/local/opt/gnu-sed/libexec/gnubin:</span><span style="color: #a9a1e1;">$</span><span style="color: #dcaeea;">PATH</span><span style="color: #98be65;">"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdb87d20" class="outline-3">
+<h3 id="orgdb87d20">基本使用方式</h3>
+<div class="outline-text-3" id="text-orgdb87d20">
 <ul class="org-ul">
 <li><p>
 sed [-n] [-e] &rsquo;command(s)&rsquo; files
 </p>
-<pre class="example" id="orga84d446">
+<pre class="example" id="orge1d9880">
     sed '1d' books.txt # 删除第1行
     sed '1d;2d;5d;' books.txt # 删除第1,2,5行
     sed -e '1d' -e '2d' -e '5d' books.txt # 删除1,2,5行
@@ -102,7 +92,7 @@ sed [-n] [-e] &rsquo;command(s)&rsquo; files
 <li><p>
 sed [-n] -f scriptfile files
 </p>
-<pre class="example" id="orgfd6b4c3">
+<pre class="example" id="org6399b48">
     echo -e "1d\n2d\n5d" &gt; commands.txt
     sed -f commands.txt books.txt
 </pre></li>
@@ -110,10 +100,10 @@ sed [-n] -f scriptfile files
 </div>
 </div>
 
-<div id="outline-container-org8062bdd" class="outline-3">
-<h3 id="org8062bdd">部分参数说明</h3>
-<div class="outline-text-3" id="text-org8062bdd">
-<pre class="example" id="org01e5bb5">
+<div id="outline-container-orgdfcf851" class="outline-3">
+<h3 id="orgdfcf851">部分参数说明</h3>
+<div class="outline-text-3" id="text-orgdfcf851">
+<pre class="example" id="org66ded31">
 -n, --quiet, --silent
 	suppress automatic printing of pattern space
 	抑制模式空间的自动打印
@@ -131,13 +121,13 @@ sed [-n] -f scriptfile files
 </div>
 </div>
 
-<div id="outline-container-org3e771bf" class="outline-2">
-<h2 id="org3e771bf">地址</h2>
-<div class="outline-text-2" id="text-org3e771bf">
+<div id="outline-container-org5fdbe59" class="outline-2">
+<h2 id="org5fdbe59">地址</h2>
+<div class="outline-text-2" id="text-org5fdbe59">
 </div>
-<div id="outline-container-orgc5799b5" class="outline-3">
-<h3 id="orgc5799b5">addr1</h3>
-<div class="outline-text-3" id="text-orgc5799b5">
+<div id="outline-container-orgf3d25db" class="outline-3">
+<h3 id="orgf3d25db">addr1</h3>
+<div class="outline-text-3" id="text-orgf3d25db">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -171,9 +161,9 @@ sed [-n] -f scriptfile files
 </div>
 </div>
 
-<div id="outline-container-org8add35a" class="outline-3">
-<h3 id="org8add35a">addr2</h3>
-<div class="outline-text-3" id="text-org8add35a">
+<div id="outline-container-org01bd071" class="outline-3">
+<h3 id="org01bd071">addr2</h3>
+<div class="outline-text-3" id="text-org01bd071">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -223,17 +213,17 @@ sed [-n] -f scriptfile files
 </div>
 </div>
 
-<div id="outline-container-orga0499ec" class="outline-2">
-<h2 id="orga0499ec">命令</h2>
-<div class="outline-text-2" id="text-orga0499ec">
+<div id="outline-container-orgec9d811" class="outline-2">
+<h2 id="orgec9d811">命令</h2>
+<div class="outline-text-2" id="text-orgec9d811">
 </div>
-<div id="outline-container-org6122677" class="outline-3">
-<h3 id="org6122677">Substitute</h3>
-<div class="outline-text-3" id="text-org6122677">
+<div id="outline-container-org40506e4" class="outline-3">
+<h3 id="org40506e4">Substitute</h3>
+<div class="outline-text-3" id="text-org40506e4">
 <p>
 文本替换
 </p>
-<pre class="example" id="orgebc1215">
+<pre class="example" id="org4e38dac">
 [address1[,address2]]s/pattern/replacement/[flags]
 </pre>
 <ol class="org-ol">
@@ -284,7 +274,7 @@ sed [-n] -f scriptfile files
 在 <code>pattern</code> 中, 被 <code>\(</code> <code>\)</code> 包围的部分.<br />
 在 <code>replacement</code> 中, 可以以 <code>\N</code> 的方式提取, 其中 <code>N</code> 表示第几个匹配
 </p>
-<pre class="example" id="org2cea52e">
+<pre class="example" id="org59b0c08">
    $ echo "Three One Two" | sed 's/\(\w\+\) \(\w\+\) \(\w\+\)/\2 \3 \1/'
    One Two Three
 </pre></li>
@@ -293,148 +283,148 @@ sed [-n] -f scriptfile files
 </div>
 
 
-<div id="outline-container-org4216a06" class="outline-3">
-<h3 id="org4216a06">Insert</h3>
-<div class="outline-text-3" id="text-org4216a06">
+<div id="outline-container-org74255fc" class="outline-3">
+<h3 id="org74255fc">Insert</h3>
+<div class="outline-text-3" id="text-org74255fc">
 <p>
 插入行
 </p>
-<pre class="example" id="org65cc8b9">
+<pre class="example" id="org8418836">
 [address]i\
 Insert text
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org2928ff9" class="outline-3">
-<h3 id="org2928ff9">Append</h3>
-<div class="outline-text-3" id="text-org2928ff9">
+<div id="outline-container-orged89819" class="outline-3">
+<h3 id="orged89819">Append</h3>
+<div class="outline-text-3" id="text-orged89819">
 <p>
 追加行
 </p>
-<pre class="example" id="org490d833">
+<pre class="example" id="org72c4342">
 [address]a\
 Append text
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org5ef44bb" class="outline-3">
-<h3 id="org5ef44bb">Delete</h3>
-<div class="outline-text-3" id="text-org5ef44bb">
+<div id="outline-container-orgf764ea1" class="outline-3">
+<h3 id="orgf764ea1">Delete</h3>
+<div class="outline-text-3" id="text-orgf764ea1">
 <p>
 删除行
 </p>
-<pre class="example" id="org68daac0">
+<pre class="example" id="orga7fc794">
 [address1[,address2]]d
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org06248be" class="outline-3">
-<h3 id="org06248be">Change</h3>
-<div class="outline-text-3" id="text-org06248be">
+<div id="outline-container-orgc4adcbd" class="outline-3">
+<h3 id="orgc4adcbd">Change</h3>
+<div class="outline-text-3" id="text-orgc4adcbd">
 <p>
 改变行
 </p>
-<pre class="example" id="org8eb1e15">
+<pre class="example" id="org1255555">
 [address1[,address2]]c\
 Replace text
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org61636b8" class="outline-3">
-<h3 id="org61636b8">Translate</h3>
-<div class="outline-text-3" id="text-org61636b8">
+<div id="outline-container-org332ebd6" class="outline-3">
+<h3 id="org332ebd6">Translate</h3>
+<div class="outline-text-3" id="text-org332ebd6">
 <p>
 替换字符
 </p>
-<pre class="example" id="orgefec842">
+<pre class="example" id="orge015309">
 [address1[,address2]]y/list-1/list-2/
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org0e3d3df" class="outline-3">
-<h3 id="org0e3d3df">l</h3>
-<div class="outline-text-3" id="text-org0e3d3df">
+<div id="outline-container-org8f5c0a5" class="outline-3">
+<h3 id="org8f5c0a5">l</h3>
+<div class="outline-text-3" id="text-org8f5c0a5">
 <p>
 显示特殊字符, <code>[len]</code> 表示每行显示几个字符
 </p>
-<pre class="example" id="orgf8ced0f">
+<pre class="example" id="org9088280">
 [address1[,address2]]l
 [address1[,address2]]l [len]
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org76b762e" class="outline-3">
-<h3 id="org76b762e">Write</h3>
-<div class="outline-text-3" id="text-org76b762e">
+<div id="outline-container-org030aa51" class="outline-3">
+<h3 id="org030aa51">Write</h3>
+<div class="outline-text-3" id="text-org030aa51">
 <p>
 写入文件<br />
 <code>sed -n 'w b.txt' a.txt</code> 等价于 <code>cp a.txt b.txt</code>
 </p>
-<pre class="example" id="org8aaf576">
+<pre class="example" id="org8f919a4">
 [address1[,address2]]w file
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org492a10d" class="outline-3">
-<h3 id="org492a10d">Read</h3>
-<div class="outline-text-3" id="text-org492a10d">
+<div id="outline-container-org3791f0d" class="outline-3">
+<h3 id="org3791f0d">Read</h3>
+<div class="outline-text-3" id="text-org3791f0d">
 <p>
 读取文件
 </p>
-<pre class="example" id="orgdefc4e4">
+<pre class="example" id="orgcdb5285">
 [address]r file
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org8793475" class="outline-3">
-<h3 id="org8793475">Execute</h3>
-<div class="outline-text-3" id="text-org8793475">
+<div id="outline-container-org0d2240d" class="outline-3">
+<h3 id="org0d2240d">Execute</h3>
+<div class="outline-text-3" id="text-org0d2240d">
 <p>
 执行命令, 如果 <code>[command]</code> 省略, 将会执行 处理的文件 里面的命令
 </p>
-<pre class="example" id="org2799f4f">
+<pre class="example" id="org0fbc521">
 [address1[,address2]]e [command]
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgc69fa51" class="outline-3">
-<h3 id="orgc69fa51">Quit</h3>
-<div class="outline-text-3" id="text-orgc69fa51">
+<div id="outline-container-org45fb88a" class="outline-3">
+<h3 id="org45fb88a">Quit</h3>
+<div class="outline-text-3" id="text-org45fb88a">
 <p>
 退出sed, <code>[value]</code> 表示返回码
 </p>
-<pre class="example" id="org211eb86">
+<pre class="example" id="orgb3dedeb">
 [address]q
 [address]q [value]
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orga53e7c8" class="outline-3">
-<h3 id="orga53e7c8">=</h3>
-<div class="outline-text-3" id="text-orga53e7c8">
+<div id="outline-container-org51c3dd7" class="outline-3">
+<h3 id="org51c3dd7">=</h3>
+<div class="outline-text-3" id="text-org51c3dd7">
 <p>
 行号<br />
 <code>sed -n '$=' a.txt</code> 等价于 <code>cat a.txt |wc -l</code>
 </p>
-<pre class="example" id="org7d9b22f">
+<pre class="example" id="orgac60296">
 [address1[,address2]]=
 </pre>
 </div>
 </div>
 
-<div id="outline-container-org2915b0c" class="outline-3">
-<h3 id="org2915b0c">&amp;</h3>
-<div class="outline-text-3" id="text-org2915b0c">
+<div id="outline-container-org250b7ac" class="outline-3">
+<h3 id="org250b7ac">&amp;</h3>
+<div class="outline-text-3" id="text-org250b7ac">
 <p>
 存储之前的成功匹配
 </p>
@@ -442,9 +432,9 @@ Replace text
 </div>
 </div>
 
-<div id="outline-container-orge1fe82a" class="outline-2">
-<h2 id="orge1fe82a">参考</h2>
-<div class="outline-text-2" id="text-orge1fe82a">
+<div id="outline-container-orgb369b28" class="outline-2">
+<h2 id="orgb369b28">参考</h2>
+<div class="outline-text-2" id="text-orgb369b28">
 <ol class="org-ol">
 <li><code>man sed</code></li>
 <li><a href="http://www.tutorialspoint.com/sed/index.htm">http://www.tutorialspoint.com/sed/index.htm</a></li>
@@ -454,8 +444,7 @@ Replace text
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-11-29 Sun 10:58</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:49</p>
 </div>
 </body>
 </html>

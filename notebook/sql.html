@@ -3,89 +3,67 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-12-06 Sun 23:02 -->
+<!-- 2022-01-13 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SQL 笔记</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
 <link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">SQL 笔记</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgbdd7c51">说明</a>
+<li><a href="#org6df8db5">说明</a>
 <ul>
-<li><a href="#org95df993">本文约定</a></li>
-<li><a href="#org51fc0ef">命名规则 (下划线命名法)</a></li>
+<li><a href="#orgeaa16f9">本文约定</a></li>
+<li><a href="#orgcc366d3">命名规则 (下划线命名法)</a></li>
 </ul>
 </li>
-<li><a href="#orgbc2ae1b">DATABASE 操作</a>
+<li><a href="#orgcb98009">DATABASE 操作</a>
 <ul>
-<li><a href="#orga46b54c">CREATE DATABASE</a></li>
-<li><a href="#org85d19cd">DROP DATABASE</a></li>
+<li><a href="#orgfe495b7">CREATE DATABASE</a></li>
+<li><a href="#org2a708f9">DROP DATABASE</a></li>
 </ul>
 </li>
-<li><a href="#org2eee664">TABLE 操作</a>
+<li><a href="#org720e3aa">TABLE 操作</a>
 <ul>
-<li><a href="#org5031db0">CREATE TABLE</a></li>
-<li><a href="#org9b3e4c0">DROP TABLE</a></li>
-<li><a href="#org8ce18bb">ALTER TABLE</a>
+<li><a href="#orga236ec6">CREATE TABLE</a></li>
+<li><a href="#org9e49128">DROP TABLE</a></li>
+<li><a href="#org8fda561">ALTER TABLE</a>
 <ul>
-<li><a href="#orga59d984">ADD COLUMN</a></li>
-<li><a href="#orga072f30">DROP COLUMN</a></li>
+<li><a href="#orgda37748">ADD COLUMN</a></li>
+<li><a href="#org12c3ed0">DROP COLUMN</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orga2bbc7d">DATA 操作</a>
+<li><a href="#orgc69e533">DATA 操作</a>
 <ul>
-<li><a href="#org66b30c0">WHERE 组件</a></li>
-<li><a href="#org6d96dce">SELECT</a>
+<li><a href="#orgbe0f1a2">WHERE 组件</a></li>
+<li><a href="#orgf49b581">SELECT</a>
 <ul>
-<li><a href="#org11a4949">ORDER BY 组件</a></li>
-<li><a href="#org2d3ca4b">基本</a></li>
-<li><a href="#org55fb57c">聚合函数 ( aggregate_function )</a></li>
-<li><a href="#orgbdb895e">HAVING 组件</a></li>
-<li><a href="#org29ff5b0">GROUP BY</a></li>
+<li><a href="#org295ecd3">ORDER BY 组件</a></li>
+<li><a href="#org77aea5b">基本</a></li>
+<li><a href="#org75b05b4">聚合函数 ( aggregate_function )</a></li>
+<li><a href="#org1d32134">HAVING 组件</a></li>
+<li><a href="#orgce3158f">GROUP BY</a></li>
 </ul>
 </li>
-<li><a href="#org5ebe54d">INSERT</a></li>
-<li><a href="#org1c6894c">UPDATE</a></li>
-<li><a href="#org9a82fca">DELETE</a></li>
-<li><a href="#org260fc3b">TRUNCATE</a></li>
+<li><a href="#org003e3ff">INSERT</a></li>
+<li><a href="#orgaf594f2">UPDATE</a></li>
+<li><a href="#org005a3ad">DELETE</a></li>
+<li><a href="#orgdaca5cd">TRUNCATE</a></li>
 </ul>
 </li>
-<li><a href="#org8e2e9f4">联合</a>
+<li><a href="#orgc6ccf17">联合</a>
 <ul>
-<li><a href="#org9c4ab5b">INNER JOIN</a></li>
-<li><a href="#org78940f5">OUTER JOIN</a></li>
+<li><a href="#org9f3a1aa">INNER JOIN</a></li>
+<li><a href="#org447974f">OUTER JOIN</a></li>
 </ul>
 </li>
 </ul>
@@ -93,13 +71,13 @@
 </div>
 <hr />
 
-<div id="outline-container-orgbdd7c51" class="outline-2">
-<h2 id="orgbdd7c51">说明</h2>
-<div class="outline-text-2" id="text-orgbdd7c51">
+<div id="outline-container-org6df8db5" class="outline-2">
+<h2 id="org6df8db5">说明</h2>
+<div class="outline-text-2" id="text-org6df8db5">
 </div>
-<div id="outline-container-org95df993" class="outline-3">
-<h3 id="org95df993">本文约定</h3>
-<div class="outline-text-3" id="text-org95df993">
+<div id="outline-container-orgeaa16f9" class="outline-3">
+<h3 id="orgeaa16f9">本文约定</h3>
+<div class="outline-text-3" id="text-orgeaa16f9">
 <p>
 大写字母是SQL的关键字<br />
 小写字母是单词含义
@@ -107,9 +85,9 @@
 </div>
 </div>
 
-<div id="outline-container-org51fc0ef" class="outline-3">
-<h3 id="org51fc0ef">命名规则 (下划线命名法)</h3>
-<div class="outline-text-3" id="text-org51fc0ef">
+<div id="outline-container-orgcc366d3" class="outline-3">
+<h3 id="orgcc366d3">命名规则 (下划线命名法)</h3>
+<div class="outline-text-3" id="text-orgcc366d3">
 <p>
 <code>database</code>, <code>table</code> 通常是复数<br />
 <code>column</code> 通常是单数
@@ -123,13 +101,13 @@
 </div>
 </div>
 
-<div id="outline-container-orgbc2ae1b" class="outline-2">
-<h2 id="orgbc2ae1b">DATABASE 操作</h2>
-<div class="outline-text-2" id="text-orgbc2ae1b">
+<div id="outline-container-orgcb98009" class="outline-2">
+<h2 id="orgcb98009">DATABASE 操作</h2>
+<div class="outline-text-2" id="text-orgcb98009">
 </div>
-<div id="outline-container-orga46b54c" class="outline-3">
-<h3 id="orga46b54c">CREATE DATABASE</h3>
-<div class="outline-text-3" id="text-orga46b54c">
+<div id="outline-container-orgfe495b7" class="outline-3">
+<h3 id="orgfe495b7">CREATE DATABASE</h3>
+<div class="outline-text-3" id="text-orgfe495b7">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">CREATE</span> DATABASE database;
 </pre>
@@ -137,9 +115,9 @@
 </div>
 </div>
 
-<div id="outline-container-org85d19cd" class="outline-3">
-<h3 id="org85d19cd">DROP DATABASE</h3>
-<div class="outline-text-3" id="text-org85d19cd">
+<div id="outline-container-org2a708f9" class="outline-3">
+<h3 id="org2a708f9">DROP DATABASE</h3>
+<div class="outline-text-3" id="text-org2a708f9">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">DROP</span> DATABASE database;
 </pre>
@@ -148,13 +126,13 @@
 </div>
 </div>
 
-<div id="outline-container-org2eee664" class="outline-2">
-<h2 id="org2eee664">TABLE 操作</h2>
-<div class="outline-text-2" id="text-org2eee664">
+<div id="outline-container-org720e3aa" class="outline-2">
+<h2 id="org720e3aa">TABLE 操作</h2>
+<div class="outline-text-2" id="text-org720e3aa">
 </div>
-<div id="outline-container-org5031db0" class="outline-3">
-<h3 id="org5031db0">CREATE TABLE</h3>
-<div class="outline-text-3" id="text-org5031db0">
+<div id="outline-container-orga236ec6" class="outline-3">
+<h3 id="orga236ec6">CREATE TABLE</h3>
+<div class="outline-text-3" id="text-orga236ec6">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">CREATE</span> <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;">table</span> (
   column1 datatype constratint, <span style="color: #5B6268;">-- &#21015;&#32422;&#26463; &#21487;&#36873; (&#19979;&#21516;)</span>
@@ -219,9 +197,9 @@
 </div>
 </div>
 
-<div id="outline-container-org9b3e4c0" class="outline-3">
-<h3 id="org9b3e4c0">DROP TABLE</h3>
-<div class="outline-text-3" id="text-org9b3e4c0">
+<div id="outline-container-org9e49128" class="outline-3">
+<h3 id="org9e49128">DROP TABLE</h3>
+<div class="outline-text-3" id="text-org9e49128">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">DROP</span> <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;">table</span>;
 </pre>
@@ -229,13 +207,13 @@
 </div>
 </div>
 
-<div id="outline-container-org8ce18bb" class="outline-3">
-<h3 id="org8ce18bb">ALTER TABLE</h3>
-<div class="outline-text-3" id="text-org8ce18bb">
+<div id="outline-container-org8fda561" class="outline-3">
+<h3 id="org8fda561">ALTER TABLE</h3>
+<div class="outline-text-3" id="text-org8fda561">
 </div>
-<div id="outline-container-orga59d984" class="outline-4">
-<h4 id="orga59d984">ADD COLUMN</h4>
-<div class="outline-text-4" id="text-orga59d984">
+<div id="outline-container-orgda37748" class="outline-4">
+<h4 id="orgda37748">ADD COLUMN</h4>
+<div class="outline-text-4" id="text-orgda37748">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">ALTER</span> <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;">table</span> <span style="color: #51afef;">ADD</span> <span style="color: #51afef;">COLUMN</span> <span style="color: #51afef;">column</span> datatype;
 </pre>
@@ -243,9 +221,9 @@
 </div>
 </div>
 
-<div id="outline-container-orga072f30" class="outline-4">
-<h4 id="orga072f30">DROP COLUMN</h4>
-<div class="outline-text-4" id="text-orga072f30">
+<div id="outline-container-org12c3ed0" class="outline-4">
+<h4 id="org12c3ed0">DROP COLUMN</h4>
+<div class="outline-text-4" id="text-org12c3ed0">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">ALTER</span> <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;">table</span> <span style="color: #51afef;">DROP</span> <span style="color: #51afef;">COLUMN</span> <span style="color: #51afef;">column</span>;
 </pre>
@@ -255,13 +233,13 @@
 </div>
 </div>
 
-<div id="outline-container-orga2bbc7d" class="outline-2">
-<h2 id="orga2bbc7d">DATA 操作</h2>
-<div class="outline-text-2" id="text-orga2bbc7d">
+<div id="outline-container-orgc69e533" class="outline-2">
+<h2 id="orgc69e533">DATA 操作</h2>
+<div class="outline-text-2" id="text-orgc69e533">
 </div>
-<div id="outline-container-org66b30c0" class="outline-3">
-<h3 id="org66b30c0">WHERE 组件</h3>
-<div class="outline-text-3" id="text-org66b30c0">
+<div id="outline-container-orgbe0f1a2" class="outline-3">
+<h3 id="orgbe0f1a2">WHERE 组件</h3>
+<div class="outline-text-3" id="text-orgbe0f1a2">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">WHERE</span>
 colume1 operator <span style="color: #51afef;">value</span>
@@ -287,9 +265,9 @@ colume2 operator <span style="color: #51afef;">value</span>
 </div>
 </div>
 
-<div id="outline-container-org6d96dce" class="outline-3">
-<h3 id="org6d96dce">SELECT</h3>
-<div class="outline-text-3" id="text-org6d96dce">
+<div id="outline-container-orgf49b581" class="outline-3">
+<h3 id="orgf49b581">SELECT</h3>
+<div class="outline-text-3" id="text-orgf49b581">
 <p>
 <b>EXAMPLE:</b>
 </p>
@@ -310,9 +288,9 @@ column1, column2 ...
 </div>
 </div>
 
-<div id="outline-container-org11a4949" class="outline-4">
-<h4 id="org11a4949">ORDER BY 组件</h4>
-<div class="outline-text-4" id="text-org11a4949">
+<div id="outline-container-org295ecd3" class="outline-4">
+<h4 id="org295ecd3">ORDER BY 组件</h4>
+<div class="outline-text-4" id="text-org295ecd3">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">ORDER</span> <span style="color: #51afef;">BY</span>
 column1 [<span style="color: #51afef;">ASC</span>|<span style="color: #51afef;">DESC</span>], column2 [<span style="color: #51afef;">ASC</span>|<span style="color: #51afef;">DESC</span>] ...
@@ -325,9 +303,9 @@ column1 [<span style="color: #51afef;">ASC</span>|<span style="color: #51afef;">
 </div>
 </div>
 
-<div id="outline-container-org2d3ca4b" class="outline-4">
-<h4 id="org2d3ca4b">基本</h4>
-<div class="outline-text-4" id="text-org2d3ca4b">
+<div id="outline-container-org77aea5b" class="outline-4">
+<h4 id="org77aea5b">基本</h4>
+<div class="outline-text-4" id="text-org77aea5b">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">SELECT</span> ...
 <span style="color: #51afef;">FROM</span> <span style="color: #51afef;">table</span>
@@ -339,9 +317,9 @@ column1 [<span style="color: #51afef;">ASC</span>|<span style="color: #51afef;">
 </div>
 </div>
 
-<div id="outline-container-org55fb57c" class="outline-4">
-<h4 id="org55fb57c">聚合函数 ( aggregate_function )</h4>
-<div class="outline-text-4" id="text-org55fb57c">
+<div id="outline-container-org75b05b4" class="outline-4">
+<h4 id="org75b05b4">聚合函数 ( aggregate_function )</h4>
+<div class="outline-text-4" id="text-org75b05b4">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">SELECT</span>
 aggregate_function(column1), aggregate_function(column2) ...
@@ -393,9 +371,9 @@ aggregate_function(column1), aggregate_function(column2) ...
 </div>
 </div>
 
-<div id="outline-container-orgbdb895e" class="outline-4">
-<h4 id="orgbdb895e">HAVING 组件</h4>
-<div class="outline-text-4" id="text-orgbdb895e">
+<div id="outline-container-org1d32134" class="outline-4">
+<h4 id="org1d32134">HAVING 组件</h4>
+<div class="outline-text-4" id="text-org1d32134">
 <pre class="example">
 HAVING
 aggregate_function(column1) operator value
@@ -406,9 +384,9 @@ aggregate_function(column2) operator value
 </div>
 </div>
 
-<div id="outline-container-org29ff5b0" class="outline-4">
-<h4 id="org29ff5b0">GROUP BY</h4>
-<div class="outline-text-4" id="text-org29ff5b0">
+<div id="outline-container-orgce3158f" class="outline-4">
+<h4 id="orgce3158f">GROUP BY</h4>
+<div class="outline-text-4" id="text-orgce3158f">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">SELECT</span> ${group_by_column},
 aggregate_function(column1), aggregate_function(column2) ...
@@ -424,9 +402,9 @@ aggregate_function(column1), aggregate_function(column2) ...
 </div>
 </div>
 
-<div id="outline-container-org5ebe54d" class="outline-3">
-<h3 id="org5ebe54d">INSERT</h3>
-<div class="outline-text-3" id="text-org5ebe54d">
+<div id="outline-container-org003e3ff" class="outline-3">
+<h3 id="org003e3ff">INSERT</h3>
+<div class="outline-text-3" id="text-org003e3ff">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">INSERT</span> <span style="color: #51afef;">INTO</span> <span style="color: #51afef;">table</span>
 (column1, column2 ...)  <span style="color: #5B6268;">-- &#27492;&#34892;&#30465;&#30053;&#26102;&#30340;&#21547;&#20041;&#26159;: &#25152;&#26377;&#21015;</span>
@@ -438,9 +416,9 @@ aggregate_function(column1), aggregate_function(column2) ...
 </div>
 </div>
 
-<div id="outline-container-org1c6894c" class="outline-3">
-<h3 id="org1c6894c">UPDATE</h3>
-<div class="outline-text-3" id="text-org1c6894c">
+<div id="outline-container-orgaf594f2" class="outline-3">
+<h3 id="orgaf594f2">UPDATE</h3>
+<div class="outline-text-3" id="text-orgaf594f2">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">UPDATE</span> <span style="color: #51afef;">table</span> <span style="color: #51afef;">SET</span>
   column1 = new_value1,
@@ -454,9 +432,9 @@ aggregate_function(column1), aggregate_function(column2) ...
 </div>
 </div>
 
-<div id="outline-container-org9a82fca" class="outline-3">
-<h3 id="org9a82fca">DELETE</h3>
-<div class="outline-text-3" id="text-org9a82fca">
+<div id="outline-container-org005a3ad" class="outline-3">
+<h3 id="org005a3ad">DELETE</h3>
+<div class="outline-text-3" id="text-org005a3ad">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">DELETE</span> <span style="color: #51afef;">FROM</span> <span style="color: #51afef;">table</span>
 (<span style="color: #51afef;">WHERE</span> ...)
@@ -466,9 +444,9 @@ aggregate_function(column1), aggregate_function(column2) ...
 </div>
 </div>
 
-<div id="outline-container-org260fc3b" class="outline-3">
-<h3 id="org260fc3b">TRUNCATE</h3>
-<div class="outline-text-3" id="text-org260fc3b">
+<div id="outline-container-orgdaca5cd" class="outline-3">
+<h3 id="orgdaca5cd">TRUNCATE</h3>
+<div class="outline-text-3" id="text-orgdaca5cd">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #5B6268;">-- &#24403;&#35201;&#21024;&#38500;&#34920;&#20013;&#30340;&#25152;&#26377;&#25968;&#25454;&#30340;&#26102;&#20505;, &#35831;&#20351;&#29992; TRUNCATE, &#22240;&#20026;&#25928;&#29575;&#26356;&#39640;</span>
 TRUNCATE <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;">table</span>;
@@ -478,13 +456,13 @@ TRUNCATE <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;
 </div>
 </div>
 
-<div id="outline-container-org8e2e9f4" class="outline-2">
-<h2 id="org8e2e9f4">联合</h2>
-<div class="outline-text-2" id="text-org8e2e9f4">
+<div id="outline-container-orgc6ccf17" class="outline-2">
+<h2 id="orgc6ccf17">联合</h2>
+<div class="outline-text-2" id="text-orgc6ccf17">
 </div>
-<div id="outline-container-org9c4ab5b" class="outline-3">
-<h3 id="org9c4ab5b">INNER JOIN</h3>
-<div class="outline-text-3" id="text-org9c4ab5b">
+<div id="outline-container-org9f3a1aa" class="outline-3">
+<h3 id="org9f3a1aa">INNER JOIN</h3>
+<div class="outline-text-3" id="text-org9f3a1aa">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #51afef;">SELECT</span> * <span style="color: #51afef;">FROM</span> table1
 <span style="color: #51afef;">INNER</span> <span style="color: #51afef;">JOIN</span> table2
@@ -494,9 +472,9 @@ TRUNCATE <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;
 </div>
 </div>
 
-<div id="outline-container-org78940f5" class="outline-3">
-<h3 id="org78940f5">OUTER JOIN</h3>
-<div class="outline-text-3" id="text-org78940f5">
+<div id="outline-container-org447974f" class="outline-3">
+<h3 id="org447974f">OUTER JOIN</h3>
+<div class="outline-text-3" id="text-org447974f">
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #5B6268;">-- LEFT: table1&#30340;&#25152;&#26377;&#25968;&#25454;</span>
 <span style="color: #51afef;">SELECT</span> * <span style="color: #51afef;">FROM</span> table1
@@ -515,8 +493,7 @@ TRUNCATE <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2020-12-06 Sun 23:02</p>
-<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a></p>
+<p class="date">Created: 2022-01-13 Thu 22:47</p>
 </div>
 </body>
 </html>
