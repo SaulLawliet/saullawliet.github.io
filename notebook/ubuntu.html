@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-03-02 Wed 15:26 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ubuntu 20.04 从零开始</title>
+<meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Ubuntu 20.04 从零开始</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgaa66a16">创建用户</a></li>
+<li><a href="#orgcf9715d">添加 swap</a></li>
+<li><a href="#orgf97bf71">软件安装</a>
+<ul>
+<li><a href="#org33f5fc5">docker</a>
+<ul>
+<li><a href="#org6343adf">redis (3MiB)</a></li>
+<li><a href="#org7a2a755">mysql (200MiB)</a></li>
+<li><a href="#orge7655e6">docker-nginx-auto-ssl (8MiB)</a></li>
+</ul>
+</li>
+<li><a href="#org8501824">node</a></li>
+<li><a href="#org8eea876">frp</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<hr />
+
+<p>
+趁着这次更换服务器的系统, 打算完整记录一下操作流程<br />
+实例：突发性能实例 t5系列 IV1核 1GB &#x2013;&gt; 5年642元<br />
+</p>
+
+<div id="outline-container-orgaa66a16" class="outline-2">
+<h2 id="orgaa66a16">创建用户</h2>
+<div class="outline-text-2" id="text-orgaa66a16">
+<p>
+刚创建的服务器只有root用户, 使用了密钥对的方式登录<br />
+注意: 不要开放密码登录的方式到公网<br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#20808;&#29992;root&#29992;&#25143;&#30331;&#24405;</span>
+<span style="color: #ECBE7B;">sudo</span> adduser saul
+<span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">mkdir</span> -p /home/saul/.ssh
+<span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">cp</span> /root/.ssh/authorized_keys /home/saul/.ssh
+<span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">chown</span> -R saul.saul /home/saul/.ssh
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#21518;&#32493;&#23601;&#21487;&#20197;&#29992;&#26222;&#36890;&#36134;&#25143;&#30331;&#24405;&#20102;</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgcf9715d" class="outline-2">
+<h2 id="orgcf9715d">添加 swap</h2>
+<div class="outline-text-2" id="text-orgcf9715d">
+<p>
+<a href="https://itsfoss.com/swap-size/">https://itsfoss.com/swap-size/</a><br />
+</p>
+<pre class="example" id="orgb210bde">
+Ubuntu has an entirely different perspective on the swap size as it takes hibernation into consideration. If you need hibernation, a swap of the size of RAM becomes necessary for Ubuntu.
+
+Otherwise, it recommends:
+
+If RAM is less than 1 GB, swap size should be at least the size of RAM and at most double the size of RAM
+If RAM is more than 1 GB, swap size should be at least equal to the square root of the RAM size and at most double the size of RAM
+If hibernation is used, swap size should be equal to size of RAM plus the square root of the RAM size
+</pre>
+
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">https://medium.com/analytics-vidhya/how-to-add-swap-space-on-ubuntu-ff9af2820adc</span>
+
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Since the server in our example has 1G of RAM, we will create a 1G file in this guide. Adjust this to meet the needs of your own server:</span>
+<span style="color: #ECBE7B;">sudo</span> fallocate -l 1G /swapfile
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Make the file only accessible to root by typing:</span>
+<span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">chmod</span> <span style="color: #da8548; font-weight: bold;">600</span> /swapfile
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">We can now mark the file as swap space by typing:</span>
+<span style="color: #ECBE7B;">sudo</span> mkswap /swapfile
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">After marking the file, we can enable the swap file, allowing our system to start utilising it:</span>
+<span style="color: #ECBE7B;">sudo</span> swapon /swapfile
+
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Back up the /etc/fstab file in case anything goes wrong:</span>
+<span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">cp</span> /etc/fstab /etc/fstab.bak
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Add the swap file information to the end of your /etc/fstab file by typing:</span>
+<span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">'/swapfile none swap sw 0 0'</span> | <span style="color: #ECBE7B;">sudo</span> tee -a /etc/fstab
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf97bf71" class="outline-2">
+<h2 id="orgf97bf71">软件安装</h2>
+<div class="outline-text-2" id="text-orgf97bf71">
+</div>
+<div id="outline-container-org33f5fc5" class="outline-3">
+<h3 id="org33f5fc5">docker</h3>
+<div class="outline-text-3" id="text-org33f5fc5">
+<p>
+<a href="https://docs.docker.com/engine/install/ubuntu/">https://docs.docker.com/engine/install/ubuntu/</a><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-sh"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">Add Docker&#8217;s official GPG key:</span>
+<span style="color: #ECBE7B;">curl</span> -fsSL https://download.docker.com/linux/ubuntu/gpg | <span style="color: #ECBE7B;">sudo</span> gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below.</span>
+<span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">\</span>
+  <span style="color: #98be65;">"deb [arch=</span><span style="color: #51afef; font-weight: bold;">$(dpkg --print-architecture)</span><span style="color: #98be65;"> signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \</span>
+<span style="color: #98be65;">  </span><span style="color: #51afef; font-weight: bold;">$(lsb_release -cs)</span><span style="color: #98be65;"> stable"</span> | <span style="color: #ECBE7B;">sudo</span> tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Install Docker Engine</span>
+<span style="color: #ECBE7B;">sudo</span> apt-get update
+<span style="color: #ECBE7B;">sudo</span> apt-get install docker-ce docker-ce-cli containerd.io
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org6343adf" class="outline-4">
+<h4 id="org6343adf">redis (3MiB)</h4>
+<div class="outline-text-4" id="text-org6343adf">
+<div class="org-src-container">
+<pre class="src src-yaml">version: '2'
+services:
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data:/data
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7a2a755" class="outline-4">
+<h4 id="org7a2a755">mysql (200MiB)</h4>
+<div class="outline-text-4" id="text-org7a2a755">
+<div class="org-src-container">
+<pre class="src src-yaml">version: "3"
+services:
+  db:
+    image: mysql/mysql-server:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data:/var/lib/mysql
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge7655e6" class="outline-4">
+<h4 id="orge7655e6">docker-nginx-auto-ssl (8MiB)</h4>
+<div class="outline-text-4" id="text-orge7655e6">
+<div class="org-src-container">
+<pre class="src src-yaml">version: '2'
+services:
+  nginx:
+    image: valian/docker-nginx-auto-ssl
+    restart: on-failure
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./data:/etc/resty-auto-ssl
+      - ./conf.d:/etc/nginx/conf.d
+    environment:
+      ALLOWED_DOMAINS: '([a-z]+.)?osaul.com'
+      SITES: 'example.osaul.com=172.22.0.1:8080'
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8501824" class="outline-3">
+<h3 id="org8501824">node</h3>
+<div class="outline-text-3" id="text-org8501824">
+<p>
+<a href="https://github.com/nodesource/distributions">https://github.com/nodesource/distributions</a><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">Node.js LTS (v16.x):</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">Using Ubuntu</span>
+<span style="color: #ECBE7B;">curl</span> -fsSL https://deb.nodesource.com/setup_lts.x | <span style="color: #ECBE7B;">sudo</span> -E bash -
+<span style="color: #ECBE7B;">sudo</span> apt-get install -y nodejs
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8eea876" class="outline-3">
+<h3 id="org8eea876">frp</h3>
+<div class="outline-text-3" id="text-org8eea876">
+<p>
+<a href="https://github.com/fatedier/frp/releases/">https://github.com/fatedier/frp/releases/</a><br />
+下载最新版本的 <code>linux_amd64</code><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">wget https://github.com/fatedier/frp/releases/download/v0.39.1/frp_0.39.1_linux_amd64.tar.gz
+tar -zxvf frp_0.39.1_linux_amd64.tar.gz
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2022-03-02 Wed 15:26</p>
+</div>
+</body>
+</html>

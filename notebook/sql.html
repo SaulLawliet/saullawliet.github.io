@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-22 Tue 20:43 -->
+<!-- 2022-03-02 Wed 14:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>SQL 笔记</title>
 <meta name="author" content="Saul Lawliet" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -81,7 +81,7 @@
 <div class="outline-text-3" id="text-orgeaa16f9">
 <p>
 大写字母是SQL的关键字<br />
-小写字母是单词含义
+小写字母是单词含义<br />
 </p>
 </div>
 </div>
@@ -91,12 +91,12 @@
 <div class="outline-text-3" id="text-orgcc366d3">
 <p>
 <code>database</code>, <code>table</code> 通常是复数<br />
-<code>column</code> 通常是单数
+<code>column</code> 通常是单数<br />
 </p>
 
 <p>
 主键一般是 <code>id</code><br />
-外键一般是 <code>table</code> 的单数 加 <code>_</code> 加 <code>id</code>, 例如 <code>movie_id</code>
+外键一般是 <code>table</code> 的单数 加 <code>_</code> 加 <code>id</code>, 例如 <code>movie_id</code><br />
 </p>
 </div>
 </div>
@@ -145,7 +145,7 @@
 </div>
 
 <p>
-<code>constratint:</code> 列约束语法
+<code>constratint:</code> 列约束语法<br />
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -184,7 +184,7 @@
 </table>
 
 <p>
-<code>constratints:</code> 表约束语法
+<code>constratints:</code> 表约束语法<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #5B6268;">-- &#24403;&#20165;&#26377;&#19968;&#21015;&#32422;&#26463;&#30340;&#26102;&#20505;, &#31561;&#21516;&#20110;&#19978;&#38754;&#30340;&#20889;&#27861;</span>
@@ -251,11 +251,11 @@ colume2 operator <span style="color: #51afef;">value</span>
 </div>
 
 <p>
-补充:
+补充:<br />
 </p>
 <ul class="org-ul">
 <li><p>
-<code>value</code> 可以是 <code>subquery</code>, 例如:
+<code>value</code> 可以是 <code>subquery</code>, 例如:<br />
 </p>
 <div class="org-src-container">
 <pre class="src src-sql">  <span style="color: #5B6268;">-- &#26597;&#35810;&#26576;&#21015;&#22823;&#20110;&#24179;&#22343;&#25968;&#30340;&#25968;&#25454;</span>
@@ -270,7 +270,7 @@ colume2 operator <span style="color: #51afef;">value</span>
 <h3 id="orgf49b581">SELECT</h3>
 <div class="outline-text-3" id="text-orgf49b581">
 <p>
-<b>EXAMPLE:</b>
+<b>EXAMPLE:</b><br />
 </p>
 <div class="org-src-container">
 <pre class="src src-sql"><span style="color: #5B6268;">-- &#26597;&#35810;&#25152;&#26377;&#21015;</span>
@@ -298,8 +298,8 @@ column1 [<span style="color: #51afef;">ASC</span>|<span style="color: #51afef;">
 </pre>
 </div>
 <ul class="org-ul">
-<li>ASC: 升序(默认)</li>
-<li>DESC: 降序</li>
+<li>ASC: 升序(默认)<br /></li>
+<li>DESC: 降序<br /></li>
 </ul>
 </div>
 </div>
@@ -497,14 +497,19 @@ TRUNCATE <span style="color: #51afef;">TABLE</span> <span style="color: #51afef;
 <h2 id="orgbe4483d">经验</h2>
 <div class="outline-text-2" id="text-orgbe4483d">
 <ul class="org-ul">
-<li>8,694,016行, 1.2GiB 的表, 插入一列耗时: 82.6s</li>
+<li>每个服务用自己独立的用户权限, 不管测试环境还是正式环境<br /></li>
+<li>阿里云Mysql5.7 1核2GB<br />
+<ul class="org-ul">
+<li>8,694,016行, 1.2GiB 的表, 插入一列耗时: 82.6s<br /></li>
+<li>8,740,938行, 1.2GiB 的表, 插入一列耗时: 124s<br /></li>
+</ul></li>
 </ul>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-02-22 Tue 20:43</p>
+<p class="date">Created: 2022-03-02 Wed 14:49</p>
 </div>
 </body>
 </html>

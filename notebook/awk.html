@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-01-13 Thu 22:49 -->
+<!-- 2022-03-02 Wed 15:26 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AWK 笔记</title>
 <meta name="author" content="Saul Lawliet" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -40,8 +40,8 @@
 <h3 id="orge4ca350">工作流</h3>
 <div class="outline-text-3" id="text-orge4ca350">
 
-<div id="org7b368c7" class="figure">
-<p><img src="awk-workflow.png" alt="awk-workflow.png" />
+<div id="org67d173f" class="figure">
+<p><img src="awk-workflow.png" alt="awk-workflow.png" /><br />
 </p>
 </div>
 </div>
@@ -50,7 +50,7 @@
 <div id="outline-container-org0108823" class="outline-3">
 <h3 id="org0108823">程序结构</h3>
 <div class="outline-text-3" id="text-org0108823">
-<pre class="example" id="org40ba328">
+<pre class="example" id="org091aff3">
 BEGIN {awk-commands}              -- BEGIN block
 /pattern/ {awk-commands}          -- body block
 END {awk-commands}                -- END block
@@ -61,7 +61,7 @@ END {awk-commands}                -- END block
 <div id="outline-container-org1235930" class="outline-3">
 <h3 id="org1235930">数据结构</h3>
 <div class="outline-text-3" id="text-org1235930">
-<pre class="example" id="org78648bb">
+<pre class="example" id="orgb5858fb">
 record1(field1, field2, field3...)
 record2(field1, field2, field3...)
 ...
@@ -75,21 +75,21 @@ record2(field1, field2, field3...)
 <div class="outline-text-2" id="text-orga09ae50">
 <ul class="org-ul">
 <li><code>$1, $2, $3...</code><br />
-表示 <code>record</code> 中的第几个 <code>field</code>, 其中 <code>$0</code> 表示整个 <code>record</code>, <code>$NF</code> 表示最后一个 <code>field</code></li>
+表示 <code>record</code> 中的第几个 <code>field</code>, 其中 <code>$0</code> 表示整个 <code>record</code>, <code>$NF</code> 表示最后一个 <code>field</code><br /></li>
 <li><code>NR</code> - <i>number of record</i><br />
-保持当前 <code>record</code> 的数量, 对于每一个 <code>record</code>, 此值会变.</li>
+保持当前 <code>record</code> 的数量, 对于每一个 <code>record</code>, 此值会变.<br /></li>
 <li><code>NF</code> - <i>number of field</i><br />
-保持当前 <code>record</code> 中 <code>field</code> 的数量, 对于每一个 <code>record</code>, 此值会变.</li>
+保持当前 <code>record</code> 中 <code>field</code> 的数量, 对于每一个 <code>record</code>, 此值会变.<br /></li>
 <li><code>FILENAME</code><br />
-当前的输入文件名</li>
+当前的输入文件名<br /></li>
 <li><code>FS</code> - <i>field separator</i><br />
-<code>field</code> 分割器, 默认是任何 <code>space</code> 和 <code>\t</code></li>
+<code>field</code> 分割器, 默认是任何 <code>space</code> 和 <code>\t</code><br /></li>
 <li><code>RS</code> - <i>record separator</i><br />
-<code>record</code> 分割器, 默认是 <code>\n</code></li>
+<code>record</code> 分割器, 默认是 <code>\n</code><br /></li>
 <li><code>OFS</code> - <i>output field separator</i><br />
-<code>field</code> 输出分割器, 默认是 <code>space</code></li>
+<code>field</code> 输出分割器, 默认是 <code>space</code><br /></li>
 <li><code>ORS</code> - <i>output record separator</i><br />
-<code>record</code> 输出分割器, 默认是 <code>\n</code></li>
+<code>record</code> 输出分割器, 默认是 <code>\n</code><br /></li>
 </ul>
 </div>
 </div>
@@ -98,15 +98,15 @@ record2(field1, field2, field3...)
 <h2 id="org6678bc4">参考</h2>
 <div class="outline-text-2" id="text-org6678bc4">
 <ol class="org-ol">
-<li><a href="http://www.tutorialspoint.com/awk/index.htm">http://www.tutorialspoint.com/awk/index.htm</a></li>
-<li><a href="https://en.wikipedia.org/wiki/AWK">https://en.wikipedia.org/wiki/AWK</a></li>
+<li><a href="http://www.tutorialspoint.com/awk/index.htm">http://www.tutorialspoint.com/awk/index.htm</a><br /></li>
+<li><a href="https://en.wikipedia.org/wiki/AWK">https://en.wikipedia.org/wiki/AWK</a><br /></li>
 </ol>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-01-13 Thu 22:49</p>
+<p class="date">Created: 2022-03-02 Wed 15:26</p>
 </div>
 </body>
 </html>
