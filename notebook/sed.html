@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-03-02 Wed 15:26 -->
+<!-- 2022-03-17 Thu 11:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>sed 笔记</title>
@@ -83,7 +83,7 @@
 <li><p>
 sed [-n] [-e] &rsquo;command(s)&rsquo; files<br />
 </p>
-<pre class="example" id="org36b05c3">
+<pre class="example" id="orge2db99b">
     sed '1d' books.txt # 删除第1行
     sed '1d;2d;5d;' books.txt # 删除第1,2,5行
     sed -e '1d' -e '2d' -e '5d' books.txt # 删除1,2,5行
@@ -92,7 +92,7 @@ sed [-n] [-e] &rsquo;command(s)&rsquo; files<br />
 <li><p>
 sed [-n] -f scriptfile files<br />
 </p>
-<pre class="example" id="org93824ca">
+<pre class="example" id="orgd0f744a">
     echo -e "1d\n2d\n5d" &gt; commands.txt
     sed -f commands.txt books.txt
 </pre></li>
@@ -103,7 +103,7 @@ sed [-n] -f scriptfile files<br />
 <div id="outline-container-orgdfcf851" class="outline-3">
 <h3 id="orgdfcf851">部分参数说明</h3>
 <div class="outline-text-3" id="text-orgdfcf851">
-<pre class="example" id="org58e3cc0">
+<pre class="example" id="org170edc2">
 -n, --quiet, --silent
 	suppress automatic printing of pattern space
 	抑制模式空间的自动打印
@@ -223,7 +223,7 @@ sed [-n] -f scriptfile files<br />
 <p>
 文本替换<br />
 </p>
-<pre class="example" id="org00e8c30">
+<pre class="example" id="org1c0c7f4">
 [address1[,address2]]s/pattern/replacement/[flags]
 </pre>
 <ol class="org-ol">
@@ -274,7 +274,7 @@ sed [-n] -f scriptfile files<br />
 在 <code>pattern</code> 中, 被 <code>\(</code> <code>\)</code> 包围的部分.<br />
 在 <code>replacement</code> 中, 可以以 <code>\N</code> 的方式提取, 其中 <code>N</code> 表示第几个匹配<br />
 </p>
-<pre class="example" id="org547a2ed">
+<pre class="example" id="org3897191">
    $ echo "Three One Two" | sed 's/\(\w\+\) \(\w\+\) \(\w\+\)/\2 \3 \1/'
    One Two Three
 </pre></li>
@@ -289,7 +289,7 @@ sed [-n] -f scriptfile files<br />
 <p>
 插入行<br />
 </p>
-<pre class="example" id="org731dc52">
+<pre class="example" id="org63e82d7">
 [address]i\
 Insert text
 </pre>
@@ -302,7 +302,7 @@ Insert text
 <p>
 追加行<br />
 </p>
-<pre class="example" id="org7c0342e">
+<pre class="example" id="orge964738">
 [address]a\
 Append text
 </pre>
@@ -315,7 +315,7 @@ Append text
 <p>
 删除行<br />
 </p>
-<pre class="example" id="org3988d7c">
+<pre class="example" id="org39f592c">
 [address1[,address2]]d
 </pre>
 </div>
@@ -327,7 +327,7 @@ Append text
 <p>
 改变行<br />
 </p>
-<pre class="example" id="orga838c72">
+<pre class="example" id="orgd5cd144">
 [address1[,address2]]c\
 Replace text
 </pre>
@@ -340,7 +340,7 @@ Replace text
 <p>
 替换字符<br />
 </p>
-<pre class="example" id="org3ee527c">
+<pre class="example" id="orgc072f80">
 [address1[,address2]]y/list-1/list-2/
 </pre>
 </div>
@@ -352,7 +352,7 @@ Replace text
 <p>
 显示特殊字符, <code>[len]</code> 表示每行显示几个字符<br />
 </p>
-<pre class="example" id="orgd9e2e22">
+<pre class="example" id="org0bfd2df">
 [address1[,address2]]l
 [address1[,address2]]l [len]
 </pre>
@@ -366,7 +366,7 @@ Replace text
 写入文件<br />
 <code>sed -n 'w b.txt' a.txt</code> 等价于 <code>cp a.txt b.txt</code><br />
 </p>
-<pre class="example" id="org1148611">
+<pre class="example" id="org78f7557">
 [address1[,address2]]w file
 </pre>
 </div>
@@ -378,7 +378,7 @@ Replace text
 <p>
 读取文件<br />
 </p>
-<pre class="example" id="orgecff69a">
+<pre class="example" id="org3ba9ca4">
 [address]r file
 </pre>
 </div>
@@ -390,7 +390,7 @@ Replace text
 <p>
 执行命令, 如果 <code>[command]</code> 省略, 将会执行 处理的文件 里面的命令<br />
 </p>
-<pre class="example" id="org4266d73">
+<pre class="example" id="org72b02b4">
 [address1[,address2]]e [command]
 </pre>
 </div>
@@ -402,7 +402,7 @@ Replace text
 <p>
 退出sed, <code>[value]</code> 表示返回码<br />
 </p>
-<pre class="example" id="orgb83f207">
+<pre class="example" id="orgf969567">
 [address]q
 [address]q [value]
 </pre>
@@ -416,7 +416,7 @@ Replace text
 行号<br />
 <code>sed -n '$=' a.txt</code> 等价于 <code>cat a.txt |wc -l</code><br />
 </p>
-<pre class="example" id="org8455957">
+<pre class="example" id="orgfaeecca">
 [address1[,address2]]=
 </pre>
 </div>
@@ -444,7 +444,7 @@ Replace text
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-03-02 Wed 15:26</p>
+<p class="date">Created: 2022-03-17 Thu 11:08</p>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-03-02 Wed 15:26 -->
+<!-- 2022-03-17 Thu 11:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ubuntu 20.04 从零开始</title>
@@ -19,6 +19,7 @@
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#orgaa66a16">创建用户</a></li>
+<li><a href="#org7c09c08">修改hostname</a></li>
 <li><a href="#orgcf9715d">添加 swap</a></li>
 <li><a href="#orgf97bf71">软件安装</a>
 <ul>
@@ -31,6 +32,7 @@
 </li>
 <li><a href="#org8501824">node</a></li>
 <li><a href="#org8eea876">frp</a></li>
+<li><a href="#orgadc9952">openresty</a></li>
 </ul>
 </li>
 </ul>
@@ -62,13 +64,24 @@
 </div>
 </div>
 
+<div id="outline-container-org7c09c08" class="outline-2">
+<h2 id="org7c09c08">修改hostname</h2>
+<div class="outline-text-2" id="text-org7c09c08">
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#20351;&#29992;root&#25191;&#34892;</span>
+hostnamectl set-hostname myubuntu
+</pre>
+</div>
+</div>
+</div>
+
 <div id="outline-container-orgcf9715d" class="outline-2">
 <h2 id="orgcf9715d">添加 swap</h2>
 <div class="outline-text-2" id="text-orgcf9715d">
 <p>
 <a href="https://itsfoss.com/swap-size/">https://itsfoss.com/swap-size/</a><br />
 </p>
-<pre class="example" id="orgb210bde">
+<pre class="example" id="orgd8c1e59">
 Ubuntu has an entirely different perspective on the swap size as it takes hibernation into consideration. If you need hibernation, a swap of the size of RAM becomes necessary for Ubuntu.
 
 Otherwise, it recommends:
@@ -120,6 +133,8 @@ If hibernation is used, swap size should be equal to size of RAM plus the square
 <span style="color: #5B6268;"># </span><span style="color: #5B6268;">Install Docker Engine</span>
 <span style="color: #ECBE7B;">sudo</span> apt-get update
 <span style="color: #ECBE7B;">sudo</span> apt-get install docker-ce docker-ce-cli containerd.io
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">&#32473;&#26222;&#36890;&#29992;&#25143;&#26435;&#38480;</span>
+<span style="color: #ECBE7B;">sudo</span> usermod -G docker -a saul
 </pre>
 </div>
 </div>
@@ -171,6 +186,7 @@ services:
   nginx:
     image: valian/docker-nginx-auto-ssl
     restart: on-failure
+network_mode: "host"
     ports:
       - 80:80
       - 443:443
@@ -216,11 +232,37 @@ tar -zxvf frp_0.39.1_linux_amd64.tar.gz
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgadc9952" class="outline-3">
+<h3 id="orgadc9952">openresty</h3>
+<div class="outline-text-3" id="text-orgadc9952">
+<p>
+<a href="http://openresty.org/en/linux-packages.html#ubuntu">http://openresty.org/en/linux-packages.html#ubuntu</a><br />
+</p>
+<div class="org-src-container">
+<pre class="src src-shell"><span style="color: #ECBE7B;">sudo</span> apt-get -y install --no-install-recommends wget gnupg ca-certificates
+wget -O - https://openresty.org/package/pubkey.gpg | <span style="color: #ECBE7B;">sudo</span> apt-key add -
+<span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">"deb http://openresty.org/package/ubuntu </span><span style="color: #51afef; font-weight: bold;">$(lsb_release -sc)</span><span style="color: #98be65;"> main"</span> <span style="color: #98be65;">\</span>
+    | <span style="color: #ECBE7B;">sudo</span> tee /etc/apt/sources.list.d/openresty.list
+<span style="color: #ECBE7B;">sudo</span> apt-get update
+<span style="color: #ECBE7B;">sudo</span> apt-get -y install openresty
+</pre>
+</div>
+
+<p>
+额外配置<br />
+</p>
+<pre class="example" id="org367783a">
+user nobody; =&gt; user saul;
+worker_processes 1; =&gt; worker_processes 2;
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-03-02 Wed 15:26</p>
+<p class="date">Created: 2022-03-17 Thu 11:12</p>
 </div>
 </body>
 </html>
