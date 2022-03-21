@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-01-13 Thu 22:47 -->
+<!-- 2022-03-21 Mon 15:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>&lt;Java Concurrency in Practice&gt; 读书笔记 - Part4: 高级主题 (TODO)</title>
 <meta name="author" content="Saul Lawliet" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -18,28 +18,28 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3a9bdc7">第13章 显式锁</a>
+<li><a href="#orge06750c">第13章 显式锁</a>
 <ul>
-<li><a href="#org76e8d2c">Lock 与 RenentrantLock</a></li>
-<li><a href="#orgad2023a">性能考虑因素</a></li>
-<li><a href="#orgce84d59">公平性</a></li>
-<li><a href="#org3b685bf">在 synchronized 和 ReentrantLock 之间进行选择</a></li>
-<li><a href="#orga884b96">读 - 写锁</a></li>
+<li><a href="#orgc4807a7">Lock 与 RenentrantLock</a></li>
+<li><a href="#org6e445b0">性能考虑因素</a></li>
+<li><a href="#orgda898a7">公平性</a></li>
+<li><a href="#orgab276a5">在 synchronized 和 ReentrantLock 之间进行选择</a></li>
+<li><a href="#org3a04d15">读 - 写锁</a></li>
 </ul>
 </li>
-<li><a href="#org48047dc">第14章 构建自定义的同步工具</a></li>
-<li><a href="#org45ca392">第15章 原子变量与非阻塞同步机制</a></li>
+<li><a href="#orgb56538d">第14章 构建自定义的同步工具</a></li>
+<li><a href="#org04b7203">第15章 原子变量与非阻塞同步机制</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org3a9bdc7" class="outline-2">
-<h2 id="org3a9bdc7">第13章 显式锁</h2>
-<div class="outline-text-2" id="text-org3a9bdc7">
+<div id="outline-container-orge06750c" class="outline-2">
+<h2 id="orge06750c">第13章 显式锁</h2>
+<div class="outline-text-2" id="text-orge06750c">
 </div>
-<div id="outline-container-org76e8d2c" class="outline-3">
-<h3 id="org76e8d2c">Lock 与 RenentrantLock</h3>
-<div class="outline-text-3" id="text-org76e8d2c">
+<div id="outline-container-orgc4807a7" class="outline-3">
+<h3 id="orgc4807a7">Lock 与 RenentrantLock</h3>
+<div class="outline-text-3" id="text-orgc4807a7">
 <p>
 ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互斥性和内存可见性.<br />
 在获取 ReentrantLock 时, 有着与进入同步代码块相同的内存语义, 在释放 ReentrantLock 时, 同样有着与退出同步代码块相同的内存语义.<br />
@@ -48,22 +48,22 @@ ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互�
 </div>
 </div>
 
-<div id="outline-container-orgad2023a" class="outline-3">
-<h3 id="orgad2023a">性能考虑因素</h3>
-<div class="outline-text-3" id="text-orgad2023a">
+<div id="outline-container-org6e445b0" class="outline-3">
+<h3 id="org6e445b0">性能考虑因素</h3>
+<div class="outline-text-3" id="text-org6e445b0">
 <p>
 在 Java6 之后内置锁与 ReentrantLock 的性能基本差不多<br />
 </p>
 
-<pre class="example" id="orgce22a5d">
+<pre class="example" id="org5b45375">
 性能是一个不断变化的指标, 如果在昨天的测试基准中发现 X 比 Y 更快, 那么在今天就可能已经过时了.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgce84d59" class="outline-3">
-<h3 id="orgce84d59">公平性</h3>
-<div class="outline-text-3" id="text-orgce84d59">
+<div id="outline-container-orgda898a7" class="outline-3">
+<h3 id="orgda898a7">公平性</h3>
+<div class="outline-text-3" id="text-orgda898a7">
 <p>
 在 ReentrantLock 的构造函数中提供了两种公平性选择: 创建一个非公平的锁(默认)或者一个公平的锁.<br />
 </p>
@@ -78,19 +78,19 @@ ReentrantLock 实现了 Lock 接口, 并提供了与 synchronized 相同的互�
 </div>
 </div>
 
-<div id="outline-container-org3b685bf" class="outline-3">
-<h3 id="org3b685bf">在 synchronized 和 ReentrantLock 之间进行选择</h3>
-<div class="outline-text-3" id="text-org3b685bf">
-<pre class="example" id="org31010d9">
+<div id="outline-container-orgab276a5" class="outline-3">
+<h3 id="orgab276a5">在 synchronized 和 ReentrantLock 之间进行选择</h3>
+<div class="outline-text-3" id="text-orgab276a5">
+<pre class="example" id="orgb0545f6">
 在一些内置锁无法满足需求的情况下, RenentrantLock 可以作为一种高级工具. 当需要一些高级功能时才应该使用 ReentrantLock,
 这些功能包括: 可定时的, 可轮询的与可中断的锁获取操作, 公平对列, 以及非块结构的锁. 否则应该优先使用 synchronized.
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orga884b96" class="outline-3">
-<h3 id="orga884b96">读 - 写锁</h3>
-<div class="outline-text-3" id="text-orga884b96">
+<div id="outline-container-org3a04d15" class="outline-3">
+<h3 id="org3a04d15">读 - 写锁</h3>
+<div class="outline-text-3" id="text-org3a04d15">
 <p>
 互斥是一种传统的加锁策略, 虽然可以避免&ldquo;写/写&rdquo;冲突和&ldquo;写/读&rdquo;冲突, 但同样也避免了&ldquo;读/读&rdquo;冲突.<br />
 如果大部分访问操作都是读操作, 可以使用读/写锁, 一个资源可以被多个读操作访问, 或者被一个写操作访问, 但两者不能同时进行.<br />
@@ -116,18 +116,18 @@ ReentrantReadWriteLock 为这两种锁都提供了可重入的加锁语义.<br /
 </div>
 </div>
 
-<div id="outline-container-org48047dc" class="outline-2">
-<h2 id="org48047dc">第14章 构建自定义的同步工具</h2>
-<div class="outline-text-2" id="text-org48047dc">
+<div id="outline-container-orgb56538d" class="outline-2">
+<h2 id="orgb56538d">第14章 构建自定义的同步工具</h2>
+<div class="outline-text-2" id="text-orgb56538d">
 <p>
 TODO<br />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org45ca392" class="outline-2">
-<h2 id="org45ca392">第15章 原子变量与非阻塞同步机制</h2>
-<div class="outline-text-2" id="text-org45ca392">
+<div id="outline-container-org04b7203" class="outline-2">
+<h2 id="org04b7203">第15章 原子变量与非阻塞同步机制</h2>
+<div class="outline-text-2" id="text-org04b7203">
 <p>
 TODO<br />
 </p>
@@ -136,7 +136,7 @@ TODO<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-01-13 Thu 22:47</p>
+<p class="date">Created: 2022-03-21 Mon 15:34</p>
 </div>
 </body>
 </html>

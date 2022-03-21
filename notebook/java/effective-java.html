@@ -1,0 +1,1035 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2022-03-21 Mon 15:34 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lt;Effective Java&gt; 读书笔记</title>
+<meta name="author" content="Saul Lawliet" />
+<meta name="generator" content="Org Mode" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">&lt;Effective Java&gt; 读书笔记</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org79e5c4d">第2章 创建和销毁对象 (1 - 7)</a>
+<ul>
+<li><a href="#org055c628">第1条: 考虑用静态工厂方法代替构造器</a></li>
+<li><a href="#org7c47f91">第2条: 遇到多个构造器参数时要考虑用构造器</a></li>
+<li><a href="#org42d55c1">第3条: 用私有构造器或者枚举类型强化 Singleton 属性</a></li>
+<li><a href="#orgb652e59">第4条: 通过私有构造器强化不可实例化的能力</a></li>
+<li><a href="#org72b47aa">第5条: 避免创建不必要的对象</a></li>
+<li><a href="#org678b445">第6条: 消除过期的对象引用</a></li>
+<li><a href="#org1886d6e">第7条: 避免使用终结方法</a></li>
+</ul>
+</li>
+<li><a href="#org02b3e5e">第3章 对于所有对象都通用的方法 (8 - 12)</a>
+<ul>
+<li><a href="#orgacac781">第8条: 覆盖 equals 时请遵守通用约定</a></li>
+<li><a href="#orgce57919">第9条: 覆盖 equals 时总要覆盖 hashCode</a></li>
+<li><a href="#org7ac7f8b">第10条: 始终要覆盖 toString</a></li>
+<li><a href="#orga12cb38">第11条: 谨慎地覆盖 clone</a></li>
+<li><a href="#org6e7b76a">第12条: 考虑实现 Comparable 接口</a></li>
+</ul>
+</li>
+<li><a href="#org1c39686">第4章 类和接口 (13 - 22)</a>
+<ul>
+<li><a href="#org3ae556f">第13条: 使类和成员的可访问性最小化</a></li>
+<li><a href="#orgf51aa5c">第14条: 在公有类中使用访问方法而非共有域</a></li>
+<li><a href="#org7a5124d">第15条: 使可变性最小化</a></li>
+<li><a href="#org5611703">第16条: 复合优先于继承</a></li>
+<li><a href="#orgd6408c5">第17条: 要么为继承而设计, 并提供文档说明, 要么就禁止继承</a></li>
+<li><a href="#org00ac5e3">第18条: 接口优于抽象类</a></li>
+<li><a href="#org23c4306">第19条: 接口只用于定义类型</a></li>
+<li><a href="#org85ca78f">第20条: 类层次优于标签类</a></li>
+<li><a href="#org335dd19">第21条: 用函数对象表示策略</a></li>
+<li><a href="#orgb88c4b0">第22条: 优先考虑静态成员类</a></li>
+</ul>
+</li>
+<li><a href="#org119d421">第5章 泛型 (23 - 29)</a>
+<ul>
+<li><a href="#org1461669">第23条: 请不要在新代码中使用原生态类型</a></li>
+<li><a href="#orgc71873f">第24条: 消除非受检警告</a></li>
+<li><a href="#org4767381">第25条: 列表优于数组</a></li>
+<li><a href="#org6a1d840">第26条: 优先考虑泛型</a></li>
+<li><a href="#org31f64c2">第27条: 优先考虑泛型方法</a></li>
+<li><a href="#org89ec616">第28条: 利用有限制通配符来提升API的灵活性</a></li>
+<li><a href="#org4f3c057">第29条: 优先考虑类型安全的异构容器</a></li>
+</ul>
+</li>
+<li><a href="#org264df33">第6章 枚举和注解 (30 - 37)</a>
+<ul>
+<li><a href="#org14f19b4">第31条: 用实例域代替序数</a></li>
+<li><a href="#org4c4bb7a">第32条: 用EnumSet代替位域</a></li>
+<li><a href="#orgc7e5da8">第33条: 用EnumMap代替序数索引</a></li>
+<li><a href="#org6bda741">第34条: 用接口模拟可伸缩的枚举</a></li>
+<li><a href="#org2ab0358">第35条: 注解优于命名空间</a></li>
+<li><a href="#org6d9bc2e">第36条: 坚持使用Override注解</a></li>
+<li><a href="#org468dbca">第37条: 用标记接口定义类型</a></li>
+</ul>
+</li>
+<li><a href="#org14dcea2">第7章 方法 (38 - 44)</a>
+<ul>
+<li><a href="#org19b8e3c">第38条: 检查参数的有效性</a></li>
+<li><a href="#org6f26a4e">第39条: 必要时进行保护性拷贝</a></li>
+<li><a href="#orgc408fee">第40条: 谨慎设计方法签名</a></li>
+<li><a href="#org656db6e">第41条: 慎用重载</a></li>
+<li><a href="#orgadb1042">第42条: 慎用可变参数</a></li>
+<li><a href="#org5b7b58f">第43条: 返回零长度的数组或者集合, 而不是null</a></li>
+<li><a href="#orgee838b0">第44条: 为所有导出的API元素编写文档注释</a></li>
+</ul>
+</li>
+<li><a href="#org0121890">第8章 通用程序设计 (45 - 56)</a>
+<ul>
+<li><a href="#org68626c5">第45条: 将局部变量的作用域最小化</a></li>
+<li><a href="#orgddb3e1c">第46条: for-each循环优先传统的for循环</a></li>
+<li><a href="#orgbe0ed0e">第47条: 了解和使用类库</a></li>
+<li><a href="#orgcc85636">第48条: 如果需要精确的答案, 请避免使用float和double</a></li>
+<li><a href="#org0d85be5">第49条: 基本类型优先于装箱基本类型</a></li>
+<li><a href="#org6f65184">第50条: 如果其他类型更合适, 则尽量避免使用字符串</a></li>
+<li><a href="#org7c9ac39">第51条: 当心字符串连接的性能</a></li>
+<li><a href="#orgd450c71">第52条: 通过接口引用对象</a></li>
+<li><a href="#org16847b1">第53条: 接口优先于反射机制</a></li>
+<li><a href="#org62336af">第54条: 谨慎的使用本地方法</a></li>
+<li><a href="#org81a0f0e">第55条: 谨慎地进行优化</a></li>
+<li><a href="#org8b43dc4">第56条: 遵守普遍接受的命名惯例</a></li>
+</ul>
+</li>
+<li><a href="#org4080c19">第9章 异常 (57 - 65)</a>
+<ul>
+<li><a href="#orge206aa6">第57条: 只针对异常的情况才使用异常</a></li>
+<li><a href="#orgba8706e">第58条: 对可恢复的情况使用受检异常, 对变成错误使用运行时异常</a></li>
+<li><a href="#orgc429f14">第59条: 避免不必要地使用受检的异常</a></li>
+<li><a href="#org90a8b2c">第60条: 优先使用标准的异常</a></li>
+<li><a href="#org928e0d0">第61条: 抛出与抽象相对应的异常</a></li>
+<li><a href="#org65bea56">第62条: 每个方法抛出的异常都要有文档</a></li>
+<li><a href="#org0ea4b60">第63条: 在细节消息中包含能捕获失败的信息</a></li>
+<li><a href="#orga0cbe3f">第64条: 努力使失败保持原子性</a></li>
+<li><a href="#org46a844d">第65条: 不要忽略异常</a></li>
+</ul>
+</li>
+<li><a href="#org8c8cc43">第10章 并发 (66 - 73)</a>
+<ul>
+<li><a href="#org5e58bdd">第66条: 同步访问共享的可变数据</a></li>
+<li><a href="#org8bb0246">第67条: 避免过度同步</a></li>
+<li><a href="#orgd7d16fa">第68条: executor 和 task 优于线程</a></li>
+<li><a href="#org80977d8">第69条: 并发工具优于 wait 和 notify</a></li>
+<li><a href="#org073b40a">第70条: 线程安全性的文档化</a></li>
+<li><a href="#orgfea9767">第71条: 慎用延迟初始化</a></li>
+<li><a href="#org26253b2">第72条: 不要依赖于线程调度器</a></li>
+</ul>
+</li>
+<li><a href="#org53fb6c1">第11章 序列化 (74 - 78)</a>
+<ul>
+<li><a href="#orgdaa27dc">第74条: 谨慎地实现 Serializable 接口</a></li>
+<li><a href="#org4183328">第75条: 考虑使用自定义的序列化形式</a></li>
+<li><a href="#orge9fce1e">第76条: 保护性地编写readObject方法</a></li>
+<li><a href="#org9b4e4ca">第77条: 对于实例控制, 枚举类型优先于readResolve</a></li>
+<li><a href="#org3b4bb01">第78条: 考虑用序列化代理代替序列化实例</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<hr />
+
+<div id="outline-container-org79e5c4d" class="outline-2">
+<h2 id="org79e5c4d">第2章 创建和销毁对象 (1 - 7)</h2>
+<div class="outline-text-2" id="text-org79e5c4d">
+</div>
+<div id="outline-container-org055c628" class="outline-3">
+<h3 id="org055c628">第1条: 考虑用静态工厂方法代替构造器</h3>
+<div class="outline-text-3" id="text-org055c628">
+<pre class="example" id="orgc8a93f1">
+优点
+1. 有名称(方法名), 可以确切地描述正被返回的对象
+2. 不必在每次调用它们的时候都创建一个新对象, 例如 Boolean.valueOf(boolean)
+3. 可以返回类型的任何子类型的对象
+4. 在创建忽视类型实例的时候, 代码可以更简单, 例如 new ArrayList&lt;Integer&gt;() (1.8已改进)
+缺点
+1. 类如果不含公有或受保护的构造器, 就不能被子例化
+2. 跟其他的静态方法实际上没有任何区别
+
+静态方法的一些惯用名
+- valueOf	类型转换
+- of		valueOf的简洁写法, 在EnumSet中流行
+- getInstance	返回实例
+- newInstance	保证返回的是不同的实例
+- getType	在不同类中使用, Type表示返回的对象类型
+- newType	在不同类中使用, Type表示返回的对象类型
+</pre>
+</div>
+</div>
+<div id="outline-container-org7c47f91" class="outline-3">
+<h3 id="org7c47f91">第2条: 遇到多个构造器参数时要考虑用构造器</h3>
+<div class="outline-text-3" id="text-org7c47f91">
+<pre class="example" id="orga27ad33">
+设计模式中的: Builder模式
+</pre>
+</div>
+</div>
+<div id="outline-container-org42d55c1" class="outline-3">
+<h3 id="org42d55c1">第3条: 用私有构造器或者枚举类型强化 Singleton 属性</h3>
+<div class="outline-text-3" id="text-org42d55c1">
+<pre class="example" id="orgf0be627">
+单元素的枚举类型已经成为实现 Singleton 的最佳方法
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb652e59" class="outline-3">
+<h3 id="orgb652e59">第4条: 通过私有构造器强化不可实例化的能力</h3>
+<div class="outline-text-3" id="text-orgb652e59">
+<pre class="example" id="org26a0c64">
+如果类不允许被实例化, 需要显式的声明, 例如 Math
+public final class Math {
+  /** Don't let anyone instantiate this class. */
+  private Math() {}
+  ...
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-org72b47aa" class="outline-3">
+<h3 id="org72b47aa">第5条: 避免创建不必要的对象</h3>
+<div class="outline-text-3" id="text-org72b47aa">
+<pre class="example" id="orga89ac73">
+当应该重用现有对象时, 就不要创建新的对象
+</pre>
+</div>
+</div>
+<div id="outline-container-org678b445" class="outline-3">
+<h3 id="org678b445">第6条: 消除过期的对象引用</h3>
+<div class="outline-text-3" id="text-org678b445">
+<pre class="example" id="org759146f">
+清空对象引用应该是一种例外, 而不是一种规范行为
+只要类是自己管理内存, 就应该警惕内存泄漏问题
+</pre>
+</div>
+</div>
+<div id="outline-container-org1886d6e" class="outline-3">
+<h3 id="org1886d6e">第7条: 避免使用终结方法</h3>
+<div class="outline-text-3" id="text-org1886d6e">
+<pre class="example" id="orgc10e853">
+(如果不是看这本书, 我都不知道 Object.finalize() 方法)
+不要依赖终结方法释放重要资源, 因为无法保证该方法一定会被调用
+
+两种合理用法
+1. 作为保护网, 比如 FileInputStream 中的 finalize() 检查用户有没有显示的调用close()
+2. 终止非关键的本地资源
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org02b3e5e" class="outline-2">
+<h2 id="org02b3e5e">第3章 对于所有对象都通用的方法 (8 - 12)</h2>
+<div class="outline-text-2" id="text-org02b3e5e">
+</div>
+<div id="outline-container-orgacac781" class="outline-3">
+<h3 id="orgacac781">第8条: 覆盖 equals 时请遵守通用约定</h3>
+<div class="outline-text-3" id="text-orgacac781">
+<pre class="example" id="org8ca30fc">
+不覆盖 equals 的情况
+- 类的每个实例在本质上都是唯一的, 例如: Thread, Object
+- 不关心类是否提供了“逻辑相等”的测试功能
+- 超类已经覆盖了 equals, 从超类继承过来的行为对于子类也是合适的
+- 类是私有的或是包级私有的, 可以确定它的equals方法永远不会被调用
+
+equals 的等价关系
+自反性: x.equals(x) == true
+对称性: if x.equals(y) == true, then y.equals(x) == true
+传递性: if x.equals(y) == true, y.equals(z) == true, then x.equals(z) == true
+一致性: 如果对象中比较的值没有修改, 那么多次调用的结果一样
+非空性: x.equals(null) == false
+
+实现高质量 equals 的诀窍
+1. 使用 == 操作符检查“参数是否为找个对象的引用”, 如果是, 返回 true
+2. 使用 instanceof 操作符检查“参数是否为正确的类型”, 如果不是, 返回 false
+3. 把参数转换为正确的类型
+4. 以此对比该类中的关键域, 检查参数中的域是否与该对象中对应的域相匹配
+5. 问自己3个问题: 是否对称? 是否传递? 是否一致?
+</pre>
+</div>
+</div>
+<div id="outline-container-orgce57919" class="outline-3">
+<h3 id="orgce57919">第9条: 覆盖 equals 时总要覆盖 hashCode</h3>
+<div class="outline-text-3" id="text-orgce57919">
+<pre class="example" id="org4399444">
+相等的对象必须具有相等的散列码(在覆盖了 equals 方法的类中, 也必须覆盖 hashcode 方法)
+// 摘自 String.hashCode(), 注意要选取一个质数
+int h = 0;
+char val[] = value;
+for (int i = 0; i &lt; value.length; i++) {
+    h = 31 * h + val[i];
+}
+hash = h;
+</pre>
+</div>
+</div>
+<div id="outline-container-org7ac7f8b" class="outline-3">
+<h3 id="org7ac7f8b">第10条: 始终要覆盖 toString</h3>
+<div class="outline-text-3" id="text-org7ac7f8b">
+<pre class="example" id="orgfbef1e8">
+建议所有的子类都覆盖这个方法; 这个方法应该返回对象中包含的所有值得关注的信息
+如果指定了格式, 最好再提供一个相匹配的静态工厂或构造器
+</pre>
+</div>
+</div>
+<div id="outline-container-orga12cb38" class="outline-3">
+<h3 id="orga12cb38">第11条: 谨慎地覆盖 clone</h3>
+<div class="outline-text-3" id="text-orga12cb38">
+<pre class="example" id="orgc2286a5">
+最好不要覆盖这个方法, 也不要调用它(除非要拷贝数组)
+如果一定要实现对象拷贝: 请实现一个拷贝构造器或拷贝工厂(转换构造器或转换工厂)
+</pre>
+</div>
+</div>
+<div id="outline-container-org6e7b76a" class="outline-3">
+<h3 id="org6e7b76a">第12条: 考虑实现 Comparable 接口</h3>
+<div class="outline-text-3" id="text-org6e7b76a">
+<pre class="example" id="orga53cf0a">
+如果正在编写一个值类, 最好实现Comparable接口
+实现条件:
+1. x.compareTo(y) == -y.compareTo(x)
+2. x.compareTo(y) &gt; 0 &amp;&amp; y.compareTo(z) &gt; 0, 则: x.compareTo(z) &gt; 0
+3. x.compareTo(y) == 0, 则: x.compareTo(z) == y.compareTo(z)
+4. (建议) (x.compareTo(y) == 0) == (x.equals(y))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1c39686" class="outline-2">
+<h2 id="org1c39686">第4章 类和接口 (13 - 22)</h2>
+<div class="outline-text-2" id="text-org1c39686">
+</div>
+<div id="outline-container-org3ae556f" class="outline-3">
+<h3 id="org3ae556f">第13条: 使类和成员的可访问性最小化</h3>
+<div class="outline-text-3" id="text-org3ae556f">
+<pre class="example" id="org13e4013">
+尽可能地使每个类或者成员不被外界访问.
+设计良好的模块, 把它的API与它的实现清晰的隔离开.
+模块之间通过它们的API通信, 一个模块不需要知道其他模块内部工作情况.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgf51aa5c" class="outline-3">
+<h3 id="orgf51aa5c">第14条: 在公有类中使用访问方法而非共有域</h3>
+<div class="outline-text-3" id="text-orgf51aa5c">
+<pre class="example" id="org30eebae">
+如果类可以在它所在的包的外部进行访问, 就提供访问方法.
+如果类是包级私有的, 或者是私有的嵌套类, 直接暴露它的数据域并没有本质的错误
+</pre>
+</div>
+</div>
+<div id="outline-container-org7a5124d" class="outline-3">
+<h3 id="org7a5124d">第15条: 使可变性最小化</h3>
+<div class="outline-text-3" id="text-org7a5124d">
+<pre class="example" id="org0eaa184">
+不可变类的优点:
+1. 不可变对象本质上是线程安全的, 它们不要求同步.
+2. 不仅可以共享不可变对象, 甚至也可以共享它们的内部信息.
+3. 不可变对象为其他对象提供了大量的构建
+
+不可变类的缺点: 对于每个不同的值都需要一个单独的对象
+
+使类成为不可变, 要遵循的规则:
+1. 不要提供任何会修改对象状态的方法.
+2. 保证类不会被扩展.
+3. 使所有的域都是 final 的.
+4. 是所有的域都成为私有的.
+5. 确保对于任何可变组件的互斥访问
+
+如果要对一个不可变类进行复杂的多阶段操作, 最好的方法是提供一个可变配套类, 如 String 与 StringBuilder
+</pre>
+</div>
+</div>
+<div id="outline-container-org5611703" class="outline-3">
+<h3 id="org5611703">第16条: 复合优先于继承</h3>
+<div class="outline-text-3" id="text-org5611703">
+<pre class="example" id="org68100cf">
+只有当子类真正是超类的子类型时, 才适合用继承.
+在包内使用继承是安全的, 通常情况, 一个包内的子类和超类的实现是在同一个程序员的控制下
+跨包继承是危险的操作, 1:不清楚内部细节 2:后续如果超类升级, 子类也会受影响
+为了解决跨包继承的问题, 可以使用一种叫做"复合"的设计, 实现一个转发类, 然后继承这个转发类.
+复合: 不用扩展现在的类, 而是在新的类中增加一个私有域, 它引用现有类的一个实例.
+转发方法: 新类中每个实例方法都可以调用被包含的现有类实例中对应的方法, 并返回它的结果.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd6408c5" class="outline-3">
+<h3 id="orgd6408c5">第17条: 要么为继承而设计, 并提供文档说明, 要么就禁止继承</h3>
+<div class="outline-text-3" id="text-orgd6408c5">
+<pre class="example" id="orgfad62ba">
+为继承而设计的类, 必须要有文档说明它可覆盖的方法的自用性.
+为了继承而设计的类, 唯一的测试方法就是编写子类, 测试通过才可以发布类.
+构造器不能调用可被覆盖的方法
+</pre>
+</div>
+</div>
+<div id="outline-container-org00ac5e3" class="outline-3">
+<h3 id="org00ac5e3">第18条: 接口优于抽象类</h3>
+<div class="outline-text-3" id="text-org00ac5e3">
+<pre class="example" id="org96dcce9">
+- 现有的类可以很容易被更新, 以实现新的接口
+- 接口是定义 mixin 的理想选择
+- 接口允许我们构造非层次结构的类型框架
+
+为重要的接口提供一个抽象的骨架实现类, 把接口和抽象类的优点结合起来.
+接口的作用仍然是定义类型, 但骨架实现类接管了所有与接口实现相关的工作
+</pre>
+</div>
+</div>
+<div id="outline-container-org23c4306" class="outline-3">
+<h3 id="org23c4306">第19条: 接口只用于定义类型</h3>
+<div class="outline-text-3" id="text-org23c4306">
+<pre class="example" id="org8d45400">
+如果要导出常量, 应该用工具类代替常量接口
+</pre>
+</div>
+</div>
+<div id="outline-container-org85ca78f" class="outline-3">
+<h3 id="org85ca78f">第20条: 类层次优于标签类</h3>
+<div class="outline-text-3" id="text-org85ca78f">
+<pre class="example" id="org0dac512">
+(没啥好说的, 基本操作)
+</pre>
+</div>
+</div>
+<div id="outline-container-org335dd19" class="outline-3">
+<h3 id="org335dd19">第21条: 用函数对象表示策略</h3>
+<div class="outline-text-3" id="text-org335dd19">
+<pre class="example" id="orga4e769e">
+函数指针的主要用途就是实现策略模式
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb88c4b0" class="outline-3">
+<h3 id="orgb88c4b0">第22条: 优先考虑静态成员类</h3>
+<div class="outline-text-3" id="text-orgb88c4b0">
+<pre class="example" id="org6ef2a4f">
+嵌套类: 静态成员类, 非静态成员类, 匿名类, 局部类
+静态成员类: 外围类是类本身. 常见用法作为公有辅助类
+非静态成员类: 外围类是类的实例, 常见用法定义一个 Adapter
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org119d421" class="outline-2">
+<h2 id="org119d421">第5章 泛型 (23 - 29)</h2>
+<div class="outline-text-2" id="text-org119d421">
+<pre class="example" id="orgfb65076">
+术语:
+List&lt;String&gt;                      参数化类型
+String                            实际类型参数
+List&lt;E&gt;                           泛型
+E                                 形式类型参数
+List&lt;?&gt;                           无限制通配符类型
+List                              原生态类型
+&lt;E extends Number&gt;                有限制类型参数
+&lt;T extends Comparable&lt;T&gt;&gt;         递归类型限制
+List&lt;? extend Number&gt;             有限制通配符类型
+static &lt;E&gt; List&lt;E&gt; asList(E[] a)  泛型方法
+String.class                      类型令牌
+</pre>
+</div>
+<div id="outline-container-org1461669" class="outline-3">
+<h3 id="org1461669">第23条: 请不要在新代码中使用原生态类型</h3>
+<div class="outline-text-3" id="text-org1461669">
+<pre class="example" id="orge7c70ef">
+使用原生态类型的缺点: 编译器不会对参数进行类型检查
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc71873f" class="outline-3">
+<h3 id="orgc71873f">第24条: 消除非受检警告</h3>
+<div class="outline-text-3" id="text-orgc71873f">
+<pre class="example" id="orgadaffe7">
+如果无法消除警告, 同时可以证明引起警告的代码是类型安全的.
+可以用@SuppressWarnings("unchecked")注解来禁止这条警告, 使用时应该始终在尽可能小的范围中(永远不要使用在整个类上), 同时再添加一条注释, 说明为什么这么做是安全的.
+</pre>
+</div>
+</div>
+<div id="outline-container-org4767381" class="outline-3">
+<h3 id="org4767381">第25条: 列表优于数组</h3>
+<div class="outline-text-3" id="text-org4767381">
+<pre class="example" id="orgbd29bd0">
+如果代码有错误, 用数组时, 运行时发现; 用列表时, 编译器发现.
+绝大多数时, 请用列表代替数组
+</pre>
+</div>
+</div>
+<div id="outline-container-org6a1d840" class="outline-3">
+<h3 id="org6a1d840">第26条: 优先考虑泛型</h3>
+<div class="outline-text-3" id="text-org6a1d840">
+<pre class="example" id="org24ebe88">
+public class Stack&lt;E&gt; { ... }
+</pre>
+</div>
+</div>
+<div id="outline-container-org31f64c2" class="outline-3">
+<h3 id="org31f64c2">第27条: 优先考虑泛型方法</h3>
+<div class="outline-text-3" id="text-org31f64c2">
+<pre class="example" id="org8057150">
+public static &lt;E&gt; Set&lt;E&gt; union(Set&lt;E&gt; s1, Set&lt;E&gt; s2) { ... }
+</pre>
+</div>
+</div>
+<div id="outline-container-org89ec616" class="outline-3">
+<h3 id="org89ec616">第28条: 利用有限制通配符来提升API的灵活性</h3>
+<div class="outline-text-3" id="text-org89ec616">
+<pre class="example" id="org1fcf852">
+PECS = producer-extends, consumer-super
+注: comparable, comparator 都是 consumer
+Collection&lt;? extend E&gt; or Consumer&lt;? super E&gt;
+
+Iterable&lt;E&gt; 可以理解为: E的Iterable接口
+Iterable&lt;? extend E&gt; 可以理解为: E的某个子类型的Iterable接口
+
+这两种写法后者更好. 因为在这个方法中, 你无须 形式类型参数 是什么
+public static &lt;E&gt; void swap(List&lt;E&gt; list, int i, int j);
+public static void swap(List&lt;?&gt; list, int i, int j);
+</pre>
+</div>
+</div>
+<div id="outline-container-org4f3c057" class="outline-3">
+<h3 id="org4f3c057">第29条: 优先考虑类型安全的异构容器</h3>
+<div class="outline-text-3" id="text-org4f3c057">
+<pre class="example" id="org2559739">
+异构容器的实现方式: Map&lt;Class&lt;?&gt;, Object&gt; map;
+类的类型转换, 优先用下面的方法
+public class Class&lt;T&gt; {
+  public &lt;U&gt; Class&lt;? extends U&gt; asSubclass(Class&lt;U&gt; clazz);
+  public T cast(Object obj);
+  ...
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org264df33" class="outline-2">
+<h2 id="org264df33">第6章 枚举和注解 (30 - 37)</h2>
+<div class="outline-text-2" id="text-org264df33">
+</div>
+<div id="outline-container-org14f19b4" class="outline-3">
+<h3 id="org14f19b4">第31条: 用实例域代替序数</h3>
+<div class="outline-text-3" id="text-org14f19b4">
+<pre class="example" id="orgd23d101">
+永远不要根据枚举的序数导出与它关联的值, 而是要将它保存在一个实例域中.
+所有枚举都一个 ordinal() 方法, 它返回每个枚举常量在类型中的数字位置.
+但大多数情况都用不到这个方法.
+</pre>
+</div>
+</div>
+<div id="outline-container-org4c4bb7a" class="outline-3">
+<h3 id="org4c4bb7a">第32条: 用EnumSet代替位域</h3>
+<div class="outline-text-3" id="text-org4c4bb7a">
+<pre class="example" id="org6f72f80">
+EnumSet的底层是long存储的, 所以性能上跟位域是差不多的, 而且封装了大部分的方法.
+--- old ---
+int STYLE_BOLD      = 1 &lt;&lt; 0; // 1
+int STYLE_ITALIC    = 1 &lt;&lt; 1; // 2
+int STYLE_UNDERLINE = 1 &lt;&lt; 2; // 4
+text.applyStyles(STYLE_BOLD | STYLE_ITALIC);
+
+--- new ---
+enum STYLE {BOLD, ITALIC, UNDERLINE};
+text.applyStyles(EnumSet.of(Style.BOLD, Style.ITALIC);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc7e5da8" class="outline-3">
+<h3 id="orgc7e5da8">第33条: 用EnumMap代替序数索引</h3>
+<div class="outline-text-3" id="text-orgc7e5da8">
+<pre class="example" id="org5c19261">
+如果要用到形如 "Set&lt;E&gt;[]" 或 "E[][]" 的结构, 请用EnumMap代替.
+</pre>
+</div>
+</div>
+<div id="outline-container-org6bda741" class="outline-3">
+<h3 id="org6bda741">第34条: 用接口模拟可伸缩的枚举</h3>
+<div class="outline-text-3" id="text-org6bda741">
+<pre class="example" id="org3f87e62">
+少用这种模式, 除了这样的枚举类型: 它的元素表示在某种机器上的操作(比如操作码)
+</pre>
+</div>
+</div>
+<div id="outline-container-org2ab0358" class="outline-3">
+<h3 id="org2ab0358">第35条: 注解优于命名空间</h3>
+<div class="outline-text-3" id="text-org2ab0358">
+<pre class="example" id="org18b106f">
+注解的功能要比命令空间强大的多, 所以一定要用注解代替命名空间
+</pre>
+</div>
+</div>
+<div id="outline-container-org6d9bc2e" class="outline-3">
+<h3 id="org6d9bc2e">第36条: 坚持使用Override注解</h3>
+<div class="outline-text-3" id="text-org6d9bc2e">
+<pre class="example" id="org93a01c5">
+在你想要覆盖超类声明的每个方法声明中使用Override注解
+1. 如果确定要覆盖父类的方法时, 加上注解, 则编译器会帮你"检查错误"
+2. 如果不小心写了一个方法, 恰好跟父类的方法一样, 则编译器会提醒你"无意识的覆盖"
+</pre>
+</div>
+</div>
+<div id="outline-container-org468dbca" class="outline-3">
+<h3 id="org468dbca">第37条: 用标记接口定义类型</h3>
+<div class="outline-text-3" id="text-org468dbca">
+<pre class="example" id="org26b7d07">
+如果想要定义类型, 一定要使用接口
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org14dcea2" class="outline-2">
+<h2 id="org14dcea2">第7章 方法 (38 - 44)</h2>
+<div class="outline-text-2" id="text-org14dcea2">
+</div>
+<div id="outline-container-org19b8e3c" class="outline-3">
+<h3 id="org19b8e3c">第38条: 检查参数的有效性</h3>
+<div class="outline-text-3" id="text-org19b8e3c">
+<pre class="example" id="org8e1ddd7">
+每当编写方法或者构造器的时候, 应该考虑它的参数有哪些限制.
+应该把这些限制写到文档中, 并在方法体的开头,通过显式的检查来实施这些限制.
+导出的方法可以抛出异常, 内部的方法可以使用断言.
+</pre>
+</div>
+</div>
+<div id="outline-container-org6f26a4e" class="outline-3">
+<h3 id="org6f26a4e">第39条: 必要时进行保护性拷贝</h3>
+<div class="outline-text-3" id="text-org6f26a4e">
+<pre class="example" id="org00b9bdf">
+如果类具有从客户端得到或者返回到客户端的可变组件, 类就必须保护性地拷贝这些组件.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc408fee" class="outline-3">
+<h3 id="orgc408fee">第40条: 谨慎设计方法签名</h3>
+<div class="outline-text-3" id="text-orgc408fee">
+<pre class="example" id="orge962e0a">
+- 谨慎地选择方法的名称
+- 不要过于追求提供便利的方法
+- 避免过长的参数列表
+  1. 把方法拆分成多个方法
+  2. 创建辅助类来保存参数的分组, 通常用静态成员类
+  3. 参数采用Builder模式
+对于参数类型, 优先使用接口而不是类
+对于 boolean 参数, 要优先使用两个元素的枚举类型
+</pre>
+</div>
+</div>
+<div id="outline-container-org656db6e" class="outline-3">
+<h3 id="org656db6e">第41条: 慎用重载</h3>
+<div class="outline-text-3" id="text-org656db6e">
+<pre class="example" id="org163f9ac">
+对于重载方法的选择是静态的, 而对于被覆盖的方法的选择则是动态的
+安全而保守的策略是, 永远不要导出两个具有相同参数数目的重载方法
+反例: List&lt;Integer&gt; list; list.remove(1) 与 list.remove((Integer)1)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgadb1042" class="outline-3">
+<h3 id="orgadb1042">第42条: 慎用可变参数</h3>
+<div class="outline-text-3" id="text-orgadb1042">
+<pre class="example" id="org287ae7b">
+必要时, 可以考虑 1个参数和多个, 而不是0个和多个
+重视性能的情况下, 每个重载方法带有0至3个普通参数, 当参数的数目超过3个时, 就使用一个可变参数方法
+</pre>
+</div>
+</div>
+<div id="outline-container-org5b7b58f" class="outline-3">
+<h3 id="org5b7b58f">第43条: 返回零长度的数组或者集合, 而不是null</h3>
+<div class="outline-text-3" id="text-org5b7b58f">
+<pre class="example" id="orgbb2e90c">
+返回类型为数组或者集合的方法没理由返回null, 而是返回一个零长度的数组或者集合.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgee838b0" class="outline-3">
+<h3 id="orgee838b0">第44条: 为所有导出的API元素编写文档注释</h3>
+<div class="outline-text-3" id="text-orgee838b0">
+<pre class="example" id="org8a0715c">
+为了正确地编写API文档, 必须在每个被导出的类, 接口, 构造器, 方法和域声明之前增加一个文档注释
+方法的文档注释应该简洁地描述出它和客户端之间的约定
+同一个类或者接口中的两个成员或者构造器, 不应该具有同样的概要描述
+为泛型或者方法编写文档时, 确保要在文档中说明所有的类型参数
+为枚举类型编写文档时, 要确保在文档中说明常量
+为注解类型编写文档时, 要确保在文档中说明所有成员
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0121890" class="outline-2">
+<h2 id="org0121890">第8章 通用程序设计 (45 - 56)</h2>
+<div class="outline-text-2" id="text-org0121890">
+</div>
+<div id="outline-container-org68626c5" class="outline-3">
+<h3 id="org68626c5">第45条: 将局部变量的作用域最小化</h3>
+<div class="outline-text-3" id="text-org68626c5">
+<pre class="example" id="org9c1420e">
+要使局部变量的作用域最小化, 最有力的方法就是在第一次使用它的地方声明.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgddb3e1c" class="outline-3">
+<h3 id="orgddb3e1c">第46条: for-each循环优先传统的for循环</h3>
+<div class="outline-text-3" id="text-orgddb3e1c">
+<pre class="example" id="orgb6e155d">
+实现 Iterable 接口的对象都可以用for-each循环.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgbe0ed0e" class="outline-3">
+<h3 id="orgbe0ed0e">第47条: 了解和使用类库</h3>
+<div class="outline-text-3" id="text-orgbe0ed0e">
+<pre class="example" id="orgfe77814">
+不要重复造轮子, 如果一个比较常用的功能, 优先去标准库里找.
+好处:
+1. 完整的测试, 发行, 超多人的使用, 工业标准, 性能最优.
+2. 查看源码可以学习主流的编码风格
+</pre>
+</div>
+</div>
+<div id="outline-container-orgcc85636" class="outline-3">
+<h3 id="orgcc85636">第48条: 如果需要精确的答案, 请避免使用float和double</h3>
+<div class="outline-text-3" id="text-orgcc85636">
+<pre class="example" id="orgcb5755d">
+1. 使用 BigDecimal, 比较繁琐, 好处是可以完全控制舍入.
+2. 使用 int 或 long, 优先使用这条.
+</pre>
+</div>
+</div>
+<div id="outline-container-org0d85be5" class="outline-3">
+<h3 id="org0d85be5">第49条: 基本类型优先于装箱基本类型</h3>
+<div class="outline-text-3" id="text-org0d85be5">
+<pre class="example" id="orgeb86362">
+当在一项操作中混合使用基本类型和装箱类型时, 装箱类型会自动拆箱(有风险, 比如空指针).
+应当只有在集合中才使用装箱类型.
+</pre>
+</div>
+</div>
+<div id="outline-container-org6f65184" class="outline-3">
+<h3 id="org6f65184">第50条: 如果其他类型更合适, 则尽量避免使用字符串</h3>
+<div class="outline-text-3" id="text-org6f65184">
+<pre class="example" id="org3d2f78d">
+不要用字符串代替其他类型(如int, boolean, enum).
+</pre>
+</div>
+</div>
+<div id="outline-container-org7c9ac39" class="outline-3">
+<h3 id="org7c9ac39">第51条: 当心字符串连接的性能</h3>
+<div class="outline-text-3" id="text-org7c9ac39">
+<pre class="example" id="orgeaec467">
+因为字符串是不可变的, 所以当两个字符串连接时(+), 它们的内容都要被拷贝(性能问题).
+当需要大量连接的时候, 用 StringBuilder(非同步) / StringBuffer(同步) 代替 String
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd450c71" class="outline-3">
+<h3 id="orgd450c71">第52条: 通过接口引用对象</h3>
+<div class="outline-text-3" id="text-orgd450c71">
+<pre class="example" id="org31bbd48">
+Vector&lt;Subscriber&gt; subscribers = new Vector&lt;Subscriber&gt;();    // Bad
+  List&lt;Subscriber&gt; subscribers = new Vector&lt;Subscriber&gt;();    // Good, 更灵活
+                           ... = new ArrayList&lt;Subscriber&gt;(); // 易于更换实现
+</pre>
+</div>
+</div>
+<div id="outline-container-org16847b1" class="outline-3">
+<h3 id="org16847b1">第53条: 接口优先于反射机制</h3>
+<div class="outline-text-3" id="text-org16847b1">
+<pre class="example" id="orgf714edb">
+反射缺点:
+1. 丧失了编译时类型检查的好处
+2. 执行反射访问所需要的代码非常笨拙和冗长
+3. 性能损失
+反射好处:
+访问编译时无法获取的类
+</pre>
+</div>
+</div>
+<div id="outline-container-org62336af" class="outline-3">
+<h3 id="org62336af">第54条: 谨慎的使用本地方法</h3>
+<div class="outline-text-3" id="text-org62336af">
+<pre class="example" id="org7161b69">
+使用本地方法来提高性能的做法不值得提倡
+</pre>
+</div>
+</div>
+<div id="outline-container-org81a0f0e" class="outline-3">
+<h3 id="org81a0f0e">第55条: 谨慎地进行优化</h3>
+<div class="outline-text-3" id="text-org81a0f0e">
+<pre class="example" id="org0f1c635">
+在设计之初就要考虑性能问题
+要努力编写好的程序而不是快的程序
+</pre>
+</div>
+</div>
+<div id="outline-container-org8b43dc4" class="outline-3">
+<h3 id="org8b43dc4">第56条: 遵守普遍接受的命名惯例</h3>
+<div class="outline-text-3" id="text-org8b43dc4">
+<pre class="example" id="org1575a8d">
+几个例子
+Package			com.google.inject, org.joda.time.format
+Class or Interface	Timer, FutureTask, LinkedHashMap, HttpServlet
+Method or Field		remove, ensureCapacity, getCrc
+Constant Field		MIN_VALUE, NEGATIVE_INFINITY
+Local Variable		i, xref, houseNumber
+Type Parameter		T, E, K, V, X, T1, T2
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4080c19" class="outline-2">
+<h2 id="org4080c19">第9章 异常 (57 - 65)</h2>
+<div class="outline-text-2" id="text-org4080c19">
+</div>
+<div id="outline-container-orge206aa6" class="outline-3">
+<h3 id="orge206aa6">第57条: 只针对异常的情况才使用异常</h3>
+<div class="outline-text-3" id="text-orge206aa6">
+<pre class="example" id="org605cfdb">
+异常应该只用于异常的情况下, 它们永远不应该用于正常的控制流
+</pre>
+</div>
+</div>
+<div id="outline-container-orgba8706e" class="outline-3">
+<h3 id="orgba8706e">第58条: 对可恢复的情况使用受检异常, 对变成错误使用运行时异常</h3>
+<div class="outline-text-3" id="text-orgba8706e">
+<pre class="example" id="org97aabb1">
+对可恢复的情况, 使用受检异常; 对于程序错误, 使用运行时异常(RuntimeException 的子类)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc429f14" class="outline-3">
+<h3 id="orgc429f14">第59条: 避免不必要地使用受检的异常</h3>
+<div class="outline-text-3" id="text-orgc429f14">
+<pre class="example" id="org8469fb2">
+受检的异常, 会给调用者带来额外的负担(需要编写try-catch块)
+</pre>
+</div>
+</div>
+<div id="outline-container-org90a8b2c" class="outline-3">
+<h3 id="org90a8b2c">第60条: 优先使用标准的异常</h3>
+<div class="outline-text-3" id="text-org90a8b2c">
+<pre class="example" id="orgf5eba9c">
+优先熟悉并使用标准库, 没什么好说的.
+
+常用的异常:
+IllegalArgumentException         非null的参数值不正确
+IllegalStateException            对于方法调用而言, 对象状态不合适
+NullPointerException             在禁止使用null的情况下参数值为null
+IndexOUtOfBoundsException        下标参数值越界
+ConcurrentModificationException  在禁止并发修改的情况下, 检测到对象的并发修改
+UnsupportedOperationException    对象不支持用户请求的方法
+</pre>
+</div>
+</div>
+<div id="outline-container-org928e0d0" class="outline-3">
+<h3 id="org928e0d0">第61条: 抛出与抽象相对应的异常</h3>
+<div class="outline-text-3" id="text-org928e0d0">
+<pre class="example" id="org8bc55e7">
+异常转译: 更高层的实现应该捕获低层的异常, 同时抛出可以按照高层抽象进行解释的异常
+异常链: 在异常转译的基础上, 低层异常作为参数构造出高层异常
+</pre>
+</div>
+</div>
+<div id="outline-container-org65bea56" class="outline-3">
+<h3 id="org65bea56">第62条: 每个方法抛出的异常都要有文档</h3>
+<div class="outline-text-3" id="text-org65bea56">
+<pre class="example" id="org7f9efe3">
+永远不要声明一个方法 "throws Exception" 或 "throws Throwable"
+只有受检的异常才包含在方法的声明中
+</pre>
+</div>
+</div>
+<div id="outline-container-org0ea4b60" class="outline-3">
+<h3 id="org0ea4b60">第63条: 在细节消息中包含能捕获失败的信息</h3>
+<div class="outline-text-3" id="text-org0ea4b60">
+<pre class="example" id="org9d1fd5c">
+为了捕获失败, 异常的细节信息应该包含所有 "对该异常有贡献" 的参数和域的值
+例如: java.lang.IndexOutOfBoundsException的异常细节只有越界的index
+更好的异常细节应该包含: 上界, 下界, index
+</pre>
+</div>
+</div>
+<div id="outline-container-orga0cbe3f" class="outline-3">
+<h3 id="orga0cbe3f">第64条: 努力使失败保持原子性</h3>
+<div class="outline-text-3" id="text-orga0cbe3f">
+<pre class="example" id="org8545289">
+定义: 失败的方法调用应该使对象保持在被调用之前的状态
+(以下方法难度递增)
+1. 设计不可变对象
+2. 先对参数进行检查
+3. 调整计算处理过程的顺序, 可能失败的计算在修改对象的之前执行
+4. 编写一段恢复代码
+5. 在对象的一份临时拷贝上执行, 操作成功之后用临时拷贝的结果代替对象的内容
+</pre>
+</div>
+</div>
+<div id="outline-container-org46a844d" class="outline-3">
+<h3 id="org46a844d">第65条: 不要忽略异常</h3>
+<div class="outline-text-3" id="text-org46a844d">
+<pre class="example" id="orgcce5b82">
+要相信API的设计者声明一个方法将抛出某个异常的时候, 他们一定正在试图说明某些事情, 不要忽略它!
+捕获一个异常的时候, 一定不要用空的catch块, 至少加个注释说明为什么这样做.
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org8c8cc43" class="outline-2">
+<h2 id="org8c8cc43">第10章 并发 (66 - 73)</h2>
+<div class="outline-text-2" id="text-org8c8cc43">
+</div>
+<div id="outline-container-org5e58bdd" class="outline-3">
+<h3 id="org5e58bdd">第66条: 同步访问共享的可变数据</h3>
+<div class="outline-text-3" id="text-org5e58bdd">
+<pre class="example" id="org1b6011b">
+当多个线程共享可变数据的时候, 每个读或写数据的线程都必须执行同步.
+基本的方式有: synchronized, volatile, AtomicXXX
+</pre>
+</div>
+</div>
+<div id="outline-container-org8bb0246" class="outline-3">
+<h3 id="org8bb0246">第67条: 避免过度同步</h3>
+<div class="outline-text-3" id="text-org8bb0246">
+<pre class="example" id="org5e9833e">
+在同步区内尽量少调用外部方法
+在同步区内做尽可能少的工作(获得锁, 检查共享数据, 根据需要转换数据, 释放锁)
+如果在内部同步了类, 可以使用分拆锁/分离锁/非阻塞来控制并发度
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd7d16fa" class="outline-3">
+<h3 id="orgd7d16fa">第68条: executor 和 task 优于线程</h3>
+<div class="outline-text-3" id="text-orgd7d16fa">
+<pre class="example" id="orgeab561d">
+以前 Thread 是即充当工作单元, 又是执行机制, 现在工作单元和执行机制是分开的.
+工作单元: 也称为 task, 有两种 Runnable(无返回值) 和 Callable(有返回值)
+执行机制: executor service
+由于有不同的 executor, 所以这种方式极大的提高了灵活性
+
+通常用 Executors 来创建 Executor
+建议用 ScheduledThreadPoolExecutor 代替 Timer
+</pre>
+</div>
+</div>
+<div id="outline-container-org80977d8" class="outline-3">
+<h3 id="org80977d8">第69条: 并发工具优于 wait 和 notify</h3>
+<div class="outline-text-3" id="text-org80977d8">
+<pre class="example" id="org78d4993">
+由于JDK1.5新增了并发工具, 所以没有理由在新代码中使用 wait 和 notify
+如果维护在使用 wait 和 notify 的代码, 一定要用标准模式的 while 循环调用 wait
+一般情况, 应该优先使用 notifyAll, 而不是使用notify
+
+并发工具分成三类: Executor Framework, 并发集合, 同步器
+</pre>
+</div>
+</div>
+<div id="outline-container-org073b40a" class="outline-3">
+<h3 id="org073b40a">第70条: 线程安全性的文档化</h3>
+<div class="outline-text-3" id="text-org073b40a">
+<pre class="example" id="orgbe266f1">
+当一个类的实例或者静态方法被并发使用的时候, 一定要看文档如果描述其行为的并发程度
+每个类都应该清楚地在文档中说明它的线程安全属性
+几种线程安全级别:
+- 不可变的. 如: String, Long
+- 无条件的线程安全. 如: Random, ConcurrentHashMap
+- 有条件的线程安全. 如: Collections.synchronized包装返回的集合, 他们的迭代器要求外部同步
+- 非线程安全. 如: ArrayList, HashMap
+- 线程对立的. 非常少见, 可以忽略
+</pre>
+</div>
+</div>
+<div id="outline-container-orgfea9767" class="outline-3">
+<h3 id="orgfea9767">第71条: 慎用延迟初始化</h3>
+<div class="outline-text-3" id="text-orgfea9767">
+<pre class="example" id="org60bf7f8">
+正常的初始化要优先于延迟初始化. 除非绝对必要, 否则不要用延迟初始化
+延时化技术
+静态域: 使用 lazy initialization holder class 模式
+private static class FieldHolder {
+  static final FieldType type = computeFielValue();
+}
+static FieldType getField() { return FieldHolder.field; }
+实例域: 使用双重检查模式, 如果可以接受重复初始化, 可以使用单重检查模式
+注意实例域一定要声明成 volalite
+</pre>
+</div>
+</div>
+<div id="outline-container-org26253b2" class="outline-3">
+<h3 id="org26253b2">第72条: 不要依赖于线程调度器</h3>
+<div class="outline-text-3" id="text-org26253b2">
+<pre class="example" id="orgb7c8a8e">
+任何依赖于线程调度器来达到正确性或者性能要求的程序, 很有可能都是不可以移植的
+作为推论, 不要依赖 Thread.yield 或者线程优先级, 它们仅仅是对调度器做些暗示
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org53fb6c1" class="outline-2">
+<h2 id="org53fb6c1">第11章 序列化 (74 - 78)</h2>
+<div class="outline-text-2" id="text-org53fb6c1">
+</div>
+<div id="outline-container-orgdaa27dc" class="outline-3">
+<h3 id="orgdaa27dc">第74条: 谨慎地实现 Serializable 接口</h3>
+<div class="outline-text-3" id="text-orgdaa27dc">
+<pre class="example" id="org48823a3">
+代价1: 一旦一个被发布, 就大大降低了"改变这个类的实现"的灵活性
+代价2: 它增加了出现 Bug 和安全漏洞的可能性
+代价3: 随着类发行新的版本, 相关的测试负担也增加了
+
+实现 Serializable 接口并不是一个很轻松就可以做出的决定
+为了继承而设计的类应该尽可能少地去实现 Serializable 接口, 用户的接口也应该尽可能少地继承 Serializable 接口
+为了继承而设计的不可序列化的类, 应该考虑提供一个无参数构造器
+</pre>
+</div>
+</div>
+<div id="outline-container-org4183328" class="outline-3">
+<h3 id="org4183328">第75条: 考虑使用自定义的序列化形式</h3>
+<div class="outline-text-3" id="text-org4183328">
+<pre class="example" id="org54f923e">
+如果一个对象的物理表示法等同于它的逻辑内容, 可能就适用于使用默认的序列化形式
+private void writeObject(ObjectOutputStream s) throws IOException;
+private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException;
+</pre>
+</div>
+</div>
+<div id="outline-container-orge9fce1e" class="outline-3">
+<h3 id="orge9fce1e">第76条: 保护性地编写readObject方法</h3>
+<div class="outline-text-3" id="text-orge9fce1e">
+<pre class="example" id="orgc428654">
+对于对象引用域必须保持为私有的类, 要保护性地拷贝这些域中的每个对象. 不可变类的组件就属于这一类别
+对于任何约束条件, 如果检查失败, 则抛出一个InvalidObjectException异常. 这些检查动作应该跟在所有的保护性拷贝之后
+如果整个对象图在被反序列化之后必须进行验证, 就应该使用ObjectInputValidation接口
+无论是直接方式还是间接方式, 都不要调用类中任何可被覆盖的方法
+</pre>
+</div>
+</div>
+<div id="outline-container-org9b4e4ca" class="outline-3">
+<h3 id="org9b4e4ca">第77条: 对于实例控制, 枚举类型优先于readResolve</h3>
+<div class="outline-text-3" id="text-org9b4e4ca">
+<pre class="example" id="orgedfe350">
+ANY-ACCESS-MODIFIER Object readResolve() throws ObjectStreamException;
+</pre>
+</div>
+</div>
+<div id="outline-container-org3b4bb01" class="outline-3">
+<h3 id="org3b4bb01">第78条: 考虑用序列化代理代替序列化实例</h3>
+<div class="outline-text-3" id="text-org3b4bb01">
+<pre class="example" id="orgaf107e8">
+ANY-ACCESS-MODIFIER Object writeReplace() throws ObjectStreamException;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Saul Lawliet</p>
+<p class="date">Created: 2022-03-21 Mon 15:34</p>
+</div>
+</body>
+</html>

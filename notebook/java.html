@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-01-13 Thu 22:47 -->
+<!-- 2022-03-21 Mon 15:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Java 笔记</title>
 <meta name="author" content="Saul Lawliet" />
 <meta name="generator" content="Org Mode" />
-<link rel="stylesheet" href="/assets/css/org.css" type="text/css" />
+<link rel="stylesheet" href="https://saullawliet.github.io/assets/css/org.css" type="text/css" />
 </head>
 <body>
 <div id="content" class="content">
@@ -19,6 +19,8 @@
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#orga13438b">资料</a></li>
+<li><a href="#org01b922d">读书笔记</a></li>
+<li><a href="#org77a4935">源码分析</a></li>
 <li><a href="#org3c585ef">Java Memory Model</a></li>
 <li><a href="#org790a171">并发特性</a></li>
 <li><a href="#orgd7b2995">Happens-Before</a></li>
@@ -50,6 +52,30 @@
 <ul class="org-ul">
 <li>Java Design Patterns <a href="https://java-design-patterns.com/">https://java-design-patterns.com/</a><br /></li>
 <li>美团技术团队 <a href="https://tech.meituan.com/tags/java.html">https://tech.meituan.com/tags/java.html</a><br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org01b922d" class="outline-2">
+<h2 id="org01b922d">读书笔记</h2>
+<div class="outline-text-2" id="text-org01b922d">
+<ul class="org-ul">
+<li><a href="java/effective-java.html">&lt;Effective Java&gt;</a><br /></li>
+<li><a href="java/java-concurrency-in-practice-part1.html">&lt;Java Concurrency in Practice&gt; - Part1: 基础部分</a><br /></li>
+<li><a href="java/java-concurrency-in-practice-part2.html">&lt;Java Concurrency in Practice&gt; - Part2: 结构化并发应用程序</a><br /></li>
+<li><a href="java/java-concurrency-in-practice-part3.html">&lt;Java Concurrency in Practice&gt; - Part3: 活跃, 性能与测试</a><br /></li>
+<li><a href="java/java-concurrency-in-practice-part4.html">&lt;Java Concurrency in Practice&gt; - Part4: 高级主题</a><br /></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org77a4935" class="outline-2">
+<h2 id="org77a4935">源码分析</h2>
+<div class="outline-text-2" id="text-org77a4935">
+<ul class="org-ul">
+<li><a href="java/AtomicInteger.html">AtomicInteger</a><br /></li>
+<li><a href="java/ReentrantLock.html">ReentrantLock</a><br /></li>
+<li><a href="java/Semaphore.html">Semaphore</a><br /></li>
 </ul>
 </div>
 </div>
@@ -317,7 +343,7 @@ Monitor 是线程私有的数据结构, 每一个线程都有一个可用的 Mon
 </p>
 
 
-<div id="org80cc654" class="figure">
+<div id="org77c546d" class="figure">
 <p><img src="https://i.loli.net/2020/04/03/1AXmgTt5hp3QdJO.gif" alt="1AXmgTt5hp3QdJO.gif" /><br />
 </p>
 </div>
@@ -374,7 +400,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 <h3 id="orge26ebd4">垃圾回收器</h3>
 <div class="outline-text-3" id="text-orge26ebd4">
 
-<div id="orgcf2037b" class="figure">
+<div id="orgbbcc159" class="figure">
 <p><img src="https://i.loli.net/2020/04/08/JAixmhlzv1Mqe36.jpg" alt="JAixmhlzv1Mqe36.jpg" /><br />
 </p>
 </div>
@@ -436,7 +462,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 <h3 id="orgcb634f2">HotSpot JVM 手册</h3>
 <div class="outline-text-3" id="text-orgcb634f2">
 
-<div id="org492cadf" class="figure">
+<div id="org200889d" class="figure">
 <p><img src="https://saullawliet.github.io/images/Java%208%20-%20GC%20cheatsheet.png" alt="Java%208%20-%20GC%20cheatsheet.png" /><br />
 </p>
 </div>
@@ -446,7 +472,7 @@ Java8 之后: PermGen 变成了 Metaspace<br />
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Saul Lawliet</p>
-<p class="date">Created: 2022-01-13 Thu 22:47</p>
+<p class="date">Created: 2022-03-21 Mon 15:34</p>
 </div>
 </body>
 </html>
